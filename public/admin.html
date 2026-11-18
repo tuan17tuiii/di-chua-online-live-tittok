@@ -1,0 +1,1065 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chánh Điện Tịnh Tâm · Full Admin Event-Flow Config Studio</title>
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <!-- Unified Global Navigation & Save Header -->
+  <header class="studio-topbar">
+    <div class="brand-group">
+      <div class="brand-lotus">🪷</div>
+      <div>
+        <div class="brand-title">CHÁNH ĐIỆN TỊNH TÂM</div>
+        <div class="brand-sub">TRUNG TÂM CẤU HÌNH TOÀN DIỆN THEO LUỒNG SỰ KIỆN (ADMIN CONFIG STUDIO)</div>
+      </div>
+    </div>
+
+    <nav class="global-nav-pills">
+      <a href="/control.html" class="nav-pill">🎛️ Bàn Điều Khiển Live (Live Manager)</a>
+      <a href="/admin.html" class="nav-pill active">⚙️ Cấu Hình Sự Kiện Toàn Diện (Admin Config)</a>
+      <a href="/overlay.html" target="_blank" class="nav-pill">📺 Mở Màn Hình OBS 9:16 ↗</a>
+    </nav>
+
+    <div class="topbar-actions">
+      <span class="dirty-indicator" id="dirty-badge">● Có thay đổi chưa lưu</span>
+      <div class="status-chip">
+        <span class="dot yellow" id="ws-dot"></span>
+        <span id="ws-label">WS...</span>
+      </div>
+      <div class="status-chip">
+        <span class="dot" id="tt-dot"></span>
+        <span id="tt-label">TikTok: Idle</span>
+      </div>
+      <button class="btn btn-gold" id="btn-save-top">💾 LƯU & ÁP DỤNG NGAY</button>
+    </div>
+  </header>
+
+  <!-- 3-Column Studio Workspace -->
+  <main class="studio-layout">
+
+    <!-- COLUMN 1: Micro-Event Flow Navigation Sidebar -->
+    <aside class="studio-sidebar">
+      <div class="sidebar-heading">CẤU HÌNH THEO LUỒNG SỰ KIỆN</div>
+
+      <button class="flow-nav-btn active" data-section="sec-connection">
+        <span class="flow-nav-icon">📡</span>
+        <span>
+          <span class="flow-nav-title">1. Kết Nối TikTok Live</span>
+          <span class="flow-nav-desc">Kênh lưu sẵn, Cookie v2.5, Proxy, Sự kiện</span>
+        </span>
+      </button>
+
+      <button class="flow-nav-btn" data-section="sec-presence">
+        <span class="flow-nav-icon">🚪</span>
+        <span>
+          <span class="flow-nav-title">2. Vào Phòng · Follow · Share</span>
+          <span class="flow-nav-desc">Member, Follow, Share, Hộ pháp, Túi lộc</span>
+        </span>
+      </button>
+
+      <button class="flow-nav-btn" data-section="sec-likes">
+        <span class="flow-nav-icon">❤️</span>
+        <span>
+          <span class="flow-nav-title">3. Thả Tim & Cột Mốc Tim</span>
+          <span class="flow-nav-desc">Hạt hoa sen cá nhân & Đại lễ mốc tim</span>
+        </span>
+      </button>
+
+      <button class="flow-nav-btn" data-section="sec-comments">
+        <span class="flow-nav-icon">💬</span>
+        <span>
+          <span class="flow-nav-title">4. Bình Luận & Rule Từ Khóa</span>
+          <span class="flow-nav-desc">Lời nguyện, Skin NLP, Từ khóa -> SK, Lọc</span>
+        </span>
+      </button>
+
+      <button class="flow-nav-btn" data-section="sec-gifts">
+        <span class="flow-nav-icon">🎁</span>
+        <span>
+          <span class="flow-nav-title">5. Quà Tặng & Gift Catalog</span>
+          <span class="flow-nav-desc">Phân tầng xu & Mapping từng món quà</span>
+        </span>
+      </button>
+
+      <button class="flow-nav-btn" data-section="sec-audio">
+        <span class="flow-nav-icon">🎛️</span>
+        <span>
+          <span class="flow-nav-title">6. Âm Thanh · Giọng AI · Kinh</span>
+          <span class="flow-nav-desc">Mixer 5 kênh, Edge-TTS, Nhịp mõ & Kinh</span>
+        </span>
+      </button>
+
+      <button class="flow-nav-btn" data-section="sec-scene">
+        <span class="flow-nav-icon">🏯</span>
+        <span>
+          <span class="flow-nav-title">7. Cảnh Chùa · HUD · Bồ Đoàn</span>
+          <span class="flow-nav-desc">Ảnh nền chùa, Khói/Nến/Hào quang, Sức chứa</span>
+        </span>
+      </button>
+
+      <button class="flow-nav-btn" data-section="sec-profiles">
+        <span class="flow-nav-icon">💾</span>
+        <span>
+          <span class="flow-nav-title">8. Hồ Sơ & Sao Lưu JSON</span>
+          <span class="flow-nav-desc">Scene Presets, Profiles, Import / Export</span>
+        </span>
+      </button>
+    </aside>
+
+    <!-- COLUMN 2: Dynamic Event-Flow Configuration Panes -->
+    <section class="studio-editor" id="studio-editor">
+
+      <!-- ========================================================= -->
+      <!-- SECTION 1: TIKTOK LIVE CONNECTION (v2.5.0)                -->
+      <!-- ========================================================= -->
+      <div class="section-pane active" id="sec-connection">
+        <div class="section-banner">
+          <div>
+            <h2>📡 1. Cấu Hình Kết Nối `TikTok-Live-Connector` (v2.5.0)</h2>
+            <p>Quản lý danh sách kênh TikTok thường phát, xác thực Session Cookie chuẩn v2.5, EulerStream Sign API, Proxy dân cư và bật/tắt từng luồng sự kiện gốc.</p>
+          </div>
+          <button class="btn btn-sm btn-danger" data-reset-section="connection">↺ Mặc định mục này</button>
+        </div>
+
+        <!-- Quick Connect & Saved Channels -->
+        <div class="flow-card highlight-border">
+          <div class="flow-card-header">
+            <div class="flow-card-title">
+              <h3>⚡ Kết Nối Nhanh & Danh Sách Kênh Lưu Sẵn</h3>
+            </div>
+            <div class="flow-card-actions">
+              <button class="btn btn-sm btn-gold" id="cfg-btn-connect-now">⚡ KẾT NỐI KÊNH ĐANG CHỌN</button>
+              <button class="btn btn-sm btn-danger" id="cfg-btn-disconnect-now">⏹ NGẮT KẾT NỐI</button>
+            </div>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-2">
+              <div class="field">
+                <label>Kênh TikTok mặc định (@username hoặc link live):</label>
+                <input type="text" class="input" id="conn-defaultChannel" placeholder="kenh_phat_phap">
+                <span class="field-hint">Hỗ trợ nhập `@username` hoặc dán nguyên link `https://www.tiktok.com/@user/live`.</span>
+              </div>
+              <div class="field">
+                <label>Room ID chỉ định (Tùy chọn - để trống sẽ tự dò):</label>
+                <input type="text" class="input" id="conn-explicitRoomId" placeholder="Tự động lấy Room ID khi đang live">
+              </div>
+            </div>
+
+            <div>
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                <label style="font-weight:700;">📌 Danh Sách Kênh TikTok Lưu Sẵn (Bấm 1 chạm trong Live Manager):</label>
+                <button class="btn btn-xs btn-gold" id="btn-add-saved-channel">+ Thêm kênh lưu sẵn</button>
+              </div>
+              <div class="subrule-list" id="saved-channels-list"></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Credentials, Proxy & Resilience -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div class="flow-card-title">
+              <h3>🔐 Xác Thực Nâng Cao (Cookie Session v2.5 · EulerStream · Proxy)</h3>
+            </div>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-2">
+              <div class="field">
+                <label>EulerStream Sign API Key (`signApiKey` - Tùy chọn):</label>
+                <input type="password" class="input mono" id="conn-signApiKey" placeholder="Để trống dùng hạn mức miễn phí mặc định">
+                <span class="field-hint">Tăng giới hạn kết nối và mở khóa danh mục quà nâng cao từ EulerStream.</span>
+              </div>
+              <div class="field">
+                <label>Residential Proxy URL (`http://user:pass@ip:port`):</label>
+                <input type="text" class="input mono" id="conn-proxyUrl" placeholder="Để trống nếu dùng mạng trực tiếp">
+              </div>
+            </div>
+
+            <div class="grid-3">
+              <div class="field">
+                <label>TikTok `sessionid` Cookie:</label>
+                <input type="password" class="input mono" id="conn-sessionId" placeholder="Lấy từ trình duyệt đã đăng nhập TikTok">
+              </div>
+              <div class="field">
+                <label>Vùng máy chủ `tt-target-idc`:</label>
+                <input type="text" class="input mono" id="conn-targetIdc" placeholder="alisg">
+              </div>
+              <div class="field">
+                <label>Watchdog Timeout (giây):</label>
+                <input type="number" class="input mono" id="conn-watchdogTimeoutSec" min="15" max="300">
+              </div>
+            </div>
+
+            <div class="grid-3">
+              <label class="check-row"><input type="checkbox" id="conn-autoReconnect"> Tự động kết nối lại khi rớt mạng</label>
+              <label class="check-row"><input type="checkbox" id="conn-authenticateWs"> Xác thực WebSocket bằng Cookie (`authenticateWs`)</label>
+              <label class="check-row"><input type="checkbox" id="conn-fetchGiftsOnConnect"> Tự tải danh mục Quà TikTok khi vào phòng</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Master Event Stream Switches -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div class="flow-card-title">
+              <h3>🎛️ Bộ Công Tắc Thu Nhận Từng Sự Kiện Gốc Từ TikTok</h3>
+            </div>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-4" id="conn-enabled-events-grid">
+              <label class="check-row"><input type="checkbox" data-ev-toggle="chat"> 💬 Bình luận (`chat`)</label>
+              <label class="check-row"><input type="checkbox" data-ev-toggle="gift"> 🎁 Quà tặng (`gift`)</label>
+              <label class="check-row"><input type="checkbox" data-ev-toggle="like"> ❤️ Thả tim (`like`)</label>
+              <label class="check-row"><input type="checkbox" data-ev-toggle="member"> 🚪 Vào phòng (`member`)</label>
+              <label class="check-row"><input type="checkbox" data-ev-toggle="follow"> ✨ Theo dõi (`follow`)</label>
+              <label class="check-row"><input type="checkbox" data-ev-toggle="share"> 🔗 Chia sẻ (`share`)</label>
+              <label class="check-row"><input type="checkbox" data-ev-toggle="subNotify"> 👑 Đăng ký (`subNotify`)</label>
+              <label class="check-row"><input type="checkbox" data-ev-toggle="emote"> 🙏 Nhãn dán (`emote`)</label>
+              <label class="check-row"><input type="checkbox" data-ev-toggle="envelope"> 🧧 Túi lộc (`envelope`)</label>
+              <label class="check-row"><input type="checkbox" data-ev-toggle="roomUser"> 👥 Đếm người xem (`roomUser`)</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- SECTION 2: PRESENCE & SOCIAL MICRO-EVENT FLOWS            -->
+      <!-- ========================================================= -->
+      <div class="section-pane" id="sec-presence">
+        <div class="section-banner">
+          <div>
+            <h2>🚪 2. Flow Sự Kiện Vào Phòng · Follow · Share · Hộ Pháp</h2>
+            <p>Cấu hình chi tiết phản ứng của Chánh Điện cho từng tương tác xã hội nhỏ của khán giả.</p>
+          </div>
+          <button class="btn btn-sm btn-danger" data-reset-section="presenceFlows">↺ Mặc định mục này</button>
+        </div>
+
+        <!-- 2.1 Member Join Flow -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div>
+              <div class="flow-card-title"><h3>🚪 Sự Kiện 2.1: Khán Giả Bước Vào Phòng (`member`)</h3></div>
+              <div class="flow-pipeline-badges" style="margin-top:4px;">
+                <span class="pipe-chip trigger">Khi vào phòng</span><span class="pipe-arrow">→</span>
+                <span class="pipe-chip guard">Kiểm tra % chỗ trống</span><span class="pipe-arrow">→</span>
+                <span class="pipe-chip action">Xếp bồ đoàn & Chào mừng</span>
+              </div>
+            </div>
+            <div class="flow-card-actions">
+              <button class="btn btn-xs btn-test" data-test-event="member">⚡ Test Vào Phòng</button>
+              <label class="switch"><input type="checkbox" id="pf-member-enabled"><span class="switch-slider"></span></label>
+            </div>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-3">
+              <label class="check-row"><input type="checkbox" id="pf-member-seatOnJoin"> Tự xếp vào bồ đoàn ngay khi vào phòng</label>
+              <label class="check-row"><input type="checkbox" id="pf-member-bowOnJoin"> Nhân vật tự cúi lạy khi an tọa</label>
+              <div class="field">
+                <label>Chỉ xếp chỗ khi bồ đoàn còn trống ≥ (%):</label>
+                <input type="number" class="input mono" id="pf-member-minFreeSeatPercent" min="0" max="95">
+              </div>
+            </div>
+            <div class="grid-3">
+              <div class="field">
+                <label>Trang phục mặc định:</label>
+                <select class="select" id="pf-member-defaultSkin">
+                  <option value="random">Ngẫu nhiên tự nhiên</option>
+                  <option value="man">Cư Sĩ Nam</option>
+                  <option value="woman">Cư Sĩ Nữ</option>
+                  <option value="monk">Sư Thầy</option>
+                  <option value="nun">Ni Cô</option>
+                  <option value="child">Chú Tiểu</option>
+                  <option value="granny">Bà Lão</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Hiệu ứng hạt tại chỗ ngồi:</label>
+                <select class="select" id="pf-member-particleTier">
+                  <option value="0">Không bắn hạt</option>
+                  <option value="1">Nhẹ (6 cánh sen vàng)</option>
+                  <option value="2">Vừa (15 hoa sen)</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Bong bóng chào trên đầu (để trống = tắt):</label>
+                <input type="text" class="input" id="pf-member-welcomeBubble" placeholder="VD: A Di Đà Phật 🙏">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2.2 Follow Flow -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div>
+              <div class="flow-card-title"><h3>✨ Sự Kiện 2.2: Khán Giả Bấm Follow Kênh (`follow`)</h3></div>
+              <div class="flow-pipeline-badges" style="margin-top:4px;">
+                <span class="pipe-chip trigger">Khi bấm Follow</span><span class="pipe-arrow">→</span>
+                <span class="pipe-chip guard">Cooldown TTS</span><span class="pipe-arrow">→</span>
+                <span class="pipe-chip action">Cấp chỗ + Cúi lạy + Thưởng xu + Cảm ơn</span>
+              </div>
+            </div>
+            <div class="flow-card-actions">
+              <button class="btn btn-xs btn-test" data-test-event="follow">⚡ Test Follow</button>
+              <label class="switch"><input type="checkbox" id="pf-follow-enabled"><span class="switch-slider"></span></label>
+            </div>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-4">
+              <label class="check-row"><input type="checkbox" id="pf-follow-seatOnFollow"> Cấp chỗ ngồi ngay</label>
+              <label class="check-row"><input type="checkbox" id="pf-follow-bowOnFollow"> Nhân vật cúi lạy cảm tạ</label>
+              <div class="field">
+                <label>Thưởng xu công đức:</label>
+                <input type="number" class="input mono" id="pf-follow-bonusCoins" min="0" max="1000">
+              </div>
+              <div class="field">
+                <label>Âm thanh nghi lễ:</label>
+                <select class="select" id="pf-follow-sfx">
+                  <option value="none">Không phát âm</option>
+                  <option value="mo">Tiếng Mõ</option>
+                  <option value="tier1_chime">Chuông Gió Chúc Phúc</option>
+                  <option value="small_bell">Chuông Bát Gia Trì</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid-3">
+              <label class="check-row"><input type="checkbox" id="pf-follow-ttsEnabled"> Đọc giọng AI cảm ơn người Follow</label>
+              <div class="field">
+                <label>Cooldown đọc TTS (giây):</label>
+                <input type="number" class="input mono" id="pf-follow-ttsCooldownSec" min="0" max="600">
+              </div>
+              <div class="field">
+                <label>Cấp hạt hoa sen:</label>
+                <select class="select" id="pf-follow-particleTier">
+                  <option value="0">Tắt</option>
+                  <option value="1">Cấp 1 (Nhẹ)</option>
+                  <option value="2">Cấp 2 (Vừa)</option>
+                </select>
+              </div>
+            </div>
+            <div class="field">
+              <label>Mẫu câu đọc TTS khi Follow (dùng `{name}`):</label>
+              <input type="text" class="input" id="pf-follow-ttsTemplate">
+            </div>
+          </div>
+        </div>
+
+        <!-- 2.3 Share Flow -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div>
+              <div class="flow-card-title"><h3>🔗 Sự Kiện 2.3: Khán Giả Chia Sẻ Phiên Live (`share`)</h3></div>
+              <div class="flow-pipeline-badges" style="margin-top:4px;">
+                <span class="pipe-chip trigger">Khi Share Live</span><span class="pipe-arrow">→</span>
+                <span class="pipe-chip guard">Chống spam 1 lần/phiên</span><span class="pipe-arrow">→</span>
+                <span class="pipe-chip action">Cấp chỗ + Cộng xu gieo duyên</span>
+              </div>
+            </div>
+            <div class="flow-card-actions">
+              <button class="btn btn-xs btn-test" data-test-event="share">⚡ Test Share</button>
+              <label class="switch"><input type="checkbox" id="pf-share-enabled"><span class="switch-slider"></span></label>
+            </div>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-4">
+              <label class="check-row"><input type="checkbox" id="pf-share-seatOnShare"> Cấp chỗ ngồi ngay</label>
+              <label class="check-row"><input type="checkbox" id="pf-share-oncePerSession"> Giới hạn 1 lần/user/phiên</label>
+              <div class="field">
+                <label>Thưởng xu gieo duyên:</label>
+                <input type="number" class="input mono" id="pf-share-bonusCoins" min="0" max="1000">
+              </div>
+              <div class="field">
+                <label>Âm thanh nghi lễ:</label>
+                <select class="select" id="pf-share-sfx">
+                  <option value="none">Không phát âm</option>
+                  <option value="mo">Tiếng Mõ</option>
+                  <option value="tier1_chime">Chuông Gió</option>
+                  <option value="small_bell">Chuông Gia Trì</option>
+                </select>
+              </div>
+            </div>
+            <div class="grid-2">
+              <label class="check-row"><input type="checkbox" id="pf-share-ttsEnabled"> Đọc giọng AI cảm ơn người Share</label>
+              <div class="field">
+                <label>Mẫu câu đọc TTS khi Share (`{name}`):</label>
+                <input type="text" class="input" id="pf-share-ttsTemplate">
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2.4 Subscribe & 2.5 Envelope -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div class="flow-card-title"><h3>👑 Sự Kiện 2.4 & 2.5: Đăng Ký Hộ Pháp (`subNotify`) & Túi Lộc (`envelope`)</h3></div>
+            <div class="flow-card-actions">
+              <button class="btn btn-xs btn-test" data-test-event="subscribe">⚡ Test Subscribe</button>
+              <button class="btn btn-xs btn-test" data-test-event="envelope">⚡ Test Túi Lộc</button>
+            </div>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-3">
+              <label class="check-row"><input type="checkbox" id="pf-sub-enabled"> Bật sự kiện Đăng ký Hộ Pháp</label>
+              <label class="check-row"><input type="checkbox" id="pf-sub-grantVip"> Tự động gắn VIP bảo vệ chỗ ngồi</label>
+              <div class="field">
+                <label>Thưởng xu Đăng ký Hộ Pháp:</label>
+                <input type="number" class="input mono" id="pf-sub-bonusCoins" min="0" max="10000">
+              </div>
+            </div>
+            <div class="field">
+              <label>Mẫu câu đọc TTS vinh danh Đăng ký Hộ Pháp (`{name}`):</label>
+              <input type="text" class="input" id="pf-sub-ttsTemplate">
+            </div>
+            <div class="grid-2" style="padding-top:8px;border-top:1px dashed var(--border-subtle);">
+              <label class="check-row"><input type="checkbox" id="pf-env-enabled"> Bật hiệu ứng mưa hoa sen khi có Túi Lộc (`envelope`)</label>
+              <label class="check-row"><input type="checkbox" id="pf-env-ttsEnabled"> Đọc TTS thông báo khi có người thả Túi Lộc</label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- SECTION 3: LIKE & ROOM LIKE MILESTONE FLOWS               -->
+      <!-- ========================================================= -->
+      <div class="section-pane" id="sec-likes">
+        <div class="section-banner">
+          <div>
+            <h2>❤️ 3. Flow Thả Tim Cá Nhân & Đại Lễ Cột Mốc Tim Toàn Phòng</h2>
+            <p>Biến từng lượt thả tim miễn phí thành tương tác sống động và tạo cao trào cộng đồng mỗi khi phòng chạm cột mốc tim mới.</p>
+          </div>
+          <button class="btn btn-sm btn-danger" data-reset-section="likeFlows">↺ Mặc định mục này</button>
+        </div>
+
+        <!-- 3.1 Per-user Like -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div class="flow-card-title"><h3>💗 Sự Kiện 3.1: Từng Đợt Thả Tim Của Người Xem (`like`)</h3></div>
+            <div class="flow-card-actions">
+              <button class="btn btn-xs btn-test" data-test-event="like">⚡ Test Thả Tim</button>
+              <label class="switch"><input type="checkbox" id="lf-per-enabled"><span class="switch-slider"></span></label>
+            </div>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-4">
+              <label class="check-row"><input type="checkbox" id="lf-per-seatOnLike"> Cấp bồ đoàn cho người thả tim</label>
+              <div class="field">
+                <label>Số tim tối thiểu để cấp chỗ:</label>
+                <input type="number" class="input mono" id="lf-per-minLikesToSeat" min="1" max="500">
+              </div>
+              <label class="check-row"><input type="checkbox" id="lf-per-bowOnLike"> Nhân vật cúi lạy khi thả tim</label>
+              <div class="field">
+                <label>Hạt hoa sen tại chỗ ngồi:</label>
+                <select class="select" id="lf-per-particleTier">
+                  <option value="0">Tắt hạt</option>
+                  <option value="1">Cấp 1 (6 cánh sen)</option>
+                  <option value="2">Cấp 2 (15 hoa sen)</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3.2 Room Like Milestones -->
+        <div class="flow-card highlight-border">
+          <div class="flow-card-header">
+            <div>
+              <div class="flow-card-title"><h3>🎆 Sự Kiện 3.2: Cột Mốc Tim Toàn Phòng (`likeMilestones`)</h3></div>
+              <div class="flow-pipeline-badges" style="margin-top:4px;">
+                <span class="pipe-chip trigger">Tổng tim đạt mốc</span><span class="pipe-arrow">→</span>
+                <span class="pipe-chip action">Đại Hồng Chung + Cả chùa đồng lạy + Mưa hoa sen + TTS</span>
+              </div>
+            </div>
+            <div class="flow-card-actions">
+              <button class="btn btn-xs btn-test" data-test-event="like_milestone">⚡ Kích Hoạt Thử Mốc Tim</button>
+              <label class="switch"><input type="checkbox" id="lf-ms-enabled"><span class="switch-slider"></span></label>
+            </div>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-3">
+              <div class="field">
+                <label>Lặp lại định kỳ mỗi N tim (0 = tắt lặp):</label>
+                <input type="number" class="input mono" id="lf-ms-everyNLikes" min="0" step="500">
+              </div>
+              <div class="field">
+                <label>Các mốc cụ thể (cách nhau dấu phẩy):</label>
+                <input type="text" class="input mono" id="lf-ms-customThresholds" placeholder="1000, 5000, 10000, 50000">
+              </div>
+              <div class="field">
+                <label>Âm thanh đại lễ:</label>
+                <select class="select" id="lf-ms-sfx">
+                  <option value="great_bell">🔔 Đại Hồng Chung</option>
+                  <option value="small_bell">🛎️ Chuông Gia Trì</option>
+                  <option value="tier2_chime">✨ Chuông Chúc Phúc</option>
+                  <option value="none">Không phát âm</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="grid-4">
+              <label class="check-row"><input type="checkbox" id="lf-ms-pulseHalo"> Bừng sáng Hào quang Phật</label>
+              <label class="check-row"><input type="checkbox" id="lf-ms-allBow"> Tất cả Phật tử đồng lạy</label>
+              <label class="check-row"><input type="checkbox" id="lf-ms-rainPetals"> Mưa hoa sen toàn màn hình</label>
+              <label class="check-row"><input type="checkbox" id="lf-ms-showBanner"> Hiện Banner chúc mừng</label>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label>Tiêu đề Banner cột mốc tim:</label>
+                <input type="text" class="input" id="lf-ms-bannerTitle">
+              </div>
+              <label class="check-row" style="align-self:end;"><input type="checkbox" id="lf-ms-ttsEnabled"> Đọc giọng AI tri ân đại chúng khi đạt mốc</label>
+            </div>
+
+            <div class="field">
+              <label>Mẫu câu đọc TTS khi chạm mốc tim (dùng `{totalLikes}`):</label>
+              <textarea class="textarea" id="lf-ms-ttsTemplate"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- SECTION 4: COMMENTS, SKIN NLP, KEYWORD RULES, MODERATION  -->
+      <!-- ========================================================= -->
+      <div class="section-pane" id="sec-comments">
+        <div class="section-banner">
+          <div>
+            <h2>💬 4. Flow Bình Luận · Lời Nguyện · Đổi Trang Phục & Rule Từ Khóa</h2>
+            <p>Kết nối mọi câu bình luận với hành động nhân vật, tự động ghi nhớ lời nguyện cho quà tặng, và tạo không giới hạn kịch bản bắt từ khóa.</p>
+          </div>
+          <button class="btn btn-sm btn-danger" data-reset-section="commentFlows">↺ Mặc định mục này</button>
+        </div>
+
+        <!-- 4.1 General Comment & Prayer Cache -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div class="flow-card-title"><h3>💭 4.1. Hành Vi Bình Luận Mặc Định & Bộ Nhớ Đệm Lời Nguyện (`PrayerCache`)</h3></div>
+            <button class="btn btn-xs btn-test" data-test-event="chat">⚡ Test Bình Luận</button>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-4">
+              <label class="check-row"><input type="checkbox" id="cf-gen-seatOnChat"> Tự xếp chỗ khi bình luận</label>
+              <label class="check-row"><input type="checkbox" id="cf-gen-bowOnChat"> Tự cúi lạy khi bình luận</label>
+              <label class="check-row"><input type="checkbox" id="cf-gen-showBubble"> Hiện bong bóng thoại</label>
+              <div class="field">
+                <label>Thời gian hiện bong bóng (giây):</label>
+                <input type="number" class="input mono" id="cf-gen-bubbleDurationSec" min="2" max="30">
+              </div>
+            </div>
+            <div class="grid-3">
+              <div class="field">
+                <label>Cooldown chống spam mỗi người (ms):</label>
+                <input type="number" class="input mono" id="cf-gen-perUserCooldownMs" min="0" max="60000" step="500">
+              </div>
+              <div class="field">
+                <label>Độ dài bình luận tối đa (ký tự):</label>
+                <input type="number" class="input mono" id="cf-gen-maxLength" min="20" max="300">
+              </div>
+              <div class="field">
+                <label>Thời gian nhớ lời nguyện chờ tặng quà (giây):</label>
+                <input type="number" class="input mono" id="cf-prayer-ttlSec" min="10" max="600">
+              </div>
+            </div>
+            <div class="field">
+              <label>Danh sách lời chúc / cầu an mặc định (mỗi dòng 1 câu — dùng khi người tặng quà chưa kịp bình luận):</label>
+              <textarea class="textarea" id="cf-prayer-defaultPrayers" rows="4"></textarea>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4.2 Custom Keyword Trigger Rules -->
+        <div class="flow-card highlight-border">
+          <div class="flow-card-header">
+            <div>
+              <div class="flow-card-title"><h3>⚡ 4.2. Kịch Bản Bắt Từ Khóa Bình Luận (`Comment Keyword Flows`)</h3></div>
+              <span class="text-xs text-muted">Tạo các rule riêng: Khán giả bình luận trúng từ khóa → kích hoạt Lạy / Đổi đồ / Chuông / Hoa sen / Đọc TTS!</span>
+            </div>
+            <button class="btn btn-sm btn-gold" id="btn-add-keyword-rule">+ Thêm Rule Từ Khóa Mới</button>
+          </div>
+          <div class="flow-card-body">
+            <div class="subrule-list" id="keyword-rules-container"></div>
+          </div>
+        </div>
+
+        <!-- 4.3 Skin NLP Keywords -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div class="flow-card-title"><h3>👘 4.3. Từ Khóa Tự Động Đổi Trang Phục Nhân Vật (`Skin NLP`)</h3></div>
+            <label class="switch"><input type="checkbox" id="cf-skin-enabled"><span class="switch-slider"></span></label>
+          </div>
+          <div class="flow-card-body">
+            <div class="field">
+              <label>Các cụm từ tôn nghiêm bảo vệ (cách nhau dấu phẩy — KHÔNG bao giờ bị nhận nhầm là lệnh đổi trang phục):</label>
+              <input type="text" class="input" id="cf-skin-exclusions">
+            </div>
+            <div class="subrule-list" id="skin-rules-container"></div>
+          </div>
+        </div>
+
+        <!-- 4.4 Profanity & Moderation -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div class="flow-card-title"><h3>🛡️ 4.4. Kiểm Duyệt Nội Dung, Danh Sách Từ Cấm & Chặn User</h3></div>
+            <label class="switch"><input type="checkbox" id="cf-mod-enabled"><span class="switch-slider"></span></label>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-2">
+              <div class="field">
+                <label>Tên thay thế khi tên TikTok chứa từ nhạy cảm:</label>
+                <input type="text" class="input" id="cf-mod-fallbackNickname">
+              </div>
+              <div class="field">
+                <label>Danh sách User ID / @username bị chặn (cách nhau dấu phẩy):</label>
+                <input type="text" class="input mono" id="cf-mod-blockedUsers" placeholder="id_spam_1, user_xau_2">
+              </div>
+            </div>
+            <div class="field">
+              <label>Danh sách từ cấm / teencode / báng bổ (cách nhau bởi dấu phẩy):</label>
+              <textarea class="textarea" id="cf-mod-blacklistWords" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- SECTION 5: GIFT TIERS & SPECIFIC GIFT OVERRIDES           -->
+      <!-- ========================================================= -->
+      <div class="section-pane" id="sec-gifts">
+        <div class="section-banner">
+          <div>
+            <h2>🎁 5. Flow Quà Tặng Cúng Dường · Bảng Tầng Xu & Mapping Từng Món Quà</h2>
+            <p>Tùy chỉnh trọn vẹn từ cách gộp combo quà, ngưỡng đọc giọng AI, phân tầng theo số xu cho đến gán kịch bản riêng cho từng món quà TikTok cụ thể.</p>
+          </div>
+          <button class="btn btn-sm btn-danger" data-reset-section="giftFlows">↺ Mặc định mục này</button>
+        </div>
+
+        <!-- 5.1 General Gift Behavior -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div class="flow-card-title"><h3>⚙️ 5.1. Cấu Hình Chung Quà Tặng & Hàng Đợi Xướng Danh</h3></div>
+            <label class="switch"><input type="checkbox" id="gf-gen-enabled"><span class="switch-slider"></span></label>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-3">
+              <div class="field">
+                <label>Thời gian chờ gộp Combo quà (ms):</label>
+                <input type="number" class="input mono" id="gf-gen-comboDebounceMs" min="300" max="5000" step="100">
+              </div>
+              <div class="field">
+                <label>Số xu tối thiểu để AI đọc xướng danh:</label>
+                <input type="number" class="input mono" id="gf-gen-minDiamondsForTts" min="1" max="50000">
+              </div>
+              <div class="field">
+                <label>Ngưỡng xu vào Hàng Đợi Ưu Tiên Cao Nhất (Tier 1 Queue):</label>
+                <input type="number" class="input mono" id="gf-gen-priority1ThresholdCoins" min="1" max="50000">
+              </div>
+            </div>
+            <div class="grid-3">
+              <label class="check-row"><input type="checkbox" id="gf-gen-readAllTts"> Đọc TTS tất cả mọi món quà (bỏ qua ngưỡng xu)</label>
+              <label class="check-row"><input type="checkbox" id="gf-gen-intermediateParticles"> Bắn hạt hoa sen nhẹ trong lúc đang bấm combo</label>
+              <label class="check-row"><input type="checkbox" id="gf-gen-autoGrantVipOnGift"> Tự động bảo vệ chỗ ngồi VIP cho người tặng quà</label>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5.2 Specific Gift Mapping + Visual Catalog Picker -->
+        <div class="flow-card highlight-border">
+          <div class="flow-card-header">
+            <div>
+              <div class="flow-card-title"><h3>🎯 5.2. Mapping Kịch Bản Cho Từng Món Quà TikTok Cụ Thể (`Gift Overrides`)</h3></div>
+              <span class="text-xs text-muted">Chọn món quà bất kỳ từ danh mục bên dưới để tạo hiệu ứng / âm thanh / lời chúc riêng (ưu tiên cao hơn bảng tầng xu).</span>
+            </div>
+            <div class="flow-card-actions">
+              <button class="btn btn-xs" id="btn-refresh-gift-catalog">🔄 Đồng bộ quà từ phòng Live</button>
+              <button class="btn btn-sm btn-gold" id="btn-add-gift-override">+ Thêm Quà Tùy Chỉnh</button>
+            </div>
+          </div>
+          <div class="flow-card-body">
+            <div class="field">
+              <label>📚 Danh Mục Quà TikTok (Nhấp vào món quà để tạo ngay cấu hình riêng cho món đó):</label>
+              <div class="gift-catalog-grid" id="gift-catalog-picker"></div>
+            </div>
+
+            <div class="subrule-list" id="gift-overrides-container"></div>
+          </div>
+        </div>
+
+        <!-- 5.3 Dynamic Coin Tiers -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div>
+              <div class="flow-card-title"><h3>🏆 5.3. Bảng Phân Tầng Quà Tặng Theo Mốc Xu (`Coin Tiers`)</h3></div>
+              <span class="text-xs text-muted">Áp dụng cho mọi món quà không có cấu hình riêng ở mục 5.2. Biến hỗ trợ: `{name}`, `{giftName}`, `{countText}`, `{totalCoins}`, `{prayer}`.</span>
+            </div>
+            <button class="btn btn-sm btn-gold" id="btn-add-gift-tier">+ Thêm Tầng Mốc Xu</button>
+          </div>
+          <div class="flow-card-body">
+            <div class="subrule-list" id="gift-tiers-container"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- SECTION 6: 5-CH AUDIO MIXER, EDGE-TTS & CHANTS            -->
+      <!-- ========================================================= -->
+      <div class="section-pane" id="sec-audio">
+        <div class="section-banner">
+          <div>
+            <h2>🎛️ 6. Bộ Trộn Âm Thanh 5 Kênh · Giọng Đọc Edge-TTS & Lịch Tụng Kinh</h2>
+            <p>Điều chỉnh độc lập từng kênh âm thanh trên OBS, nghe thử giọng đọc AI ngay trên trình duyệt, và biên tập danh sách các câu kinh tự động.</p>
+          </div>
+          <button class="btn btn-sm btn-danger" data-reset-section="audioRitual">↺ Mặc định mục này</button>
+        </div>
+
+        <!-- 6.1 5-Channel Volume Mixer & BGM Track -->
+        <div class="flow-card highlight-border">
+          <div class="flow-card-header">
+            <div class="flow-card-title"><h3>🎚️ 6.1. Mixer 5 Kênh Âm Lượng Thực Tế & Nhạc Thiền Nền (BGM)</h3></div>
+            <label class="switch"><input type="checkbox" id="ar-bgm-enabled"><span class="switch-slider"></span></label>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-2">
+              <div class="field">
+                <label>Chọn bài nhạc thiền nền:</label>
+                <select class="select" id="ar-bgm-trackSelect"></select>
+              </div>
+              <div class="field">
+                <label>Hoặc đường dẫn file nhạc tùy chỉnh (`/assets/audio/bgm/...`):</label>
+                <input type="text" class="input mono" id="ar-bgm-trackUrl">
+              </div>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label>🔊 Âm lượng Tổng (`Master`):</label>
+                <div class="range-row">
+                  <input type="range" min="0" max="120" id="ar-vol-master">
+                  <span class="range-val" id="ar-vol-master-lbl">100%</span>
+                </div>
+              </div>
+              <div class="field">
+                <label>🎵 Âm lượng Nhạc Thiền (`BGM`):</label>
+                <div class="range-row">
+                  <input type="range" min="0" max="100" id="ar-vol-bgm">
+                  <span class="range-val" id="ar-vol-bgm-lbl">55%</span>
+                </div>
+              </div>
+              <div class="field">
+                <label>🪵 Âm lượng Tiếng Mõ & Chime (`SFX`):</label>
+                <div class="range-row">
+                  <input type="range" min="0" max="120" id="ar-vol-sfx">
+                  <span class="range-val" id="ar-vol-sfx-lbl">85%</span>
+                </div>
+              </div>
+              <div class="field">
+                <label>🔔 Âm lượng Chuông Chùa (`Bell`):</label>
+                <div class="range-row">
+                  <input type="range" min="0" max="120" id="ar-vol-bell">
+                  <span class="range-val" id="ar-vol-bell-lbl">95%</span>
+                </div>
+              </div>
+              <div class="field">
+                <label>🎙️ Âm lượng Giọng Đọc AI (`TTS`):</label>
+                <div class="range-row">
+                  <input type="range" min="0" max="120" id="ar-vol-tts">
+                  <span class="range-val" id="ar-vol-tts-lbl">100%</span>
+                </div>
+              </div>
+              <div class="field">
+                <label>📉 Mức hạ nhỏ nhạc nền khi AI đọc (`Ducking`):</label>
+                <div class="range-row">
+                  <input type="range" min="0" max="50" id="ar-vol-duckedBgm">
+                  <span class="range-val" id="ar-vol-duckedBgm-lbl">12%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6.2 Edge-TTS Voice Config & Audition -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div class="flow-card-title"><h3>🎙️ 6.2. Cấu Hình Giọng Xướng Danh AI (`Microsoft Edge-TTS`)</h3></div>
+            <button class="btn btn-sm btn-test" id="btn-audition-tts">🔊 Nghe Thử Giọng AI Ngay</button>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-4">
+              <div class="field">
+                <label>Giọng đọc tiếng Việt:</label>
+                <select class="select" id="ar-tts-voice">
+                  <option value="vi-VN-NamMinhNeural">Nam Minh Neural (Trầm ấm, trang nghiêm)</option>
+                  <option value="vi-VN-HoaiMyNeural">Hoài My Neural (Thanh tao, nhẹ nhàng)</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Cao độ (`Pitch` Hz):</label>
+                <input type="number" class="input mono" id="ar-tts-pitch" min="-50" max="50">
+              </div>
+              <div class="field">
+                <label>Tốc độ đọc (`Rate` %):</label>
+                <input type="number" class="input mono" id="ar-tts-rate" min="-50" max="50">
+              </div>
+              <div class="field">
+                <label>Sức chứa hàng đợi tối đa:</label>
+                <input type="number" class="input mono" id="ar-tts-maxQueueSize" min="3" max="40">
+              </div>
+            </div>
+            <div class="field">
+              <label>Câu mẫu để nghe thử:</label>
+              <input type="text" class="input" id="audition-sample-text" value="Nam mô A Di Đà Phật. Phật tử Diệu Âm thành tâm cúng dường Đèn Hoa Sen. Cầu gia đạo bình an.">
+            </div>
+          </div>
+        </div>
+
+        <!-- 6.3 Mõ & Auto Chant List -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div class="flow-card-title"><h3>📜 6.3. Nhịp Mõ Định Kỳ & Danh Sách Câu Kinh Tự Động</h3></div>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-4">
+              <label class="check-row"><input type="checkbox" id="ar-mo-enabled"> Bật gõ mõ tự động</label>
+              <div class="field">
+                <label>Nhịp mõ (`BPM` 20 - 120):</label>
+                <input type="number" class="input mono" id="ar-mo-bpm" min="20" max="120">
+              </div>
+              <label class="check-row"><input type="checkbox" id="ar-chant-enabled"> Bật đọc kinh định kỳ</label>
+              <div class="field">
+                <label>Chu kỳ tụng kinh (phút):</label>
+                <input type="number" class="input mono" id="ar-chant-everyMin" min="1" max="60">
+              </div>
+            </div>
+            <div class="field">
+              <label>Danh sách các câu kinh tự động luân phiên (mỗi dòng 1 câu kinh):</label>
+              <textarea class="textarea" id="ar-chant-items" rows="5"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- SECTION 7: SCENE, VISUAL FX, HUD & SEATING ENGINE         -->
+      <!-- ========================================================= -->
+      <div class="section-pane" id="sec-scene">
+        <div class="section-banner">
+          <div>
+            <h2>🏯 7. Không Gian Chánh Điện · Hiệu Ứng Ánh Sáng · HUD & Bồ Đoàn</h2>
+            <p>Thay đổi không gian chùa, hiệu ứng khói nhang/hào quang/nến, bảng hiệu trên màn hình OBS và quy tắc sắp xếp bồ đoàn.</p>
+          </div>
+          <button class="btn btn-sm btn-danger" data-reset-section="sceneSeating">↺ Mặc định mục này</button>
+        </div>
+
+        <!-- 7.1 Background Scene -->
+        <div class="flow-card highlight-border">
+          <div class="flow-card-header">
+            <div class="flow-card-title"><h3>🖼️ 7.1. Ảnh Nền Không Gian Chánh Điện (1080×1920)</h3></div>
+          </div>
+          <div class="flow-card-body">
+            <div class="bg-choice-grid" id="scene-bg-grid"></div>
+            <div class="field">
+              <label>Đường dẫn ảnh nền đang dùng (có thể nhập ảnh mới trong `/assets/backgrounds/...` hoặc URL):</label>
+              <input type="text" class="input mono" id="ss-bg-url">
+            </div>
+          </div>
+        </div>
+
+        <!-- 7.2 Visual FX & Plaque -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div class="flow-card-title"><h3>✨ 7.2. Khói Trầm · Nến Bàn Thờ · Hào Quang Phật & Hoành Phi</h3></div>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-2">
+              <div class="field">
+                <label>Tiêu đề Hoành Phi:</label>
+                <input type="text" class="input" id="ss-plaque-title">
+              </div>
+              <div class="field">
+                <label>Câu phụ đề Hoành Phi:</label>
+                <input type="text" class="input" id="ss-plaque-subtitle">
+              </div>
+            </div>
+
+            <div class="grid-3">
+              <label class="check-row"><input type="checkbox" id="ss-fx-smokeEnabled"> Bật khói nhang lư đồng</label>
+              <label class="check-row"><input type="checkbox" id="ss-fx-haloEnabled"> Bật hào quang kim quang</label>
+              <label class="check-row"><input type="checkbox" id="ss-fx-candlesEnabled"> Bật ánh lửa nến bàn thờ</label>
+            </div>
+
+            <div class="grid-2">
+              <div class="field">
+                <label>Độ đậm khói trầm hương:</label>
+                <div class="range-row">
+                  <input type="range" min="10" max="220" id="ss-fx-smokeIntensity">
+                  <span class="range-val" id="ss-fx-smokeIntensity-lbl">100%</span>
+                </div>
+              </div>
+              <div class="field">
+                <label>Độ rực hào quang Phật:</label>
+                <div class="range-row">
+                  <input type="range" min="10" max="220" id="ss-fx-haloIntensity">
+                  <span class="range-val" id="ss-fx-haloIntensity-lbl">100%</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7.3 HUD Visibility & Seating Engine -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div class="flow-card-title"><h3>🧘 7.3. Bảng Hiển Thị HUD & Thuật Toán Xếp Bồ Đoàn</h3></div>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-4">
+              <label class="check-row"><input type="checkbox" id="ss-plaque-visible"> Hiện Hoành Phi</label>
+              <label class="check-row"><input type="checkbox" id="ss-hud-showMeritBoard"> Hiện Bảng Vàng Công Đức</label>
+              <label class="check-row"><input type="checkbox" id="ss-hud-showPills"> Hiện Bộ Đếm Người/Tim</label>
+              <label class="check-row"><input type="checkbox" id="ss-hud-showNametags"> Hiện Thẻ Tên Phật Tử</label>
+            </div>
+            <div class="grid-3">
+              <div class="field">
+                <label>Số hạng Bảng Vàng hiển thị (Top N):</label>
+                <select class="select" id="ss-hud-meritTopLimit">
+                  <option value="3">Top 3</option>
+                  <option value="5">Top 5 (Chuẩn)</option>
+                  <option value="8">Top 8</option>
+                  <option value="10">Top 10</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Chế độ sức chứa bồ đoàn:</label>
+                <select class="select" id="ss-seat-seatMode">
+                  <option value="auto">Tự động mở rộng (24 → 36 → 64 → 100)</option>
+                  <option value="24">Cố định 24 chỗ</option>
+                  <option value="36">Cố định 36 chỗ</option>
+                  <option value="64">Cố định 64 chỗ</option>
+                  <option value="100">Cố định 100 chỗ</option>
+                </select>
+              </div>
+              <div class="field">
+                <label>Phút không tương tác trước khi nhường chỗ (Donor bão hòa):</label>
+                <input type="number" class="input mono" id="ss-seat-donorIdleEvictMin" min="2" max="180">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ========================================================= -->
+      <!-- SECTION 8: PROFILES, SCENE PRESETS & IMPORT / EXPORT      -->
+      <!-- ========================================================= -->
+      <div class="section-pane" id="sec-profiles">
+        <div class="section-banner">
+          <div>
+            <h2>💾 8. Kịch Bản Nhanh (Scene Presets) · Hồ Sơ Lưu Trữ & Sao Lưu JSON</h2>
+            <p>Lưu nhiều bộ cấu hình cho các khung giờ lễ khác nhau, xuất file JSON mang sang máy phát khác, hoặc khôi phục mặc định gốc.</p>
+          </div>
+          <button class="btn btn-sm btn-danger" id="btn-factory-reset-all">⚠️ Khôi Phục Toàn Bộ Mặc Định Gốc</button>
+        </div>
+
+        <!-- 8.1 Quick Scene Presets -->
+        <div class="flow-card highlight-border">
+          <div class="flow-card-header">
+            <div class="flow-card-title"><h3>🎭 8.1. Kích Hoạt Thử Kịch Bản Chuyển Cảnh 1-Chạm (`Scene Presets`)</h3></div>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-2" id="scene-presets-cards"></div>
+          </div>
+        </div>
+
+        <!-- 8.2 Named Profiles -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div class="flow-card-title"><h3>🗂️ 8.2. Hồ Sơ Cấu Hình Đã Lưu (`Saved Config Profiles`)</h3></div>
+          </div>
+          <div class="flow-card-body">
+            <div class="grid-3">
+              <div class="field">
+                <label>Tên hồ sơ mới:</label>
+                <input type="text" class="input" id="profile-new-name" placeholder="VD: Khóa Lễ Cầu An Tối Rằm">
+              </div>
+              <div class="field">
+                <label>Ghi chú ngắn:</label>
+                <input type="text" class="input" id="profile-new-desc" placeholder="Nhạc sáo trúc, bật mốc tim 2000">
+              </div>
+              <div class="field" style="justify-content:flex-end;">
+                <button class="btn btn-gold" id="btn-save-profile">💾 Lưu Cấu Hình Hiện Tại Thành Hồ Sơ</button>
+              </div>
+            </div>
+            <div class="subrule-list" id="saved-profiles-list"></div>
+          </div>
+        </div>
+
+        <!-- 8.3 JSON Export / Import -->
+        <div class="flow-card">
+          <div class="flow-card-header">
+            <div class="flow-card-title"><h3>📦 8.3. Sao Lưu (Export JSON) & Nhập Cấu Hình (Import JSON)</h3></div>
+          </div>
+          <div class="flow-card-body">
+            <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:center;">
+              <button class="btn btn-gold" id="btn-export-json">⬇️ Tải File Cấu Hình JSON (Đã ẩn khóa bí mật)</button>
+              <button class="btn" id="btn-export-json-secrets">🔐 Tải File JSON Đầy Đủ (Kèm Cookie/API Key)</button>
+              <label class="btn btn-test" style="cursor:pointer;">
+                ⬆️ Chọn File JSON Để Nhập (Import)
+                <input type="file" id="input-import-json" accept=".json,application/json" style="display:none;">
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <!-- COLUMN 3: Embedded 9:16 Live Preview & Quick Ritual Test Pad -->
+    <aside class="studio-preview-col">
+      <div class="preview-dock-card">
+        <div class="preview-dock-header">
+          <strong style="color:var(--gold-light);font-size:12.5px;">📺 Màn Hình Live Preview (9:16)</strong>
+          <div style="display:flex;gap:6px;">
+            <button class="btn btn-xs" id="btn-toggle-preview-audio" title="Bật/Tắt tiếng khung xem trước">🔇 Bật tiếng</button>
+            <button class="btn btn-xs" id="btn-reload-preview" title="Tải lại khung xem trước">↻</button>
+          </div>
+        </div>
+
+        <div class="preview-viewport-wrap">
+          <iframe src="/overlay.html?muted=1" class="preview-iframe" id="preview-iframe" title="OBS 9:16 Live Preview"></iframe>
+        </div>
+
+        <div class="preview-quick-bar">
+          <button class="btn btn-xs btn-test" id="qtest-fill15">🧘 +15 Phật Tử Mẫu</button>
+          <button class="btn btn-xs btn-danger" id="qtest-clear">🧹 Dọn Chánh Điện</button>
+          <button class="btn btn-xs" id="qtest-bell">🔔 Đại Hồng Chung</button>
+          <button class="btn btn-xs" id="qtest-mo">🪵 Gõ Mõ Thử</button>
+          <button class="btn btn-xs btn-gold" id="qtest-gift-lotus">🪷 Thử Quà 30 Xu</button>
+          <button class="btn btn-xs btn-gold" id="qtest-gift-grand">✨ Thử Đại Lễ 200 Xu</button>
+        </div>
+      </div>
+    </aside>
+
+  </main>
+
+  <!-- Sticky Bottom Save Bar -->
+  <footer class="floating-save-bar">
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span class="text-muted text-xs">File lưu trữ tự động: <code class="mono text-gold">data/app-config.json</code> (Giữ nguyên cấu hình kể cả khi tắt mở lại máy chủ)</span>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn" id="btn-discard-changes">↺ Tải Lại Từ Máy Chủ</button>
+      <button class="btn btn-gold" id="btn-save-bottom">💾 LƯU CẤU HÌNH & ÁP DỤNG TRỰC TIẾP LÊN SÓNG</button>
+    </div>
+  </footer>
+
+  <div class="toast-container" id="toast-container"></div>
+
+  <script type="module" src="js/AdminConfigApp.js"></script>
+</body>
+</html>
+

@@ -1,6 +1,6 @@
 /**
  * MessageSchemas: Protocol definitions, WebSocket error codes, and schema validators
- * as defined in WEBSOCKET_SPEC.md.
+ * as defined in WEBSOCKET_SPEC.md plus Admin Config & Live Manager extensions.
  */
 
 export const WS_ERROR_CODES = {
@@ -21,6 +21,7 @@ export const VALID_COMMANDS = [
   'disconnect',
   'chat',
   'gift',
+  'like',
   'fill',
   'clear',
   'bot',
@@ -34,7 +35,14 @@ export const VALID_COMMANDS = [
   'tts',
   'say',
   'settings',
-  'title'
+  'title',
+  // Extended Admin Config & Live Manager commands
+  'test_event',
+  'update_config',
+  'apply_preset',
+  'tts_queue',
+  'reset_session',
+  'adjust_coins'
 ];
 
 /**

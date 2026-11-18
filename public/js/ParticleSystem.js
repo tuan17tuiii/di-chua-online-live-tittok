@@ -1,7 +1,7 @@
 /**
  * ParticleSystem.js
- * Object-Pooled Incense Smoke, Candle Flame, Divine Halo & Petal Particle Engine
- * Complies with ARCHITECTURE.md §4.3
+ * Object-Pooled Incense Smoke, Candle Flame, Divine Halo, Per-Slot Lotus Burst & Full-Screen Petal Rain.
+ * Dynamically configurable in real time from Admin Config Studio.
  */
 
 export class ParticleSystem {
@@ -13,7 +13,7 @@ export class ParticleSystem {
     this.smokePool = Array.from({ length: 18 }, (_, i) => ({
       index: i,
       active: true,
-      age: (i / 18) * 4.0, // Staggered initial ages for seamless flow
+      age: (i / 18) * 4.0,
       maxAge: 4.0,
       baseX: 540,
       baseY: 1080
@@ -25,25 +25,31 @@ export class ParticleSystem {
       { x: 820, y: 960 }
     ];
 
-    // 3. Lotus & Petal Pool (50 object-pooled particles)
-    this.petalPool = Array.from({ length: 50 }, () => ({
+    // 3. Lotus & Petal Pool (90 object-pooled particles for bursts + screen-wide rain)
+    this.petalPool = Array.from({ length: 90 }, () => ({
       active: false,
       x: 0,
       y: 0,
       vx: 0,
       vy: 0,
+      gravity: 45,
       size: 16,
       alpha: 0,
+      fadeRate: 0.35,
       rot: 0,
       vRot: 0,
-      type: 'petal' // 'petal' or 'lotus'
+      type: 'petal'
     }));
 
-    // 4. Divine Halo State
+    // 4. Configurable FX Intensities & Toggles
     this.haloPulse = 0.0;
-    this.enableCandles = false; // Tắt ngọn lửa nến lơ lửng khi dùng ảnh chùa thật
+    this.enableSmoke = true;
+    this.smokeIntensity = 1.0;
+    this.enableCandles = false;
+    this.enableHalo = true;
+    this.haloIntensity = 1.0;
 
-    // 5. Authentic Image FX Assets từ repo tham khảo
+    // 5. Image FX Assets
     this.images = {
       halo: null,
       lotus: null,
@@ -51,6 +57,22 @@ export class ParticleSystem {
       bell: null
     };
     this.loadFxImages();
+  }
+
+  /**
+   * Apply real-time visual FX settings from Admin Config
+   * @param {Object} fxCfg
+   */
+  configureFx(fxCfg = {}) {
+    if (fxCfg.smokeEnabled !== undefined) this.enableSmoke = Boolean(fxCfg.smokeEnabled);
+    if (fxCfg.smokeIntensity !== undefined) {
+      this.smokeIntensity = Math.max(0, Math.min(2.5, Number(fxCfg.smokeIntensity) || 1.0));
+    }
+    if (fxCfg.candlesEnabled !== undefined) this.enableCandles = Boolean(fxCfg.candlesEnabled);
+    if (fxCfg.haloEnabled !== undefined) this.enableHalo = Boolean(fxCfg.haloEnabled);
+    if (fxCfg.haloIntensity !== undefined) {
+      this.haloIntensity = Math.max(0, Math.min(2.5, Number(fxCfg.haloIntensity) || 1.0));
+    }
   }
 
   loadFxImages() {
@@ -71,6 +93,7 @@ export class ParticleSystem {
 
   spawnGiftParticles(x, y, tier = 1) {
     const t = Number(tier) || 1;
+    if (t <= 0) return;
     const count = t === 1 ? 6 : t === 2 ? 15 : 40;
     let spawned = 0;
 
@@ -81,8 +104,10 @@ export class ParticleSystem {
         p.y = y - 20;
         p.vx = (Math.random() - 0.5) * 90;
         p.vy = -(90 + Math.random() * 130);
+        p.gravity = 45;
         p.size = t >= 3 ? 24 : t === 2 ? 18 : 14;
         p.alpha = 1.0;
+        p.fadeRate = 0.35;
         p.rot = Math.random() * Math.PI * 2;
         p.vRot = (Math.random() - 0.5) * 3;
         p.type = t >= 2 && Math.random() > 0.45 ? 'lotus' : 'petal';
@@ -92,10 +117,38 @@ export class ParticleSystem {
     }
   }
 
+  /**
+   * Spawn celestial lotus & golden petal rain across top of 1080x1920 screen
+   * (Triggered by Like Milestones, Grand Tier 3/4 Gifts, Envelopes)
+   * @param {number} [count=36]
+   */
+  spawnScreenRain(count = 36) {
+    const target = Math.max(6, Math.min(70, Number(count) || 36));
+    let spawned = 0;
+
+    for (const p of this.petalPool) {
+      if (!p.active) {
+        p.active = true;
+        p.x = 60 + Math.random() * 960;
+        p.y = -40 - Math.random() * 260;
+        p.vx = (Math.random() - 0.5) * 55;
+        p.vy = 95 + Math.random() * 110;
+        p.gravity = 18;
+        p.size = 18 + Math.random() * 14;
+        p.alpha = 1.0;
+        p.fadeRate = 0.14;
+        p.rot = Math.random() * Math.PI * 2;
+        p.vRot = (Math.random() - 0.5) * 2.4;
+        p.type = Math.random() > 0.65 ? 'lotus' : 'petal';
+        spawned++;
+        if (spawned >= target) break;
+      }
+    }
+  }
+
   update(deltaTimeSec) {
     const dt = Number(deltaTimeSec) || 0;
 
-    // Update Smoke Particles
     for (const p of this.smokePool) {
       p.age += dt;
       if (p.age >= p.maxAge) {
@@ -103,23 +156,20 @@ export class ParticleSystem {
       }
     }
 
-    // Update Petals & Lotuses
     for (const p of this.petalPool) {
       if (p.active) {
         p.x += p.vx * dt;
         p.y += p.vy * dt;
-        // Gentle air resistance and gravity
-        p.vy += 45 * dt;
+        p.vy += (p.gravity ?? 45) * dt;
         p.rot += p.vRot * dt;
-        p.alpha -= dt * 0.35;
+        p.alpha -= dt * (p.fadeRate ?? 0.35);
 
-        if (p.alpha <= 0 || p.y > 1920 || p.y < -60) {
+        if (p.alpha <= 0 || p.y > 1950 || p.y < -350) {
           p.active = false;
         }
       }
     }
 
-    // Decay Halo Pulse
     if (this.haloPulse > 0) {
       this.haloPulse = Math.max(0, this.haloPulse - dt * 0.85);
     }
@@ -128,36 +178,35 @@ export class ParticleSystem {
   render(timeSec) {
     const ctx = this.ctx;
 
-    // 1. Divine Halo (Hào quang kim quang tỏa mờ dịu ấm phía sau tượng Phật thật)
-    this.renderHalo(ctx, timeSec);
+    if (this.enableHalo) {
+      this.renderHalo(ctx, timeSec);
+    }
 
-    // 2. Incense Smoke (Khói trầm hương thoang thoảng bay lên)
-    this.renderSmoke(ctx);
+    if (this.enableSmoke && this.smokeIntensity > 0) {
+      this.renderSmoke(ctx);
+    }
 
-    // 3. Candle Flame Glow (Chỉ bật khi có chân nến thật)
     if (this.enableCandles) {
       this.renderCandles(ctx, timeSec);
     }
 
-    // 4. Petals & Lotuses (Hoa sen và mưa cánh hoa khi có cúng dường)
     this.renderPetals(ctx);
   }
 
   renderHalo(ctx, timeSec) {
     const img = this.images.halo;
+    const mult = this.haloIntensity;
     ctx.save();
     ctx.globalCompositeOperation = 'lighter';
 
     if (img && img.naturalWidth) {
-      // Dùng ảnh fx_halo.png từ repo gốc
       const pulse = this.haloPulse;
-      ctx.globalAlpha = 0.25 + 0.08 * Math.sin(timeSec * 1.2) + pulse * 0.45;
+      ctx.globalAlpha = Math.min(1, (0.25 + 0.08 * Math.sin(timeSec * 1.2) + pulse * 0.45) * mult);
       const s = 2.7 + pulse * 0.35;
       const w = img.naturalWidth * s;
       const h = img.naturalHeight * s;
       ctx.drawImage(img, 540 - w / 2, 560 - h / 2, w, h);
     } else {
-      // Fallback radial aura nếu ảnh chưa load xong
       const centerX = 540;
       const centerY = 560;
       const baseRadius = 200 + 15 * Math.sin(timeSec * 1.2);
@@ -170,8 +219,8 @@ export class ParticleSystem {
         centerY,
         baseRadius + pulseAdd
       );
-      grad.addColorStop(0, `rgba(255, 230, 140, ${0.30 + this.haloPulse * 0.35})`);
-      grad.addColorStop(0.5, `rgba(212, 175, 55, ${0.15 + this.haloPulse * 0.25})`);
+      grad.addColorStop(0, `rgba(255, 230, 140, ${Math.min(1, (0.30 + this.haloPulse * 0.35) * mult)})`);
+      grad.addColorStop(0.5, `rgba(212, 175, 55, ${Math.min(1, (0.15 + this.haloPulse * 0.25) * mult)})`);
       grad.addColorStop(1, 'rgba(212, 175, 55, 0)');
       ctx.fillStyle = grad;
       ctx.beginPath();
@@ -183,14 +232,14 @@ export class ParticleSystem {
   }
 
   renderSmoke(ctx) {
+    const mult = this.smokeIntensity;
     ctx.save();
     for (const p of this.smokePool) {
       const ageFrac = p.age / p.maxAge;
-      // Procedural smoke wave equation
       const x = p.baseX + Math.sin(p.age * 6.5 + p.index) * 25 * p.age;
       const y = p.baseY - p.age * 65;
-      const radius = 3 + 16 * ageFrac;
-      const alpha = Math.sin(ageFrac * Math.PI) * 0.35;
+      const radius = (3 + 16 * ageFrac) * (0.75 + 0.25 * mult);
+      const alpha = Math.min(0.85, Math.sin(ageFrac * Math.PI) * 0.35 * mult);
 
       const grad = ctx.createRadialGradient(x, y, 0, x, y, radius);
       grad.addColorStop(0, `rgba(245, 235, 215, ${alpha})`);
@@ -210,7 +259,6 @@ export class ParticleSystem {
     ctx.globalCompositeOperation = 'lighter';
 
     for (const c of this.candles) {
-      // Dual-frequency resonance flicker: alpha = 0.85 + 0.15 * sin(t * 11) * cos(t * 7)
       const flicker = 0.85 + 0.15 * Math.sin(timeSec * 11) * Math.cos(timeSec * 7);
 
       const grad = ctx.createRadialGradient(c.x, c.y, 2, c.x, c.y, 42);
@@ -224,7 +272,6 @@ export class ParticleSystem {
       ctx.arc(c.x, c.y, 42, 0, Math.PI * 2);
       ctx.fill();
 
-      // Flame Teardrop Core
       ctx.beginPath();
       ctx.ellipse(c.x, c.y - 2, 4 * flicker, 9 * flicker, 0, 0, Math.PI * 2);
       ctx.fillStyle = `rgba(255, 255, 230, ${0.98 * flicker})`;
@@ -244,13 +291,11 @@ export class ParticleSystem {
 
       const img = p.type === 'lotus' ? this.images.lotus : this.images.petal;
       if (img && img.naturalWidth) {
-        // Dùng ảnh hoa sen thật và cánh hoa sen thật từ fx_lotus.png / fx_petal.png
         const s = p.size / 64;
         const w = img.naturalWidth * s;
         const h = img.naturalHeight * s;
         ctx.drawImage(img, -w / 2, -h / 2, w, h);
       } else if (p.type === 'lotus') {
-        // Blooming Pink Lotus Flower Fallback
         ctx.fillStyle = '#ff77a9';
         for (let i = 0; i < 6; i++) {
           const petalAngle = (i / 6) * Math.PI * 2;
@@ -271,7 +316,6 @@ export class ParticleSystem {
         ctx.arc(0, 0, p.size * 0.22, 0, Math.PI * 2);
         ctx.fill();
       } else {
-        // Golden Falling Petal Fallback
         const pGrad = ctx.createLinearGradient(-p.size / 2, 0, p.size / 2, 0);
         pGrad.addColorStop(0, '#ffe875');
         pGrad.addColorStop(1, '#d4af37');

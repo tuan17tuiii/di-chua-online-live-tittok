@@ -35,12 +35,6 @@ export class Broadcaster {
     if (this.pingInterval.unref) this.pingInterval.unref();
   }
 
-  /**
-   * Handle HTTP Upgrade request from server
-   * @param {import('http').IncomingMessage} req
-   * @param {import('stream').Duplex} socket
-   * @param {Buffer} head
-   */
   handleUpgrade(req, socket, head) {
     let url;
     try {
@@ -53,7 +47,6 @@ export class Broadcaster {
 
     const role = url.searchParams.get('role');
 
-    // Role check: must be 'overlay' or 'control'
     if (!role || !ALLOWED_ROLES.includes(role)) {
       socket.write('HTTP/1.1 400 Bad Handshake: Missing or invalid role\r\n\r\n');
       socket.destroy();
@@ -65,10 +58,6 @@ export class Broadcaster {
     });
   }
 
-  /**
-   * Handle connection initialization and snapshot synchronization
-   * @private
-   */
   _handleConnection(ws, req, role) {
     ws.isAlive = true;
     ws.role = role;
@@ -108,7 +97,7 @@ export class Broadcaster {
       const snapshot = this.stateManager.getSnapshot();
       this.send(ws, snapshot);
 
-      // If control, also push recent logs and bot status
+      // If control, also push recent logs, bot status, full config, queue & session stats
       if (role === 'control') {
         if (typeof this.stateManager.getRecentLogs === 'function') {
           this.send(ws, {
@@ -122,16 +111,29 @@ export class Broadcaster {
             ...this.stateManager.getBotStatus()
           });
         }
+        if (typeof this.stateManager.getFullConfig === 'function') {
+          this.send(ws, {
+            t: 'config',
+            config: this.stateManager.getFullConfig()
+          });
+        }
+        if (typeof this.stateManager.getTtsQueueStatus === 'function') {
+          this.send(ws, {
+            t: 'tts_queue',
+            ...this.stateManager.getTtsQueueStatus()
+          });
+        }
+        if (typeof this.stateManager.getSessionStats === 'function') {
+          this.send(ws, {
+            t: 'session_stats',
+            ...this.stateManager.getSessionStats()
+          });
+        }
       }
     }
   }
 
-  /**
-   * Process inbound message from control client with rate limiting
-   * @private
-   */
   _handleControlMessage(ws, data) {
-    // 1. Rate Limiting Check: max 10 cmds / sec
     const now = Date.now();
     let rateInfo = this.controlRateMap.get(ws);
     if (!rateInfo || now > rateInfo.resetAt) {
@@ -146,7 +148,6 @@ export class Broadcaster {
       }
     }
 
-    // 2. Parse JSON
     let parsed;
     try {
       parsed = JSON.parse(data.toString('utf8'));
@@ -155,14 +156,12 @@ export class Broadcaster {
       return;
     }
 
-    // 3. Validate command schema
     const validation = validateClientCommand(parsed);
     if (!validation.valid) {
       this.send(ws, { t: 'log', line: `[ERROR] Invalid command: ${validation.error}` });
       return;
     }
 
-    // 4. Delegate command execution to stateManager
     if (this.stateManager && typeof this.stateManager.handleControlCommand === 'function') {
       try {
         this.stateManager.handleControlCommand(parsed);
@@ -172,11 +171,6 @@ export class Broadcaster {
     }
   }
 
-  /**
-   * Send JSON payload to a specific socket
-   * @param {WebSocket} ws
-   * @param {Object} payload
-   */
   send(ws, payload) {
     if (ws && ws.readyState === WebSocket.OPEN) {
       try {
@@ -187,10 +181,6 @@ export class Broadcaster {
     }
   }
 
-  /**
-   * Broadcast payload to ALL connected clients (both overlay and control)
-   * @param {Object} payload
-   */
   broadcast(payload) {
     const json = typeof payload === 'string' ? payload : JSON.stringify(payload);
     for (const ws of this.overlayClients) {
@@ -201,10 +191,6 @@ export class Broadcaster {
     }
   }
 
-  /**
-   * Broadcast payload to OVERLAY clients only
-   * @param {Object} payload
-   */
   broadcastOverlayOnly(payload) {
     const json = typeof payload === 'string' ? payload : JSON.stringify(payload);
     for (const ws of this.overlayClients) {
@@ -212,10 +198,6 @@ export class Broadcaster {
     }
   }
 
-  /**
-   * Broadcast payload to CONTROL clients only (e.g. system logs, audit lines)
-   * @param {Object} payload
-   */
   broadcastControlOnly(payload) {
     const json = typeof payload === 'string' ? payload : JSON.stringify(payload);
     for (const ws of this.controlClients) {
@@ -223,10 +205,6 @@ export class Broadcaster {
     }
   }
 
-  /**
-   * Ping/pong liveness check
-   * @private
-   */
   _pingClients() {
     const all = [...this.overlayClients, ...this.controlClients];
     for (const ws of all) {
@@ -239,9 +217,6 @@ export class Broadcaster {
     }
   }
 
-  /**
-   * Graceful shutdown of WebSocket server
-   */
   close() {
     if (this.pingInterval) {
       clearInterval(this.pingInterval);

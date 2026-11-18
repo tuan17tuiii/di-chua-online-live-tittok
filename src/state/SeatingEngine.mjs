@@ -15,6 +15,7 @@ export class SeatingEngine {
   constructor(options = {}) {
     this.seatMode = options.seatMode || 'auto';
     this.capacity = this._parseCapacity(options.initialCapacity || (this.seatMode === 'auto' ? 36 : this.seatMode));
+    this.customInactivityThresholdMs = null;
 
     this.slots = new Array(this.capacity).fill(null);
     this.viewers = new Map(); // userId -> ViewerState & { lastActivityAt: number }
@@ -24,17 +25,25 @@ export class SeatingEngine {
     this.priorityOrder = this._generatePriorityOrder(this.capacity);
   }
 
+  /**
+   * Configure donor inactivity eviction threshold in minutes
+   * @param {number} minutes
+   */
+  setDonorIdleMinutes(minutes) {
+    const m = Number(minutes);
+    if (m > 0) {
+      this.customInactivityThresholdMs = Math.max(1, m) * 60 * 1000;
+    } else {
+      this.customInactivityThresholdMs = null;
+    }
+  }
+
   _parseCapacity(cap) {
     const num = Number(cap);
     if (SeatingEngine.CAPACITIES.includes(num)) return num;
     return 36;
   }
 
-  /**
-   * Calculate grid dimensions: rows x cols (cols must be even)
-   * @param {number} cap
-   * @returns {{ rows: number, cols: number }}
-   */
   _getGridDimensions(cap) {
     switch (cap) {
       case 24: return { rows: 4, cols: 6 };
@@ -45,11 +54,6 @@ export class SeatingEngine {
     }
   }
 
-  /**
-   * Generate center-outward, front-to-back priority order of slot indices.
-   * @param {number} cap
-   * @returns {number[]}
-   */
   _generatePriorityOrder(cap) {
     const { rows, cols } = this._getGridDimensions(cap);
     const order = [];
@@ -71,10 +75,6 @@ export class SeatingEngine {
     return order;
   }
 
-  /**
-   * Auto scale capacity up to next tier: 24 -> 36 -> 64 -> 100
-   * @returns {boolean} true if scaled, false if already at 100
-   */
   autoScaleCapacity() {
     const currentIdx = SeatingEngine.CAPACITIES.indexOf(this.capacity);
     if (currentIdx < SeatingEngine.CAPACITIES.length - 1) {
@@ -85,10 +85,6 @@ export class SeatingEngine {
     return false;
   }
 
-  /**
-   * Resize seating floor capacity
-   * @param {number} newCap
-   */
   resize(newCap) {
     const validCap = this._parseCapacity(newCap);
     if (validCap === this.capacity) return;
@@ -98,14 +94,12 @@ export class SeatingEngine {
     this.slots = new Array(validCap).fill(null);
     this.priorityOrder = this._generatePriorityOrder(validCap);
 
-    // Re-place existing viewers if within new capacity
     for (let i = 0; i < Math.min(oldSlots.length, validCap); i++) {
       if (oldSlots[i]) {
         this.slots[i] = oldSlots[i];
       }
     }
 
-    // Clean up viewers that fell outside if downsizing
     for (const [userId, v] of this.viewers.entries()) {
       if (v.slotIndex >= validCap) {
         this.viewers.delete(userId);
@@ -113,10 +107,6 @@ export class SeatingEngine {
     }
   }
 
-  /**
-   * Set seat mode ('auto', '24', '36', '64', '100')
-   * @param {string} mode
-   */
   setSeatMode(mode) {
     this.seatMode = mode;
     if (mode !== 'auto') {
@@ -127,10 +117,6 @@ export class SeatingEngine {
     }
   }
 
-  /**
-   * Touch activity timestamp of seated user
-   * @param {string} userId
-   */
   touchActivity(userId) {
     const v = this.viewers.get(userId);
     if (v) {
@@ -138,15 +124,10 @@ export class SeatingEngine {
     }
   }
 
-  /**
-   * Add merit coins to seated user
-   * @param {string} userId
-   * @param {number} amount
-   */
   addCoins(userId, amount) {
     const v = this.viewers.get(userId);
     if (v) {
-      v.coins = (v.coins || 0) + amount;
+      v.coins = Math.max(0, (v.coins || 0) + amount);
       v.lastActivityAt = Date.now();
       if (this.slots[v.slotIndex]) {
         this.slots[v.slotIndex].coins = v.coins;
@@ -154,12 +135,6 @@ export class SeatingEngine {
     }
   }
 
-  /**
-   * Change skin of seated user
-   * @param {string} userId
-   * @param {string} skin
-   * @returns {boolean}
-   */
   setSkin(userId, skin) {
     const v = this.viewers.get(userId);
     if (v) {
@@ -172,11 +147,6 @@ export class SeatingEngine {
     return false;
   }
 
-  /**
-   * Set VIP protection for a slot
-   * @param {number} slotIndex
-   * @param {boolean} isVip
-   */
   setVip(slotIndex, isVip) {
     if (slotIndex < 0 || slotIndex >= this.capacity) return;
     if (isVip) {
@@ -193,12 +163,6 @@ export class SeatingEngine {
     }
   }
 
-  /**
-   * Set lock status for a slot
-   * @param {number} slotIndex
-   * @param {boolean} isLocked
-   * @returns {Object | null} Evicted user if slot was occupied
-   */
   setLock(slotIndex, isLocked) {
     if (slotIndex < 0 || slotIndex >= this.capacity) return null;
     let evicted = null;
@@ -213,12 +177,6 @@ export class SeatingEngine {
     return evicted;
   }
 
-  /**
-   * Free slot by index
-   * @param {number} slotIndex
-   * @param {string} reason
-   * @returns {Object | null}
-   */
   freeSlot(slotIndex, reason = 'unknown') {
     if (slotIndex < 0 || slotIndex >= this.capacity) return null;
     const v = this.slots[slotIndex];
@@ -229,24 +187,12 @@ export class SeatingEngine {
     return { ...v, reason };
   }
 
-  /**
-   * Free slot by user id
-   * @param {string} userId
-   * @param {string} reason
-   * @returns {Object | null}
-   */
   freeUser(userId, reason = 'kicked') {
     const v = this.viewers.get(userId);
     if (!v) return null;
     return this.freeSlot(v.slotIndex, reason);
   }
 
-  /**
-   * Evict a viewer when full according to multi-tier policy:
-   * 1. Longest-quiet non-donor (coins === 0, !isVip, not locked)
-   * 2. 100% Donor Saturation Deadlock Resolution: Inactive donor (>15m idle), lowest coins first
-   * @returns {Object | null} Evicted viewer or null
-   */
   evictIfNeeded() {
     if (this.viewers.size < this.capacity) {
       return null;
@@ -257,7 +203,6 @@ export class SeatingEngine {
       if (expanded) return null;
     }
 
-    // Step 1: Evict quietest non-donor (coins === 0)
     const nonDonors = Array.from(this.viewers.values()).filter(
       (v) => (v.coins === 0 || !v.coins) && !v.isVip && !this.lockedSlots.has(v.slotIndex) && !this.vipSlots.has(v.slotIndex)
     );
@@ -268,15 +213,14 @@ export class SeatingEngine {
       return this.freeSlot(evictee.slotIndex, 'evicted_quiet_non_donor');
     }
 
-    // Step 2: 100% Donor Saturation Deadlock Resolution
     const now = Date.now();
+    const threshold = this.customInactivityThresholdMs ?? SeatingEngine.INACTIVITY_THRESHOLD_MS;
     const candidateDonors = Array.from(this.viewers.values()).filter(
       (v) => !v.isVip && !this.lockedSlots.has(v.slotIndex) && !this.vipSlots.has(v.slotIndex) &&
-             (now - v.lastActivityAt > SeatingEngine.INACTIVITY_THRESHOLD_MS)
+             (now - v.lastActivityAt > threshold)
     );
 
     if (candidateDonors.length > 0) {
-      // Sort by coins ascending (lowest coins first), then by lastActivityAt ascending (most idle first)
       candidateDonors.sort((a, b) => {
         if (a.coins !== b.coins) return a.coins - b.coins;
         return a.lastActivityAt - b.lastActivityAt;
@@ -288,13 +232,7 @@ export class SeatingEngine {
     return null;
   }
 
-  /**
-   * Assign a seat to a user from center-outward priority.
-   * @param {Object} user User data: { id, name, skin, avatar, coins, isVip, demo }
-   * @returns {{ slotIndex: number, evicted: Object | null }}
-   */
   assignSeat(user) {
-    // If already seated, touch activity and update
     const existing = this.viewers.get(user.id);
     if (existing) {
       existing.lastActivityAt = Date.now();
@@ -302,13 +240,13 @@ export class SeatingEngine {
       if (user.name) existing.name = user.name;
       if (user.avatar) existing.avatar = user.avatar;
       if (user.skin) existing.skin = user.skin;
+      if (user.isVip !== undefined) existing.isVip = Boolean(user.isVip);
       this.slots[existing.slotIndex] = { ...existing };
       return { slotIndex: existing.slotIndex, evicted: null };
     }
 
     let evicted = null;
 
-    // Check if full or no slot available
     const hasAvailableSlot = this.priorityOrder.some(
       (slotIdx) => slotIdx < this.capacity && !this.slots[slotIdx] && !this.lockedSlots.has(slotIdx)
     );
@@ -317,7 +255,6 @@ export class SeatingEngine {
       evicted = this.evictIfNeeded();
     }
 
-    // Find first available slot in priorityOrder
     let targetSlot = -1;
     for (const slotIdx of this.priorityOrder) {
       if (slotIdx < this.capacity && !this.slots[slotIdx] && !this.lockedSlots.has(slotIdx)) {
@@ -327,7 +264,6 @@ export class SeatingEngine {
     }
 
     if (targetSlot === -1) {
-      // Emergency fallback: search linear
       for (let i = 0; i < this.capacity; i++) {
         if (!this.slots[i] && !this.lockedSlots.has(i)) {
           targetSlot = i;
@@ -359,11 +295,6 @@ export class SeatingEngine {
     return { slotIndex: targetSlot, evicted };
   }
 
-  /**
-   * Fill demo viewers
-   * @param {number} count
-   * @returns {Array<Object>} assigned viewers
-   */
   fillDemo(count) {
     const demoNames = [
       'Diệu Hạnh', 'Minh Tâm', 'Tuệ Đức', 'Tịnh Quang', 'Thiện Nhân',
@@ -394,18 +325,11 @@ export class SeatingEngine {
     return added;
   }
 
-  /**
-   * Clear all seats
-   */
   clearAll() {
     this.slots.fill(null);
     this.viewers.clear();
   }
 
-  /**
-   * Get active seated viewers list
-   * @returns {Array<Object>}
-   */
   getSnapshot() {
     return Array.from(this.viewers.values()).map((v) => ({
       id: v.id,

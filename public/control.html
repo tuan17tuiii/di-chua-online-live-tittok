@@ -54,11 +54,45 @@
         <span class="telemetry-value mono" id="telemetry-likes">0</span>
       </div>
 
+      <div class="telemetry-badge">
+        <span class="badge-icon">✧</span>
+        <span class="telemetry-label">Tổng xu phiên:</span>
+        <span class="telemetry-value mono text-gold" id="telemetry-coins">0</span>
+      </div>
+
+      <a href="/admin.html" class="btn btn-primary" id="btn-open-admin-config" style="text-decoration:none;" title="Mở Trung Tâm Cấu Hình Toàn Diện Theo Từng Sự Kiện Nhỏ">
+        <span class="btn-icon">⚙️</span> ADMIN CONFIG FULL
+      </a>
+
       <button class="btn btn-gold btn-preview" id="btn-open-preview" title="Mở màn hình Overlay OBS tỷ lệ chuẩn 9:16 (540×960 px)">
         <span class="btn-icon">⧉</span> MỞ PREVIEW 9:16
       </button>
     </div>
   </header>
+
+  <!-- LIVE MANAGER QUICK COMMAND & SCENE PRESET STRIP -->
+  <section class="live-manager-strip" id="module-live-manager">
+    <div class="lm-strip-group">
+      <span class="lm-strip-label">🎭 KỊCH BẢN 1-CHẠM:</span>
+      <button class="btn btn-xs btn-outline-gold lm-preset-btn" data-preset-id="khai_kinh">🌅 Khai Kinh</button>
+      <button class="btn btn-xs btn-outline-gold lm-preset-btn" data-preset-id="tinh_toa">🧘 Tĩnh Tọa</button>
+      <button class="btn btn-xs btn-outline-gold lm-preset-btn" data-preset-id="dai_le">🔔 Đại Lễ Cầu An</button>
+      <button class="btn btn-xs btn-outline-gold lm-preset-btn" data-preset-id="tinh_do_dem">🌙 Tịnh Độ Đêm</button>
+    </div>
+
+    <div class="lm-strip-group">
+      <span class="lm-strip-label">⚡ TEST FLOW NHANH:</span>
+      <button class="btn btn-xs btn-outline-muted lm-quick-flow-btn" data-flow-ev="member">🚪 Vào phòng</button>
+      <button class="btn btn-xs btn-outline-muted lm-quick-flow-btn" data-flow-ev="follow">✨ Follow</button>
+      <button class="btn btn-xs btn-outline-muted lm-quick-flow-btn" data-flow-ev="share">🔗 Share</button>
+      <button class="btn btn-xs btn-outline-muted lm-quick-flow-btn" data-flow-ev="like_milestone">🎆 Mốc Tim</button>
+    </div>
+
+    <div class="lm-strip-group lm-strip-right">
+      <button class="btn btn-xs btn-outline-gold" id="btn-export-donors-csv" title="Tải file CSV Bảng Vàng Công Đức cuối ca live">📊 Xuất CSV Công Đức</button>
+      <button class="btn btn-xs btn-outline-danger" id="btn-reset-session" title="Làm mới điểm công đức & thống kê cho ca live mới">🔄 Reset Ca Live Mới</button>
+    </div>
+  </section>
 
   <!-- Main Dashboard Layout Grid -->
   <main class="dashboard-grid">
@@ -80,11 +114,12 @@
 
         <div class="card-body">
           <div class="form-group">
-            <label for="input-unique-id">Tài khoản TikTok Live (@username):</label>
+            <label for="input-unique-id">Tài khoản TikTok Live (@username hoặc link):</label>
             <div class="input-with-prefix">
               <span class="input-prefix">@</span>
               <input type="text" id="input-unique-id" class="form-control" placeholder="kenh_phat_phap" value="kenh_phat_phap">
             </div>
+            <div class="lm-saved-channels mt-1" id="saved-channel-pills"></div>
           </div>
 
           <div class="form-group">
@@ -152,6 +187,22 @@
         <div class="card-body p-0">
           <div class="top-donors-list" id="top-donors-container">
             <div class="empty-state-small">Chưa có Phật tử nào trong chánh điện</div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LUỒNG QUÀ TẶNG VỪA NHẬN & ĐỌC LẠI LỜI NGUYỆN (LIVE GIFT FEED) -->
+      <section class="card mt-3">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">🎁</span>
+            <h2>QUÀ VỪA NHẬN & PHÁT LẠI TTS</h2>
+          </div>
+          <span class="occupants-count mono" id="recent-gifts-badge">0 lễ vật</span>
+        </div>
+        <div class="card-body p-0">
+          <div class="top-donors-list" id="recent-gifts-container">
+            <div class="empty-state-small">Chưa có lễ vật cúng dường trong phiên này</div>
           </div>
         </div>
       </section>
@@ -413,6 +464,21 @@
             <button class="btn btn-danger btn-block mt-2" id="btn-broadcast-say">
               <span class="btn-icon">🎙️</span> XƯỚNG THANH LÊN SÓNG LIVE
             </button>
+          </div>
+
+          <!-- LIVE TTS QUEUE CONTROLLER & PANIC MUTE -->
+          <div class="lm-tts-queue-box mt-3" id="tts-queue-deck">
+            <div class="flex-between mb-2">
+              <strong class="text-gold text-xs">🎚️ ĐIỀU KHIỂN HÀNG ĐỢI ĐỌC AI (TTS QUEUE)</strong>
+              <span class="mono text-xs text-muted" id="tts-queue-count-label">Chờ: 0</span>
+            </div>
+            <div class="lm-tts-now-playing" id="tts-now-playing-text">Trạng thái: Sẵn sàng xướng danh</div>
+            <div class="lm-tts-btn-row mt-2">
+              <button class="btn btn-xs btn-outline-gold" id="btn-tts-pause-toggle">⏸ Tạm dừng</button>
+              <button class="btn btn-xs btn-outline-muted" id="btn-tts-skip">⏭ Bỏ qua câu</button>
+              <button class="btn btn-xs btn-outline-muted" id="btn-tts-clear">🗑 Xóa chờ</button>
+              <button class="btn btn-xs btn-outline-danger" id="btn-tts-panic-mute">🔇 Mute Khẩn</button>
+            </div>
           </div>
 
         </div>

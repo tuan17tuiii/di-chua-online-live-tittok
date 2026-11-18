@@ -1832,3 +1832,84 @@ input:checked + .slider-round:before {
 .toast-content { flex: 1; }
 .toast-title { font-weight: 700; font-size: 11px; color: var(--gold-light); }
 .toast-msg { font-size: 11px; color: #e5e7eb; }
+
+/* ==========================================================================
+   LIVE MANAGER COCKPIT EXTENSIONS (Scene Presets, TTS Queue, Gift Replay)
+   ========================================================================== */
+.live-manager-strip {
+  background: linear-gradient(90deg, #1f1512 0%, #2b1d18 50%, #1f1512 100%);
+  border-bottom: 1px solid var(--border-gold);
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.lm-strip-group {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.lm-strip-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.5px;
+  margin-right: 4px;
+}
+
+.lm-saved-channels {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.lm-channel-chip {
+  background: var(--bg-input);
+  border: 1px solid var(--border-gold);
+  color: var(--gold-pale);
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-size: 10.5px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.lm-channel-chip:hover {
+  background: var(--gold-deep);
+  color: #fff;
+}
+
+.lm-tts-queue-box {
+  background: rgba(18, 12, 10, 0.72);
+  border: 1px solid var(--border-gold);
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.lm-tts-now-playing {
+  background: var(--bg-input);
+  border: 1px solid var(--border-subtle);
+  border-radius: 6px;
+  padding: 6px 9px;
+  font-size: 11px;
+  color: #e5dfd5;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lm-tts-btn-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 5px;
+}
+
+.lm-tts-btn-row .active-danger {
+  background: var(--color-danger) !important;
+  color: #fff !important;
+  border-color: #fca5a5 !important;
+}

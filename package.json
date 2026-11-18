@@ -8,6 +8,7 @@
     "start": "node src/server.mjs",
     "dev": "node --watch src/server.mjs",
     "test": "node --test test/unit_backend.test.mjs",
+    "test:all": "node --test test/unit_backend.test.mjs test/verify_control_dashboard.test.mjs test/config_and_flows.test.mjs",
     "verify-assets": "node scripts/verify_assets.mjs"
   },
   "dependencies": {

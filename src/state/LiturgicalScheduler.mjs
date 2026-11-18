@@ -1,6 +1,6 @@
 /**
  * LiturgicalScheduler: Coordinates the temple mõ metronome (20-120 BPM) with cadence reset
- * and automatic liturgical chanting intervals.
+ * and automatic liturgical chanting intervals with customizable chant list.
  */
 export class LiturgicalScheduler {
   static DEFAULT_CHANTS = [
@@ -16,6 +16,7 @@ export class LiturgicalScheduler {
    * @param {number} [options.chantEveryMin=3]
    * @param {boolean} [options.moEnabled=true]
    * @param {boolean} [options.autoChantEnabled=true]
+   * @param {string[]} [options.chants]
    * @param {Function} [options.onMoTick]
    * @param {Function} [options.onChantTick]
    */
@@ -24,6 +25,9 @@ export class LiturgicalScheduler {
     this.chantEveryMin = this._clampChantMin(options.chantEveryMin || 3);
     this.moEnabled = options.moEnabled !== undefined ? options.moEnabled : true;
     this.autoChantEnabled = options.autoChantEnabled !== undefined ? options.autoChantEnabled : true;
+    this.chants = Array.isArray(options.chants) && options.chants.length > 0
+      ? [...options.chants]
+      : [...LiturgicalScheduler.DEFAULT_CHANTS];
 
     this.onMoTick = options.onMoTick || (() => {});
     this.onChantTick = options.onChantTick || (() => {});
@@ -41,7 +45,25 @@ export class LiturgicalScheduler {
   }
 
   _clampChantMin(min) {
-    return Math.max(1, Math.min(10, Number(min) || 3));
+    return Math.max(1, Math.min(60, Number(min) || 3));
+  }
+
+  /**
+   * Hot-update custom chant phrases list
+   * @param {string[]} items
+   */
+  setChantItems(items) {
+    if (Array.isArray(items)) {
+      const cleaned = items.map((s) => String(s || '').trim()).filter(Boolean);
+      this.chants = cleaned.length > 0 ? cleaned : [...LiturgicalScheduler.DEFAULT_CHANTS];
+    }
+  }
+
+  _pickNextChant() {
+    const list = this.chants.length > 0 ? this.chants : LiturgicalScheduler.DEFAULT_CHANTS;
+    const text = list[this.chantIndex % list.length];
+    this.chantIndex++;
+    return text;
   }
 
   /**
@@ -75,10 +97,6 @@ export class LiturgicalScheduler {
     }
   }
 
-  /**
-   * Internal helper to start mo metronome timer
-   * @private
-   */
   _startMoTimer() {
     if (this.moIntervalId) clearInterval(this.moIntervalId);
     const intervalMs = Math.round((60 / this.moBpm) * 1000);
@@ -89,16 +107,11 @@ export class LiturgicalScheduler {
     if (this.moIntervalId.unref) this.moIntervalId.unref();
   }
 
-  /**
-   * Internal helper to start chant timer
-   * @private
-   */
   _startChantTimer() {
     if (this.chantIntervalId) clearInterval(this.chantIntervalId);
     const intervalMs = this.chantEveryMin * 60 * 1000;
     this.chantIntervalId = setInterval(() => {
-      const chantText = LiturgicalScheduler.DEFAULT_CHANTS[this.chantIndex % LiturgicalScheduler.DEFAULT_CHANTS.length];
-      this.chantIndex++;
+      const chantText = this._pickNextChant();
       this.onChantTick(chantText);
     }, intervalMs);
     if (this.chantIntervalId.unref) this.chantIntervalId.unref();
@@ -112,7 +125,6 @@ export class LiturgicalScheduler {
     this.roundRobinIndex = (this.roundRobinIndex % 3) + 1;
     this.onMoTick(this.roundRobinIndex);
 
-    // Cadence Reset: restart interval timer so the next strike occurs after a full period
     if (this.isRunning && this.moEnabled) {
       this._startMoTimer();
     }
@@ -126,8 +138,7 @@ export class LiturgicalScheduler {
    * @returns {string} chantText
    */
   triggerChantManual(customText) {
-    const text = customText || LiturgicalScheduler.DEFAULT_CHANTS[this.chantIndex % LiturgicalScheduler.DEFAULT_CHANTS.length];
-    this.chantIndex++;
+    const text = customText || this._pickNextChant();
     this.onChantTick(text);
 
     if (this.isRunning && this.autoChantEnabled) {
@@ -136,10 +147,6 @@ export class LiturgicalScheduler {
     return text;
   }
 
-  /**
-   * Update mõ metronome BPM
-   * @param {number} bpm 20-120 BPM
-   */
   setMoBpm(bpm) {
     this.moBpm = this._clampBpm(bpm);
     if (this.isRunning && this.moEnabled) {
@@ -147,10 +154,6 @@ export class LiturgicalScheduler {
     }
   }
 
-  /**
-   * Enable/disable mõ metronome
-   * @param {boolean} enabled
-   */
   setMoEnabled(enabled) {
     this.moEnabled = Boolean(enabled);
     if (this.isRunning) {
@@ -163,10 +166,6 @@ export class LiturgicalScheduler {
     }
   }
 
-  /**
-   * Update chanting period
-   * @param {number} minutes 1-10 mins
-   */
   setChantInterval(minutes) {
     this.chantEveryMin = this._clampChantMin(minutes);
     if (this.isRunning && this.autoChantEnabled) {
@@ -174,10 +173,6 @@ export class LiturgicalScheduler {
     }
   }
 
-  /**
-   * Enable/disable auto chanting
-   * @param {boolean} enabled
-   */
   setAutoChantEnabled(enabled) {
     this.autoChantEnabled = Boolean(enabled);
     if (this.isRunning) {

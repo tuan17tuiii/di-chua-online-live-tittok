@@ -73,6 +73,11 @@ class AdminStateStore {
     this.logFilter = 'all'; // 'all' | 'gift' | 'chat' | 'ritual' | 'warn' | 'error'
     this.autoScroll = true;
 
+    // Full Config, Live TTS Queue & Session Stats
+    this.fullConfig = null;
+    this.ttsQueue = { paused: false, muted: false, current: null, pending: [], recent: [] };
+    this.sessionStats = { totalDiamonds: 0, totalGifts: 0, recentGifts: [] };
+
     // Event Listeners (Pub/Sub)
     this.listeners = new Map();
   }
@@ -446,6 +451,27 @@ class WebSocketNetworkClient {
           };
           this.store.emit('bot_state_changed', this.store.botState);
           this.store.appendLogEntry(`[BOT] Động cơ bot: ${msg.on ? 'BẬT (' + (msg.count || 15) + ' bot, nhịp: ' + (msg.pace || 'mid') + ')' : 'ĐÃ TẮT'}`);
+          break;
+
+        case 'config':
+          if (msg.config) {
+            this.store.fullConfig = msg.config;
+            this.store.emit('full_config_updated', msg.config);
+          }
+          break;
+
+        case 'tts_queue':
+          this.store.ttsQueue = { ...this.store.ttsQueue, ...msg };
+          this.store.emit('tts_queue_updated', this.store.ttsQueue);
+          break;
+
+        case 'session_stats':
+          this.store.sessionStats = { ...this.store.sessionStats, ...msg };
+          this.store.emit('session_stats_updated', this.store.sessionStats);
+          break;
+
+        case 'fx':
+        case 'gift_catalog':
           break;
 
         default:
@@ -1165,7 +1191,9 @@ class AudioMixerModule {
     this.sliderBgmVol?.addEventListener('change', () => {
       const vol = parseInt(this.sliderBgmVol.value, 10);
       const music = vol > 0;
-      this.wsClient.sendCommand('settings', { settings: { music } });
+      this.wsClient.sendCommand('settings', {
+        settings: { music, volumes: { bgm: vol / 100 } }
+      });
     });
 
     // 2. Mõ Metronome Cadence Slider & Toggle (cmd: "settings")
@@ -1326,6 +1354,11 @@ class AudioMixerModule {
   syncAudioState() {
     const s = this.store.settings;
     if (this.toggleBgm) this.toggleBgm.checked = !!s.music;
+    if (s.volumes && typeof s.volumes.bgm === 'number' && this.sliderBgmVol) {
+      const bgmPct = Math.round(s.volumes.bgm * 100);
+      this.sliderBgmVol.value = bgmPct;
+      if (this.valBgmVol) this.valBgmVol.textContent = `${bgmPct}%`;
+    }
     if (this.toggleMo) this.toggleMo.checked = !!s.mo;
     if (this.sliderMoBpm && s.moBpm) {
       this.sliderMoBpm.value = s.moBpm;
@@ -1676,7 +1709,208 @@ class AuditLoggerModule {
 
 /**
  * ------------------------------------------------------------------------------
- * 8. UTILITIES (Toast Notifications, HTML Escaping)
+ * 8. MODULE 6: LIVE MANAGER COCKPIT DECK (Scene Presets, TTS Queue, Gift Replay)
+ * ------------------------------------------------------------------------------
+ */
+
+class LiveManagerDeckModule {
+  constructor(store, wsClient) {
+    this.store = store;
+    this.wsClient = wsClient;
+
+    this.telemetryCoins = document.getElementById('telemetry-coins');
+    this.savedChannelPills = document.getElementById('saved-channel-pills');
+    this.inputUniqueId = document.getElementById('input-unique-id');
+    this.inputRoomId = document.getElementById('input-room-id');
+
+    this.recentGiftsBadge = document.getElementById('recent-gifts-badge');
+    this.recentGiftsContainer = document.getElementById('recent-gifts-container');
+
+    this.ttsQueueCountLabel = document.getElementById('tts-queue-count-label');
+    this.ttsNowPlayingText = document.getElementById('tts-now-playing-text');
+    this.btnTtsPauseToggle = document.getElementById('btn-tts-pause-toggle');
+    this.btnTtsSkip = document.getElementById('btn-tts-skip');
+    this.btnTtsClear = document.getElementById('btn-tts-clear');
+    this.btnTtsPanicMute = document.getElementById('btn-tts-panic-mute');
+
+    this.btnExportDonorsCsv = document.getElementById('btn-export-donors-csv');
+    this.btnResetSession = document.getElementById('btn-reset-session');
+
+    this.bindEvents();
+  }
+
+  bindEvents() {
+    // 1. 1-Click Scene Presets
+    document.querySelectorAll('.lm-preset-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const presetId = btn.getAttribute('data-preset-id');
+        this.wsClient.sendCommand('apply_preset', { presetId });
+        showToast('Chuyển cảnh nhanh', `Đã kích hoạt kịch bản: ${btn.textContent.trim()}`, 'success');
+      });
+    });
+
+    // 2. 1-Click Quick Event Flow Tests
+    document.querySelectorAll('.lm-quick-flow-btn').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const eventType = btn.getAttribute('data-flow-ev');
+        this.wsClient.sendCommand('test_event', { eventType, name: 'Phật Tử Hữu Duyên' });
+        showToast('Test sự kiện nhanh', `Đã kích hoạt thử luồng: ${eventType.toUpperCase()}`, 'info');
+      });
+    });
+
+    // 3. Export Merit Leaderboard CSV & Reset Session
+    this.btnExportDonorsCsv?.addEventListener('click', () => {
+      window.location.href = '/api/live/donors.csv';
+      showToast('Xuất báo cáo', 'Đang tải về file CSV Bảng Vàng Công Đức.', 'success');
+    });
+
+    this.btnResetSession?.addEventListener('click', () => {
+      if (confirm('Làm mới thống kê và Bảng Vàng Công Đức cho ca live mới? (Các Phật tử đang ngồi vẫn giữ chỗ)')) {
+        this.wsClient.sendCommand('reset_session', { clearSeats: false });
+        showToast('Ca live mới', 'Đã làm mới thống kê phiên và Bảng Vàng Công Đức.', 'info');
+      }
+    });
+
+    // 4. Live TTS Queue Deck Controls
+    this.btnTtsPauseToggle?.addEventListener('click', () => {
+      const nextAction = this.store.ttsQueue.paused ? 'resume' : 'pause';
+      this.wsClient.sendCommand('tts_queue', { action: nextAction });
+    });
+
+    this.btnTtsSkip?.addEventListener('click', () => {
+      this.wsClient.sendCommand('tts_queue', { action: 'skip' });
+      showToast('Bỏ qua TTS', 'Đã chuyển sang câu đọc tiếp theo.', 'info');
+    });
+
+    this.btnTtsClear?.addEventListener('click', () => {
+      this.wsClient.sendCommand('tts_queue', { action: 'clear' });
+      showToast('Xóa hàng đợi', 'Đã làm trống hàng đợi đọc TTS.', 'warn');
+    });
+
+    this.btnTtsPanicMute?.addEventListener('click', () => {
+      const nextAction = this.store.ttsQueue.muted ? 'unmute' : 'mute';
+      this.wsClient.sendCommand('tts_queue', { action: nextAction });
+      showToast(
+        nextAction === 'mute' ? '🔇 ĐÃ TẮT TIẾNG KHẨN CẤP' : '🔊 ĐÃ MỞ LẠI TIẾNG',
+        nextAction === 'mute' ? 'Đã ngắt giọng đọc AI ngay lập tức.' : 'Hàng đợi giọng đọc AI hoạt động trở lại.',
+        nextAction === 'mute' ? 'error' : 'success'
+      );
+    });
+
+    // 5. Store Listeners
+    this.store.on('full_config_updated', (cfg) => this.renderSavedChannels(cfg));
+    this.store.on('tts_queue_updated', (q) => this.renderTtsQueue(q));
+    this.store.on('session_stats_updated', (stats) => this.renderSessionStats(stats));
+  }
+
+  renderSavedChannels(cfg) {
+    if (!this.savedChannelPills) return;
+    const channels = cfg?.connection?.savedChannels || [];
+    if (!channels.length) {
+      this.savedChannelPills.innerHTML = '';
+      return;
+    }
+
+    this.savedChannelPills.innerHTML = channels
+      .filter((ch) => ch.uniqueId)
+      .map(
+        (ch) => `
+        <button type="button" class="lm-channel-chip" data-uid="${escapeHtml(ch.uniqueId)}" data-rid="${escapeHtml(ch.roomId || '')}">
+          ⚡ ${escapeHtml(ch.label || '@' + ch.uniqueId)}
+        </button>
+      `
+      )
+      .join('');
+
+    this.savedChannelPills.querySelectorAll('.lm-channel-chip').forEach((chip) => {
+      chip.addEventListener('click', () => {
+        const uniqueId = chip.getAttribute('data-uid');
+        const roomId = chip.getAttribute('data-rid') || undefined;
+        if (this.inputUniqueId) this.inputUniqueId.value = uniqueId;
+        if (this.inputRoomId) this.inputRoomId.value = roomId || '';
+        this.wsClient.sendCommand('connect', { uniqueId, roomId });
+        showToast('Đổi kênh nhanh', `Đang kết nối tới @${uniqueId}...`, 'info');
+      });
+    });
+  }
+
+  renderTtsQueue(q) {
+    const pendingCount = Array.isArray(q.pending) ? q.pending.length : 0;
+    if (this.ttsQueueCountLabel) {
+      this.ttsQueueCountLabel.textContent = `Chờ: ${pendingCount}`;
+    }
+
+    if (this.ttsNowPlayingText) {
+      if (q.muted) {
+        this.ttsNowPlayingText.textContent = '🔇 ĐANG TẮT TIẾNG KHẨN CẤP (PANIC MUTE)';
+      } else if (q.paused) {
+        this.ttsNowPlayingText.textContent = `⏸ Đang tạm dừng (${pendingCount} câu đang chờ)`;
+      } else if (q.current && q.current.text) {
+        this.ttsNowPlayingText.textContent = `🎙️ Đang đọc: ${q.current.text}`;
+      } else {
+        this.ttsNowPlayingText.textContent = 'Trạng thái: Sẵn sàng xướng danh';
+      }
+    }
+
+    if (this.btnTtsPauseToggle) {
+      this.btnTtsPauseToggle.textContent = q.paused ? '▶ Tiếp tục' : '⏸ Tạm dừng';
+    }
+    if (this.btnTtsPanicMute) {
+      this.btnTtsPanicMute.textContent = q.muted ? '🔊 Mở lại TTS' : '🔇 Mute Khẩn';
+      this.btnTtsPanicMute.classList.toggle('active-danger', Boolean(q.muted));
+    }
+  }
+
+  renderSessionStats(stats) {
+    if (this.telemetryCoins) {
+      this.telemetryCoins.textContent = Number(stats.totalDiamonds || 0).toLocaleString('vi-VN');
+    }
+
+    const gifts = Array.isArray(stats.recentGifts) ? stats.recentGifts : [];
+    if (this.recentGiftsBadge) {
+      this.recentGiftsBadge.textContent = `${stats.totalGifts || gifts.length} lễ vật`;
+    }
+    if (!this.recentGiftsContainer) return;
+
+    if (gifts.length === 0) {
+      this.recentGiftsContainer.innerHTML = '<div class="empty-state-small">Chưa có lễ vật cúng dường trong phiên này</div>';
+      return;
+    }
+
+    this.recentGiftsContainer.innerHTML = gifts
+      .slice(0, 8)
+      .map(
+        (g, idx) => `
+        <div class="donor-row">
+          <div class="donor-info">
+            <div>
+              <div class="donor-name">🎁 ${escapeHtml(g.name)} · <span class="text-gold">${escapeHtml(g.giftName)} x${g.count || 1}</span></div>
+              <div class="donor-coins mono">+${g.totalCoins || 0} ✧ · "${escapeHtml(g.prayer || '')}"</div>
+            </div>
+          </div>
+          <div class="donor-actions">
+            <button class="btn btn-xxs btn-outline-gold btn-replay-gift-tts" data-gift-idx="${idx}" title="Đọc lại lời nguyện của lễ vật này trên sóng">🔁 Đọc lại</button>
+          </div>
+        </div>
+      `
+      )
+      .join('');
+
+    this.recentGiftsContainer.querySelectorAll('.btn-replay-gift-tts').forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const g = gifts[Number(btn.getAttribute('data-gift-idx'))];
+        if (g?.ttsText) {
+          this.wsClient.sendCommand('tts_queue', { action: 'replay', text: g.ttsText });
+          showToast('Đọc lại lời nguyện', `Đã xếp hàng đọc lại lễ vật của ${g.name}.`, 'success');
+        }
+      });
+    });
+  }
+}
+
+/**
+ * ------------------------------------------------------------------------------
+ * 9. UTILITIES (Toast Notifications, HTML Escaping)
  * ------------------------------------------------------------------------------
  */
 
@@ -1732,14 +1966,15 @@ class ControlApplication {
     this.store = new AdminStateStore();
     this.wsClient = new WebSocketNetworkClient(this.store);
 
-    // Initialize the 5 core modules when DOM is available
+    // Initialize the core modules when DOM is available
     if (typeof document !== 'undefined') {
       this.modules = {
         connection: new ConnectionHubModule(this.store, this.wsClient),
         seating: new SeatingMatrixModule(this.store, this.wsClient),
         audio: new AudioMixerModule(this.store, this.wsClient),
         simulation: new SimulationStudioModule(this.store, this.wsClient),
-        logger: new AuditLoggerModule(this.store)
+        logger: new AuditLoggerModule(this.store),
+        liveManager: new LiveManagerDeckModule(this.store, this.wsClient)
       };
     } else {
       this.modules = {};

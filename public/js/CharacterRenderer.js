@@ -1,7 +1,6 @@
 /**
  * CharacterRenderer.js
- * 4-Phase Avatar State Machine, Cosine Prostration, Painter's Algorithm & Skin NLP
- * Complies with ARCHITECTURE.md §4.2 and ASSET_MANIFEST.md
+ * 4-Phase Avatar State Machine, Cosine Prostration, Painter's Algorithm & Dynamic Skin NLP
  */
 
 export class CharacterRenderer {
@@ -12,10 +11,9 @@ export class CharacterRenderer {
     this.avatarLruCache = new Map();
     this.MAX_AVATARS = 150;
 
-    // Active viewer characters: viewerId -> stateObject
     this.characters = new Map();
+    this.skinChangeEnabled = true;
 
-    // Sacred phrase exclusions: prevent clothing changes during prayers
     this.SACRED_PATTERNS = [
       /nam\s+mô/i,
       /phật\s+bà/i,
@@ -27,7 +25,6 @@ export class CharacterRenderer {
       /lạy\s+phật/i
     ];
 
-    // Word boundary & intent keywords for skin selection
     this.SKIN_KEYWORDS = [
       { key: 'char_child', regex: /(?:^|\s)(?:chú\s+tiểu|tiểu\s+đồng|bé)(?:\s|$)/i },
       { key: 'char_master', regex: /(?:^|\s)(?:cao\s+tăng|thượng\s+tọa|hòa\s+thượng)(?:\s|$)/i },
@@ -37,6 +34,43 @@ export class CharacterRenderer {
       { key: 'char_man', regex: /(?:^|\s)(?:cư\s+sĩ\s+nam|nam|chú(?!\s+tiểu))(?:\s|$)/i },
       { key: 'char_woman', regex: /(?:^|\s)(?:cư\s+sĩ\s+nữ|nữ|cô)(?:\s|$)/i }
     ];
+  }
+
+  _escapeRegex(str) {
+    return String(str).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  }
+
+  /**
+   * Synchronize Skin NLP rules from Admin Config Studio
+   * @param {Object} skinCfg
+   */
+  setSkinChangeConfig(skinCfg) {
+    if (!skinCfg || typeof skinCfg !== 'object') return;
+    this.skinChangeEnabled = skinCfg.enabled !== false;
+
+    if (Array.isArray(skinCfg.sacredExclusions)) {
+      this.SACRED_PATTERNS = skinCfg.sacredExclusions
+        .map((p) => String(p || '').trim())
+        .filter(Boolean)
+        .map((p) => new RegExp(p.split(/\s+/).map((w) => this._escapeRegex(w)).join('\\s+'), 'iu'));
+    }
+
+    if (Array.isArray(skinCfg.rules)) {
+      const compiled = [];
+      for (const r of skinCfg.rules) {
+        if (!r?.skin || !Array.isArray(r.keywords) || r.keywords.length === 0) continue;
+        const kws = r.keywords.map((k) => String(k || '').trim()).filter(Boolean);
+        if (!kws.length) continue;
+        const alt = kws.map((k) => this._escapeRegex(k)).join('|');
+        compiled.push({
+          key: this.normalizeSkin(r.skin),
+          regex: new RegExp(`(?:^|[^\\p{L}\\p{N}])(?:${alt})(?:$|[^\\p{L}\\p{N}])`, 'iu')
+        });
+      }
+      if (compiled.length > 0) {
+        this.SKIN_KEYWORDS = compiled;
+      }
+    }
   }
 
   normalizeSkin(skin) {
@@ -86,7 +120,6 @@ export class CharacterRenderer {
       img.src = item.path;
     }
 
-    // Load authentic static portraits
     const staticList = [
       { id: 'char_man', path: '/assets/characters/c_man.png' },
       { id: 'char_woman', path: '/assets/characters/c_woman.png' },
@@ -105,10 +138,9 @@ export class CharacterRenderer {
   }
 
   detectSkinNLP(text) {
-    if (!text || typeof text !== 'string') return null;
+    if (!this.skinChangeEnabled || !text || typeof text !== 'string') return null;
     const clean = text.trim();
 
-    // Sacred phrase exclusion
     if (this.SACRED_PATTERNS.some((pat) => pat.test(clean))) {
       return null;
     }
@@ -139,7 +171,6 @@ export class CharacterRenderer {
       return;
     }
 
-    // New viewer: starts in WALK phase entering from center aisle
     this.characters.set(id, {
       id,
       name: viewer.name || 'Phật tử',
@@ -150,13 +181,12 @@ export class CharacterRenderer {
       targetSlot,
       currentX: 540,
       currentY: 2020,
-      phase: 'walk', // 'walk' -> 'sitting' -> 'sit' -> 'bowing'
+      phase: 'walk',
       phaseTime: 0,
       bowTheta: 0,
       breathOffset: slotIndex * 1.37
     });
 
-    // Profile avatar image LRU Cache
     if (viewer.avatar && typeof viewer.avatar === 'string' && !this.avatarLruCache.has(viewer.avatar)) {
       if (this.avatarLruCache.size >= this.MAX_AVATARS) {
         const oldest = this.avatarLruCache.keys().next().value;
@@ -171,6 +201,10 @@ export class CharacterRenderer {
   removeViewer(id) {
     if (!id) return;
     this.characters.delete(String(id));
+  }
+
+  clearAll() {
+    this.characters.clear();
   }
 
   triggerBow(id) {
@@ -202,7 +236,6 @@ export class CharacterRenderer {
       char.targetSlot = target;
 
       if (char.phase === 'walk') {
-        // Step 1: Walk along center aisle (x=540) to target Y
         const dy = target.y - char.currentY;
         const walkSpeed = 380 * dt;
 
@@ -211,7 +244,6 @@ export class CharacterRenderer {
           char.currentX = 540;
         } else {
           char.currentY = target.y;
-          // Step 2: Step laterally to target X cushion
           const dx = target.x - char.currentX;
           if (Math.abs(dx) > 4) {
             char.currentX += Math.sign(dx) * Math.min(walkSpeed, Math.abs(dx));
@@ -224,7 +256,6 @@ export class CharacterRenderer {
       } else if (char.phase === 'sitting') {
         char.currentX = target.x;
         char.currentY = target.y;
-        // 4-frame sitting transition (~0.6s)
         if (char.phaseTime >= 0.6) {
           char.phase = 'sit';
           char.phaseTime = 0;
@@ -235,7 +266,6 @@ export class CharacterRenderer {
       } else if (char.phase === 'bowing') {
         char.currentX = target.x;
         char.currentY = target.y;
-        // Full cosine compression prostration over 1.4s
         const BOW_DURATION = 1.4;
         char.bowTheta = (char.phaseTime / BOW_DURATION) * (Math.PI * 2);
         if (char.phaseTime >= BOW_DURATION) {
@@ -250,7 +280,6 @@ export class CharacterRenderer {
   render(ctx, timeSec) {
     const renderables = [];
 
-    // 1. Gather all cushions
     const slots = this.floorEngine.slotCoords;
     for (let i = 0; i < slots.length; i++) {
       const slot = slots[i];
@@ -261,16 +290,14 @@ export class CharacterRenderer {
       });
     }
 
-    // 2. Gather all active avatars
     for (const char of this.characters.values()) {
       renderables.push({
-        y: char.currentY + 0.1, // Slight offset ensures avatar renders on top of cushion at same Y
+        y: char.currentY + 0.1,
         type: 'avatar',
         render: () => this.renderAvatar(ctx, char, timeSec)
       });
     }
 
-    // 3. Painter's Algorithm: Sort ascending by Y coordinate
     renderables.sort((a, b) => a.y - b.y);
 
     for (const item of renderables) {
@@ -283,26 +310,23 @@ export class CharacterRenderer {
     const sheet = this.spritesheets.get(char.skin) || this.spritesheets.get('char_man');
     const scale = slot.scale;
 
-    let frameIndex = 7; // Default Frame 7: Sit Idle
+    let frameIndex = 7;
     let yScale = 1.0;
     let yOffset = 0;
 
     if (char.phase === 'walk') {
-      frameIndex = Math.floor(char.phaseTime * 8) % 4; // Frames 0..3
+      frameIndex = Math.floor(char.phaseTime * 8) % 4;
     } else if (char.phase === 'sitting') {
-      frameIndex = 4 + Math.min(2, Math.floor((char.phaseTime / 0.6) * 3)); // Frames 4..6
+      frameIndex = 4 + Math.min(2, Math.floor((char.phaseTime / 0.6) * 3));
     } else if (char.phase === 'sit') {
       frameIndex = 7;
-      // Idle harmonic breathing: deltaY = sin(t * 1.1 + phi) * 2.0 * scale
       yOffset = Math.sin(timeSec * 1.1 + char.breathOffset) * 2.0 * scale;
     } else if (char.phase === 'bowing') {
       frameIndex = 7;
-      // Procedural Cosine Compression: y_scale = 1 - 0.45 * (1 - cos(theta))
       yScale = 1.0 - 0.45 * (1.0 - Math.cos(char.bowTheta));
     }
 
     ctx.save();
-    // Pivot Anchor: (centerX, bottomY) at floor contact
     ctx.translate(char.currentX, char.currentY + yOffset);
     ctx.scale(scale, scale * yScale);
 
@@ -324,94 +348,9 @@ export class CharacterRenderer {
       if (staticImg && staticImg.naturalWidth) {
         const sw = staticImg.naturalWidth;
         const sh = staticImg.naturalHeight;
-        ctx.drawImage(
-          staticImg,
-          -sw / 2,
-          -sh,
-          sw,
-          sh
-        );
-      } else {
-        // Procedural Vector Meditator Fallback
-        this.renderProceduralAvatar(ctx, char.skin, char.phase);
+        ctx.drawImage(staticImg, -sw / 2, -sh, sw, sh);
       }
     }
-
-    ctx.restore();
-  }
-
-  renderProceduralAvatar(ctx, skin, phase) {
-    ctx.save();
-
-    // Robe color based on skin type
-    let robeColor = '#705335'; // Monk/layperson brown
-    let trimColor = '#d4af37';
-
-    if (skin === 'char_woman') {
-      robeColor = '#4a6572'; // Grey-blue lam robe
-      trimColor = '#b0bec5';
-    } else if (skin === 'char_monk') {
-      robeColor = '#9c551f'; // Saffron orange
-      trimColor = '#ffd54f';
-    } else if (skin === 'char_nun') {
-      robeColor = '#6d4c41'; // Brown sồng robe
-      trimColor = '#bcaaa4';
-    } else if (skin === 'char_master') {
-      robeColor = '#b71c1c'; // Red-gold ceremonial robe
-      trimColor = '#ffd700';
-    } else if (skin === 'char_child') {
-      robeColor = '#8d6e63';
-      trimColor = '#ffecb3';
-    }
-
-    // Seated Robe Base (Ellipse)
-    ctx.beginPath();
-    ctx.ellipse(0, -55, 75, 55, 0, 0, Math.PI * 2);
-    ctx.fillStyle = robeColor;
-    ctx.fill();
-    ctx.strokeStyle = trimColor;
-    ctx.lineWidth = 3;
-    ctx.stroke();
-
-    // Torso
-    ctx.beginPath();
-    ctx.ellipse(0, -115, 52, 60, 0, 0, Math.PI * 2);
-    ctx.fillStyle = robeColor;
-    ctx.fill();
-    ctx.stroke();
-
-    // Hands folded in Dhyana Mudra
-    ctx.beginPath();
-    ctx.ellipse(0, -65, 26, 12, 0, 0, Math.PI * 2);
-    ctx.fillStyle = '#ffdbac';
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(0, 0, 0, 0.2)';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-
-    // Head
-    ctx.beginPath();
-    ctx.arc(0, -175, 32, 0, Math.PI * 2);
-    ctx.fillStyle = '#ffdbac';
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(0, 0, 0, 0.15)';
-    ctx.lineWidth = 1.5;
-    ctx.stroke();
-
-    // Serene closed eyes
-    ctx.strokeStyle = '#4e342e';
-    ctx.lineWidth = 2;
-    ctx.beginPath();
-    ctx.arc(-11, -175, 6, 0.2, Math.PI - 0.2);
-    ctx.stroke();
-    ctx.beginPath();
-    ctx.arc(11, -175, 6, 0.2, Math.PI - 0.2);
-    ctx.stroke();
-
-    // Subtle gentle smile
-    ctx.beginPath();
-    ctx.arc(0, -165, 8, 0.2, Math.PI - 0.2);
-    ctx.stroke();
 
     ctx.restore();
   }

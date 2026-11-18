@@ -1,7 +1,7 @@
 /**
  * WebAudioEngine.js
- * 48kHz Web Audio API Engine, Autoplay Watchdog, Additive Bell/Mõ Synthesis & -14dB Look-Ahead Ducking
- * Complies with ARCHITECTURE.md §6 and WEBSOCKET_SPEC.md §3.9, §3.11
+ * 48kHz Web Audio API Engine, 5-Channel Real-Time Gain Control, Dynamic BGM Track Switching,
+ * Additive Bell/Mõ/Chime Synthesis, Instant TTS Stop/Skip & Look-Ahead Ducking.
  */
 
 export class WebAudioEngine {
@@ -14,12 +14,22 @@ export class WebAudioEngine {
     this.masterGain = null;
 
     this.normalBgmVolume = 0.55;
-    this.duckedBgmVolume = 0.12; // -14dB attenuation
+    this.duckedBgmVolume = 0.12;
+    this.currentBgmUrl = '/assets/audio/bgm/music1.mp3';
 
     this.audioBuffers = new Map();
     this.moRoundRobinIndex = 0;
     this.bgmSource = null;
+    this.currentTtsSource = null;
     this.isBgmPlaying = false;
+    this.localMuted = false;
+
+    if (typeof window !== 'undefined' && window.location) {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('muted') === '1') {
+        this.localMuted = true;
+      }
+    }
 
     this.initAudioContext();
   }
@@ -30,39 +40,32 @@ export class WebAudioEngine {
       if (!AudioContextClass) return;
       this.ctx = new AudioContextClass({ sampleRate: 48000 });
 
-      // Master Gain Node -> Destination
       this.masterGain = this.ctx.createGain();
-      this.masterGain.gain.setValueAtTime(1.0, this.ctx.currentTime);
+      this.masterGain.gain.setValueAtTime(this.localMuted ? 0 : 1.0, this.ctx.currentTime);
       this.masterGain.connect(this.ctx.destination);
 
-      // BGM Channel Gain
       this.bgmGain = this.ctx.createGain();
       this.bgmGain.gain.setValueAtTime(this.normalBgmVolume, this.ctx.currentTime);
       this.bgmGain.connect(this.masterGain);
 
-      // SFX Channel Gain (Mõ strikes, chimes)
       this.sfxGain = this.ctx.createGain();
       this.sfxGain.gain.setValueAtTime(0.85, this.ctx.currentTime);
       this.sfxGain.connect(this.masterGain);
 
-      // Bell Channel Gain (Temple bell, Bowl bell)
       this.bellGain = this.ctx.createGain();
       this.bellGain.gain.setValueAtTime(0.95, this.ctx.currentTime);
       this.bellGain.connect(this.masterGain);
 
-      // TTS Channel Gain (AI Voice announcements)
       this.ttsGain = this.ctx.createGain();
       this.ttsGain.gain.setValueAtTime(1.0, this.ctx.currentTime);
       this.ttsGain.connect(this.masterGain);
 
-      // Autoplay Watchdog (OBS CEF headless policy)
       if (this.ctx.state === 'suspended') {
         setTimeout(() => {
           this.ctx.resume().catch(() => {});
         }, 500);
       }
 
-      // Secondary unlock on any browser interaction
       const unlock = () => {
         if (this.ctx && this.ctx.state === 'suspended') {
           this.ctx.resume().catch(() => {});
@@ -79,6 +82,46 @@ export class WebAudioEngine {
     }
   }
 
+  setLocalMuted(muted) {
+    this.localMuted = Boolean(muted);
+    if (this.ctx && this.masterGain) {
+      this.masterGain.gain.setValueAtTime(this.localMuted ? 0 : (this._targetMasterVol ?? 1.0), this.ctx.currentTime);
+    }
+  }
+
+  /**
+   * Apply 5-channel volume mixer settings from Admin Config in real time
+   * @param {Object} vols { master, bgm, sfx, bell, tts, duckedBgm }
+   */
+  setVolumes(vols = {}) {
+    if (!this.ctx) return;
+    const now = this.ctx.currentTime;
+    const clamp = (v, def) => Math.max(0, Math.min(1.5, Number(v ?? def)));
+
+    if (vols.master !== undefined && this.masterGain) {
+      this._targetMasterVol = clamp(vols.master, 1.0);
+      if (!this.localMuted) {
+        this.masterGain.gain.setTargetAtTime(this._targetMasterVol, now, 0.05);
+      }
+    }
+    if (vols.bgm !== undefined && this.bgmGain) {
+      this.normalBgmVolume = clamp(vols.bgm, 0.55);
+      this.bgmGain.gain.setTargetAtTime(this.normalBgmVolume, now, 0.08);
+    }
+    if (vols.sfx !== undefined && this.sfxGain) {
+      this.sfxGain.gain.setTargetAtTime(clamp(vols.sfx, 0.85), now, 0.05);
+    }
+    if (vols.bell !== undefined && this.bellGain) {
+      this.bellGain.gain.setTargetAtTime(clamp(vols.bell, 0.95), now, 0.05);
+    }
+    if (vols.tts !== undefined && this.ttsGain) {
+      this.ttsGain.gain.setTargetAtTime(clamp(vols.tts, 1.0), now, 0.05);
+    }
+    if (vols.duckedBgm !== undefined) {
+      this.duckedBgmVolume = clamp(vols.duckedBgm, 0.12);
+    }
+  }
+
   ensureContextRunning() {
     if (this.ctx && this.ctx.state === 'suspended') {
       this.ctx.resume().catch(() => {});
@@ -86,16 +129,17 @@ export class WebAudioEngine {
   }
 
   async loadAudioBuffer(id, url) {
-    if (!this.ctx) return;
+    if (!this.ctx || !url) return null;
     try {
       const resp = await fetch(url);
       if (!resp.ok) throw new Error(`HTTP ${resp.status}`);
       const arrayBuffer = await resp.arrayBuffer();
       const decoded = await this.ctx.decodeAudioData(arrayBuffer);
       this.audioBuffers.set(id, decoded);
-    } catch (e) {
-      // Audio buffer failed to load; mark as null so engine falls back to synthesis
+      return decoded;
+    } catch {
       this.audioBuffers.set(id, null);
+      return null;
     }
   }
 
@@ -106,10 +150,32 @@ export class WebAudioEngine {
       { id: 'mo_3', url: '/assets/audio/sfx/mo_strike_03.wav' },
       { id: 'bell_temple', url: '/assets/audio/sfx/bell_temple.wav' },
       { id: 'bell_bowl', url: '/assets/audio/sfx/bell_bowl.wav' },
-      { id: 'bgm', url: '/assets/audio/bgm/music1.mp3' }
+      { id: 'tier1_chime', url: '/assets/audio/sfx/gift_tier1.wav' },
+      { id: 'tier2_chime', url: '/assets/audio/sfx/gift_tier2.wav' },
+      { id: 'bgm', url: this.currentBgmUrl }
     ];
 
     await Promise.all(audioList.map((a) => this.loadAudioBuffer(a.id, a.url)));
+  }
+
+  /**
+   * Dynamically switch background music track URL
+   * @param {string} url
+   * @param {boolean} [shouldPlay=true]
+   */
+  async setBgmTrack(url, shouldPlay = true) {
+    if (!url || url === this.currentBgmUrl) {
+      if (shouldPlay) this.startBgm();
+      else this.stopBgm();
+      return;
+    }
+    this.currentBgmUrl = url;
+    const wasPlaying = this.isBgmPlaying;
+    this.stopBgm();
+    await this.loadAudioBuffer('bgm', url);
+    if (shouldPlay || wasPlaying) {
+      this.startBgm();
+    }
   }
 
   startBgm() {
@@ -136,7 +202,7 @@ export class WebAudioEngine {
       try {
         this.bgmSource.stop(0);
         this.bgmSource.disconnect();
-      } catch (e) {}
+      } catch {}
       this.bgmSource = null;
       this.isBgmPlaying = false;
     }
@@ -146,17 +212,13 @@ export class WebAudioEngine {
     if (!this.ctx || !this.bgmGain) return;
     const now = this.ctx.currentTime;
     const safeDuration = Math.max(0.5, Number(durationSec) || 4.0);
+    const targetDucked = Math.min(this.normalBgmVolume, this.duckedBgmVolume);
 
-    // Cancel previously scheduled ramps
     this.bgmGain.gain.cancelScheduledValues(now);
-
-    // Parametric look-ahead ducking: 400ms linear ramp to -14dB (0.12)
     this.bgmGain.gain.setValueAtTime(this.bgmGain.gain.value, now);
-    this.bgmGain.gain.linearRampToValueAtTime(this.duckedBgmVolume, now + 0.400);
-
-    // Restore ramp back to normal after duration
-    this.bgmGain.gain.setValueAtTime(this.duckedBgmVolume, now + safeDuration);
-    this.bgmGain.gain.linearRampToValueAtTime(this.normalBgmVolume, now + safeDuration + 0.600);
+    this.bgmGain.gain.linearRampToValueAtTime(targetDucked, now + 0.35);
+    this.bgmGain.gain.setValueAtTime(targetDucked, now + safeDuration);
+    this.bgmGain.gain.linearRampToValueAtTime(this.normalBgmVolume, now + safeDuration + 0.55);
   }
 
   playMo() {
@@ -170,25 +232,20 @@ export class WebAudioEngine {
     const buffer = this.audioBuffers.get(chosenKey);
     if (buffer) {
       try {
-        // Acoustic playback with humanization
         const source = this.ctx.createBufferSource();
         source.buffer = buffer;
-
-        // Micro pitch shift: +/- 25 cents
         source.playbackRate.value = 1.0 + (Math.random() - 0.5) * 0.03;
 
         const gainNode = this.ctx.createGain();
-        // Gain variance: +/- 5%
         gainNode.gain.value = 1.0 + (Math.random() - 0.5) * 0.10;
 
         source.connect(gainNode);
         gainNode.connect(this.sfxGain);
         source.start(0);
-      } catch (e) {
+      } catch {
         this.synthesizeMo();
       }
     } else {
-      // Synthetic Oscillator Fallback: Triangle wave swept 620Hz -> 380Hz + Bandpass
       this.synthesizeMo();
     }
   }
@@ -223,6 +280,40 @@ export class WebAudioEngine {
     }
   }
 
+  playChime(chimeKey = 'tier2_chime') {
+    this.ensureContextRunning();
+    if (!this.ctx || !this.sfxGain) return;
+
+    const buffer = this.audioBuffers.get(chimeKey);
+    if (buffer) {
+      try {
+        const source = this.ctx.createBufferSource();
+        source.buffer = buffer;
+        source.connect(this.sfxGain);
+        source.start(0);
+        return;
+      } catch {}
+    }
+
+    // Gentle Buddhist wind-chime synthesis fallback
+    try {
+      const now = this.ctx.currentTime;
+      const notes = chimeKey === 'tier1_chime' ? [528, 792] : [528, 660, 792, 1056];
+      notes.forEach((freq, i) => {
+        const osc = this.ctx.createOscillator();
+        const g = this.ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(freq, now + i * 0.08);
+        g.gain.setValueAtTime(0.28, now + i * 0.08);
+        g.gain.exponentialRampToValueAtTime(0.0005, now + i * 0.08 + 1.8);
+        osc.connect(g);
+        g.connect(this.sfxGain);
+        osc.start(now + i * 0.08);
+        osc.stop(now + i * 0.08 + 1.85);
+      });
+    } catch {}
+  }
+
   playBell(isGreatBell = true) {
     this.ensureContextRunning();
     if (!this.ctx) return;
@@ -239,11 +330,10 @@ export class WebAudioEngine {
         source.buffer = buffer;
         source.connect(this.bellGain);
         source.start(0);
-      } catch (e) {
+      } catch {
         this.synthesizeBell(isGreatBell ? 11.2 : 4.5);
       }
     } else {
-      // Additive Harmonic Bell Synthesis Fallback
       this.synthesizeBell(isGreatBell ? 11.2 : 4.5);
     }
   }
@@ -252,7 +342,6 @@ export class WebAudioEngine {
     if (!this.ctx || !this.bellGain) return;
     try {
       const now = this.ctx.currentTime;
-      // 4 Additive harmonic partials: 216Hz, 432Hz, 1296Hz, 2160Hz
       const partials = [
         { freq: 216, gain: 0.50, decay: duration },
         { freq: 432, gain: 0.35, decay: duration * 0.7 },
@@ -286,6 +375,24 @@ export class WebAudioEngine {
     }
   }
 
+  /**
+   * Immediately stop active TTS speech (used by Skip & Panic Mute in Live Manager)
+   */
+  stopTts() {
+    if (this.currentTtsSource) {
+      try {
+        this.currentTtsSource.stop(0);
+        this.currentTtsSource.disconnect();
+      } catch {}
+      this.currentTtsSource = null;
+    }
+    if (this.ctx && this.bgmGain) {
+      const now = this.ctx.currentTime;
+      this.bgmGain.gain.cancelScheduledValues(now);
+      this.bgmGain.gain.setTargetAtTime(this.normalBgmVolume, now, 0.2);
+    }
+  }
+
   async playTtsDataUri(dataUri, onEnded) {
     this.ensureContextRunning();
     if (!this.ctx || !dataUri) {
@@ -294,7 +401,8 @@ export class WebAudioEngine {
     }
 
     try {
-      // In-memory Base64 Data URI decoding with zero disk I/O
+      this.stopTts();
+
       const parts = dataUri.split(',');
       const base64Data = parts.length > 1 ? parts[1] : parts[0];
       const binaryString = atob(base64Data);
@@ -307,14 +415,17 @@ export class WebAudioEngine {
       const decodedBuffer = await this.ctx.decodeAudioData(bytes.buffer);
       const duration = decodedBuffer.duration;
 
-      // Parametric look-ahead ducking for the speech duration
       this.duckAudio(duration);
 
       const source = this.ctx.createBufferSource();
       source.buffer = decodedBuffer;
       source.connect(this.ttsGain);
+      this.currentTtsSource = source;
 
       source.onended = () => {
+        if (this.currentTtsSource === source) {
+          this.currentTtsSource = null;
+        }
         if (onEnded) onEnded();
       };
 
