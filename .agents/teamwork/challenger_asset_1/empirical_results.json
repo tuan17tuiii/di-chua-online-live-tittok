@@ -1,0 +1,2348 @@
+[
+  {
+    "id": "bg_main_hall",
+    "name": "Chánh Điện Đại Hùng Bảo Điện",
+    "group": "backgrounds",
+    "path": "assets/backgrounds/hall.jpg",
+    "format": "jpg",
+    "exists": true,
+    "fileSizeBytes": 528144,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "hasApp0": true,
+        "sofMarker": "SOF0",
+        "components": 3
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 1080,
+      "actualHeight": 1920,
+      "expectedWidth": 1080,
+      "expectedHeight": 1920,
+      "issues": []
+    },
+    "alphaCheck": null,
+    "anchoringCheck": null
+  },
+  {
+    "id": "bg_zen_garden",
+    "name": "Thiền Viện Trúc Lâm Cảnh Đêm",
+    "group": "backgrounds",
+    "path": "assets/backgrounds/zen_garden.jpg",
+    "format": "jpg",
+    "exists": true,
+    "fileSizeBytes": 538757,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "hasApp0": true,
+        "sofMarker": "SOF2",
+        "components": 3
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 1080,
+      "actualHeight": 1920,
+      "expectedWidth": 1080,
+      "expectedHeight": 1920,
+      "issues": []
+    },
+    "alphaCheck": null,
+    "anchoringCheck": null
+  },
+  {
+    "id": "altar_table_main",
+    "name": "Bàn Thờ Tam Cấp Sơn Son Thếp Vàng",
+    "group": "altar",
+    "path": "assets/altar/altar_table.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 80823,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 1080,
+      "actualHeight": 850,
+      "expectedWidth": 1080,
+      "expectedHeight": 850,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "131.60",
+      "zeroAlphaRatio": "0.4661",
+      "opaqueAlphaRatio": "0.4840",
+      "semiAlphaRatio": "0.0499",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": null
+  },
+  {
+    "id": "statue_shakyamuni",
+    "name": "Tượng Bổn Sư Thích Ca Mâu Ni",
+    "group": "altar",
+    "path": "assets/altar/statue_shakyamuni.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 111432,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 600,
+      "actualHeight": 800,
+      "expectedWidth": 600,
+      "expectedHeight": 800,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "66.34",
+      "zeroAlphaRatio": "0.6786",
+      "opaqueAlphaRatio": "0.2337",
+      "semiAlphaRatio": "0.0877",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": null
+  },
+  {
+    "id": "statue_amitabha",
+    "name": "Tượng Phật A Di Đà",
+    "group": "altar",
+    "path": "assets/altar/statue_amitabha.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 121114,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 600,
+      "actualHeight": 800,
+      "expectedWidth": 600,
+      "expectedHeight": 800,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "68.20",
+      "zeroAlphaRatio": "0.6580",
+      "opaqueAlphaRatio": "0.2296",
+      "semiAlphaRatio": "0.1124",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": null
+  },
+  {
+    "id": "statue_avalokiteshvara",
+    "name": "Tượng Bồ Tát Quán Thế Âm",
+    "group": "altar",
+    "path": "assets/altar/statue_avalokiteshvara.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 114383,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 550,
+      "actualHeight": 820,
+      "expectedWidth": 550,
+      "expectedHeight": 820,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "69.83",
+      "zeroAlphaRatio": "0.6480",
+      "opaqueAlphaRatio": "0.2470",
+      "semiAlphaRatio": "0.1050",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": null
+  },
+  {
+    "id": "altar_censer_bronze",
+    "name": "Lư Hương Đồng Chạm Trổ",
+    "group": "altar",
+    "path": "assets/altar/censer_bronze.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 30334,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 280,
+      "actualHeight": 240,
+      "expectedWidth": 280,
+      "expectedHeight": 240,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "50.87",
+      "zeroAlphaRatio": "0.6919",
+      "opaqueAlphaRatio": "0.0974",
+      "semiAlphaRatio": "0.2107",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": null
+  },
+  {
+    "id": "altar_candle_stand",
+    "name": "Chân Nến Sen Đồng",
+    "group": "altar",
+    "path": "assets/altar/candle_stand.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 17166,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 150,
+      "actualHeight": 350,
+      "expectedWidth": 150,
+      "expectedHeight": 350,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "39.83",
+      "zeroAlphaRatio": "0.6644",
+      "opaqueAlphaRatio": "0.1176",
+      "semiAlphaRatio": "0.2181",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": null
+  },
+  {
+    "id": "cushion_lotus_mat",
+    "name": "Bồ Đoàn Tọa Thiền Sen Vàng",
+    "group": "altar",
+    "path": "assets/altar/meditation_cushion.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 15866,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 160,
+      "actualHeight": 90,
+      "expectedWidth": 160,
+      "expectedHeight": 90,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "65.82",
+      "zeroAlphaRatio": "0.3938",
+      "opaqueAlphaRatio": "0.1242",
+      "semiAlphaRatio": "0.4819",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": null
+  },
+  {
+    "id": "char_man_static",
+    "name": "Cư sĩ Nam áo lam (Static)",
+    "group": "characters_static",
+    "path": "assets/characters/c_man.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 12499,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 212,
+      "actualHeight": 300,
+      "expectedWidth": 212,
+      "expectedHeight": 300,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "108.76",
+      "zeroAlphaRatio": "0.5539",
+      "opaqueAlphaRatio": "0.4058",
+      "semiAlphaRatio": "0.0403",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": {
+      "pass": true,
+      "frames": [
+        {
+          "frameIndex": 0,
+          "bbox": {
+            "minX": 13,
+            "maxX": 199,
+            "minY": 67,
+            "maxY": 299
+          },
+          "subjectWidth": 187,
+          "subjectHeight": 233,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 29,
+          "bottom5RowsAlphaCount": 297
+        }
+      ],
+      "issues": []
+    }
+  },
+  {
+    "id": "char_man_strip",
+    "name": "Cư sĩ Nam áo lam (Spritesheet)",
+    "group": "characters_strip",
+    "path": "assets/characters/anim_man.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 73396,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 1696,
+      "actualHeight": 300,
+      "expectedWidth": 1696,
+      "expectedHeight": 300,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "96.88",
+      "zeroAlphaRatio": "0.6000",
+      "opaqueAlphaRatio": "0.3587",
+      "semiAlphaRatio": "0.0413",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": {
+      "pass": true,
+      "frames": [
+        {
+          "frameIndex": 0,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 27,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 273,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 17,
+          "bottom5RowsAlphaCount": 306
+        },
+        {
+          "frameIndex": 1,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 30,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 270,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 16,
+          "bottom5RowsAlphaCount": 297
+        },
+        {
+          "frameIndex": 2,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 27,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 273,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 17,
+          "bottom5RowsAlphaCount": 306
+        },
+        {
+          "frameIndex": 3,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 30,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 270,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 16,
+          "bottom5RowsAlphaCount": 297
+        },
+        {
+          "frameIndex": 4,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 64,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 236,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 128,
+          "bottom5RowsAlphaCount": 636
+        },
+        {
+          "frameIndex": 5,
+          "bbox": {
+            "minX": 30,
+            "maxX": 182,
+            "minY": 89,
+            "maxY": 299
+          },
+          "subjectWidth": 153,
+          "subjectHeight": 211,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 153,
+          "bottom5RowsAlphaCount": 761
+        },
+        {
+          "frameIndex": 6,
+          "bbox": {
+            "minX": 17,
+            "maxX": 195,
+            "minY": 114,
+            "maxY": 299
+          },
+          "subjectWidth": 179,
+          "subjectHeight": 186,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 179,
+          "bottom5RowsAlphaCount": 885
+        },
+        {
+          "frameIndex": 7,
+          "bbox": {
+            "minX": 13,
+            "maxX": 199,
+            "minY": 67,
+            "maxY": 299
+          },
+          "subjectWidth": 187,
+          "subjectHeight": 233,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 29,
+          "bottom5RowsAlphaCount": 297
+        }
+      ],
+      "issues": []
+    }
+  },
+  {
+    "id": "char_woman_static",
+    "name": "Cư sĩ Nữ áo lam (Static)",
+    "group": "characters_static",
+    "path": "assets/characters/c_woman.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 13674,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 212,
+      "actualHeight": 300,
+      "expectedWidth": 212,
+      "expectedHeight": 300,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "109.33",
+      "zeroAlphaRatio": "0.5513",
+      "opaqueAlphaRatio": "0.4076",
+      "semiAlphaRatio": "0.0411",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": {
+      "pass": true,
+      "frames": [
+        {
+          "frameIndex": 0,
+          "bbox": {
+            "minX": 13,
+            "maxX": 199,
+            "minY": 60,
+            "maxY": 299
+          },
+          "subjectWidth": 187,
+          "subjectHeight": 240,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 29,
+          "bottom5RowsAlphaCount": 297
+        }
+      ],
+      "issues": []
+    }
+  },
+  {
+    "id": "char_woman_strip",
+    "name": "Cư sĩ Nữ áo lam (Spritesheet)",
+    "group": "characters_strip",
+    "path": "assets/characters/anim_woman.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 78064,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 1696,
+      "actualHeight": 300,
+      "expectedWidth": 1696,
+      "expectedHeight": 300,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "97.45",
+      "zeroAlphaRatio": "0.5974",
+      "opaqueAlphaRatio": "0.3605",
+      "semiAlphaRatio": "0.0421",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": {
+      "pass": true,
+      "frames": [
+        {
+          "frameIndex": 0,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 20,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 280,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 17,
+          "bottom5RowsAlphaCount": 306
+        },
+        {
+          "frameIndex": 1,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 23,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 277,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 16,
+          "bottom5RowsAlphaCount": 297
+        },
+        {
+          "frameIndex": 2,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 20,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 280,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 17,
+          "bottom5RowsAlphaCount": 306
+        },
+        {
+          "frameIndex": 3,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 23,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 277,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 16,
+          "bottom5RowsAlphaCount": 297
+        },
+        {
+          "frameIndex": 4,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 57,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 243,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 128,
+          "bottom5RowsAlphaCount": 636
+        },
+        {
+          "frameIndex": 5,
+          "bbox": {
+            "minX": 30,
+            "maxX": 182,
+            "minY": 82,
+            "maxY": 299
+          },
+          "subjectWidth": 153,
+          "subjectHeight": 218,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 153,
+          "bottom5RowsAlphaCount": 761
+        },
+        {
+          "frameIndex": 6,
+          "bbox": {
+            "minX": 17,
+            "maxX": 195,
+            "minY": 107,
+            "maxY": 299
+          },
+          "subjectWidth": 179,
+          "subjectHeight": 193,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 179,
+          "bottom5RowsAlphaCount": 885
+        },
+        {
+          "frameIndex": 7,
+          "bbox": {
+            "minX": 13,
+            "maxX": 199,
+            "minY": 60,
+            "maxY": 299
+          },
+          "subjectWidth": 187,
+          "subjectHeight": 240,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 29,
+          "bottom5RowsAlphaCount": 297
+        }
+      ],
+      "issues": []
+    }
+  },
+  {
+    "id": "char_granny_static",
+    "name": "Phật tử cao tuổi áo nâu sồng (Static)",
+    "group": "characters_static",
+    "path": "assets/characters/c_granny.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 13305,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 195,
+      "actualHeight": 300,
+      "expectedWidth": 195,
+      "expectedHeight": 300,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "108.63",
+      "zeroAlphaRatio": "0.5537",
+      "opaqueAlphaRatio": "0.4044",
+      "semiAlphaRatio": "0.0419",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": {
+      "pass": true,
+      "frames": [
+        {
+          "frameIndex": 0,
+          "bbox": {
+            "minX": 11,
+            "maxX": 183,
+            "minY": 70,
+            "maxY": 299
+          },
+          "subjectWidth": 173,
+          "subjectHeight": 230,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 27,
+          "bottom5RowsAlphaCount": 277
+        }
+      ],
+      "issues": []
+    }
+  },
+  {
+    "id": "char_granny_strip",
+    "name": "Phật tử cao tuổi áo nâu sồng (Spritesheet)",
+    "group": "characters_strip",
+    "path": "assets/characters/anim_granny.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 66904,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 1560,
+      "actualHeight": 300,
+      "expectedWidth": 1560,
+      "expectedHeight": 300,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "96.66",
+      "zeroAlphaRatio": "0.5999",
+      "opaqueAlphaRatio": "0.3567",
+      "semiAlphaRatio": "0.0434",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": {
+      "pass": true,
+      "frames": [
+        {
+          "frameIndex": 0,
+          "bbox": {
+            "minX": 35,
+            "maxX": 159,
+            "minY": 31,
+            "maxY": 299
+          },
+          "subjectWidth": 125,
+          "subjectHeight": 269,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 16,
+          "bottom5RowsAlphaCount": 284
+        },
+        {
+          "frameIndex": 1,
+          "bbox": {
+            "minX": 35,
+            "maxX": 159,
+            "minY": 33,
+            "maxY": 299
+          },
+          "subjectWidth": 125,
+          "subjectHeight": 267,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 17,
+          "bottom5RowsAlphaCount": 275
+        },
+        {
+          "frameIndex": 2,
+          "bbox": {
+            "minX": 35,
+            "maxX": 159,
+            "minY": 31,
+            "maxY": 299
+          },
+          "subjectWidth": 125,
+          "subjectHeight": 269,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 16,
+          "bottom5RowsAlphaCount": 284
+        },
+        {
+          "frameIndex": 3,
+          "bbox": {
+            "minX": 35,
+            "maxX": 159,
+            "minY": 33,
+            "maxY": 299
+          },
+          "subjectWidth": 125,
+          "subjectHeight": 267,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 17,
+          "bottom5RowsAlphaCount": 275
+        },
+        {
+          "frameIndex": 4,
+          "bbox": {
+            "minX": 35,
+            "maxX": 159,
+            "minY": 68,
+            "maxY": 299
+          },
+          "subjectWidth": 125,
+          "subjectHeight": 232,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 117,
+          "bottom5RowsAlphaCount": 585
+        },
+        {
+          "frameIndex": 5,
+          "bbox": {
+            "minX": 27,
+            "maxX": 167,
+            "minY": 93,
+            "maxY": 299
+          },
+          "subjectWidth": 141,
+          "subjectHeight": 207,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 141,
+          "bottom5RowsAlphaCount": 701
+        },
+        {
+          "frameIndex": 6,
+          "bbox": {
+            "minX": 15,
+            "maxX": 179,
+            "minY": 117,
+            "maxY": 299
+          },
+          "subjectWidth": 165,
+          "subjectHeight": 183,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 165,
+          "bottom5RowsAlphaCount": 813
+        },
+        {
+          "frameIndex": 7,
+          "bbox": {
+            "minX": 11,
+            "maxX": 183,
+            "minY": 70,
+            "maxY": 299
+          },
+          "subjectWidth": 173,
+          "subjectHeight": 230,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 27,
+          "bottom5RowsAlphaCount": 277
+        }
+      ],
+      "issues": []
+    }
+  },
+  {
+    "id": "char_child_static",
+    "name": "Chú tiểu ngây thơ (Static)",
+    "group": "characters_static",
+    "path": "assets/characters/c_child.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 12302,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 180,
+      "actualHeight": 260,
+      "expectedWidth": 180,
+      "expectedHeight": 260,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "103.36",
+      "zeroAlphaRatio": "0.5707",
+      "opaqueAlphaRatio": "0.3812",
+      "semiAlphaRatio": "0.0481",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": {
+      "pass": true,
+      "frames": [
+        {
+          "frameIndex": 0,
+          "bbox": {
+            "minX": 11,
+            "maxX": 169,
+            "minY": 61,
+            "maxY": 259
+          },
+          "subjectWidth": 159,
+          "subjectHeight": 199,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 27,
+          "bottom5RowsAlphaCount": 278
+        }
+      ],
+      "issues": []
+    }
+  },
+  {
+    "id": "char_child_strip",
+    "name": "Chú tiểu ngây thơ (Spritesheet)",
+    "group": "characters_strip",
+    "path": "assets/characters/anim_child.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 68018,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 1440,
+      "actualHeight": 260,
+      "expectedWidth": 1440,
+      "expectedHeight": 260,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "91.99",
+      "zeroAlphaRatio": "0.6156",
+      "opaqueAlphaRatio": "0.3364",
+      "semiAlphaRatio": "0.0481",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": {
+      "pass": true,
+      "frames": [
+        {
+          "frameIndex": 0,
+          "bbox": {
+            "minX": 32,
+            "maxX": 147,
+            "minY": 28,
+            "maxY": 259
+          },
+          "subjectWidth": 116,
+          "subjectHeight": 232,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 17,
+          "bottom5RowsAlphaCount": 270
+        },
+        {
+          "frameIndex": 1,
+          "bbox": {
+            "minX": 32,
+            "maxX": 147,
+            "minY": 31,
+            "maxY": 259
+          },
+          "subjectWidth": 116,
+          "subjectHeight": 229,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 16,
+          "bottom5RowsAlphaCount": 261
+        },
+        {
+          "frameIndex": 2,
+          "bbox": {
+            "minX": 32,
+            "maxX": 147,
+            "minY": 28,
+            "maxY": 259
+          },
+          "subjectWidth": 116,
+          "subjectHeight": 232,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 17,
+          "bottom5RowsAlphaCount": 270
+        },
+        {
+          "frameIndex": 3,
+          "bbox": {
+            "minX": 32,
+            "maxX": 147,
+            "minY": 31,
+            "maxY": 259
+          },
+          "subjectWidth": 116,
+          "subjectHeight": 229,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 16,
+          "bottom5RowsAlphaCount": 261
+        },
+        {
+          "frameIndex": 4,
+          "bbox": {
+            "minX": 32,
+            "maxX": 147,
+            "minY": 59,
+            "maxY": 259
+          },
+          "subjectWidth": 116,
+          "subjectHeight": 201,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 109,
+          "bottom5RowsAlphaCount": 542
+        },
+        {
+          "frameIndex": 5,
+          "bbox": {
+            "minX": 25,
+            "maxX": 154,
+            "minY": 80,
+            "maxY": 259
+          },
+          "subjectWidth": 130,
+          "subjectHeight": 180,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 130,
+          "bottom5RowsAlphaCount": 647
+        },
+        {
+          "frameIndex": 6,
+          "bbox": {
+            "minX": 14,
+            "maxX": 165,
+            "minY": 100,
+            "maxY": 259
+          },
+          "subjectWidth": 152,
+          "subjectHeight": 160,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 152,
+          "bottom5RowsAlphaCount": 750
+        },
+        {
+          "frameIndex": 7,
+          "bbox": {
+            "minX": 11,
+            "maxX": 169,
+            "minY": 61,
+            "maxY": 259
+          },
+          "subjectWidth": 159,
+          "subjectHeight": 199,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 27,
+          "bottom5RowsAlphaCount": 278
+        }
+      ],
+      "issues": []
+    }
+  },
+  {
+    "id": "char_monk_static",
+    "name": "Sư thầy thiền môn (Static)",
+    "group": "characters_static",
+    "path": "assets/characters/c_monk.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 14618,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 212,
+      "actualHeight": 300,
+      "expectedWidth": 212,
+      "expectedHeight": 300,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "108.20",
+      "zeroAlphaRatio": "0.5552",
+      "opaqueAlphaRatio": "0.4030",
+      "semiAlphaRatio": "0.0417",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": {
+      "pass": true,
+      "frames": [
+        {
+          "frameIndex": 0,
+          "bbox": {
+            "minX": 13,
+            "maxX": 199,
+            "minY": 68,
+            "maxY": 299
+          },
+          "subjectWidth": 187,
+          "subjectHeight": 232,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 29,
+          "bottom5RowsAlphaCount": 297
+        }
+      ],
+      "issues": []
+    }
+  },
+  {
+    "id": "char_monk_strip",
+    "name": "Sư thầy thiền môn (Spritesheet)",
+    "group": "characters_strip",
+    "path": "assets/characters/anim_monk.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 78707,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 1696,
+      "actualHeight": 300,
+      "expectedWidth": 1696,
+      "expectedHeight": 300,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "96.31",
+      "zeroAlphaRatio": "0.6012",
+      "opaqueAlphaRatio": "0.3559",
+      "semiAlphaRatio": "0.0429",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": {
+      "pass": true,
+      "frames": [
+        {
+          "frameIndex": 0,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 29,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 271,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 17,
+          "bottom5RowsAlphaCount": 306
+        },
+        {
+          "frameIndex": 1,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 31,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 269,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 16,
+          "bottom5RowsAlphaCount": 297
+        },
+        {
+          "frameIndex": 2,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 29,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 271,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 17,
+          "bottom5RowsAlphaCount": 306
+        },
+        {
+          "frameIndex": 3,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 31,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 269,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 16,
+          "bottom5RowsAlphaCount": 297
+        },
+        {
+          "frameIndex": 4,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 66,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 234,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 128,
+          "bottom5RowsAlphaCount": 636
+        },
+        {
+          "frameIndex": 5,
+          "bbox": {
+            "minX": 30,
+            "maxX": 182,
+            "minY": 91,
+            "maxY": 299
+          },
+          "subjectWidth": 153,
+          "subjectHeight": 209,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 153,
+          "bottom5RowsAlphaCount": 761
+        },
+        {
+          "frameIndex": 6,
+          "bbox": {
+            "minX": 17,
+            "maxX": 195,
+            "minY": 115,
+            "maxY": 299
+          },
+          "subjectWidth": 179,
+          "subjectHeight": 185,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 179,
+          "bottom5RowsAlphaCount": 885
+        },
+        {
+          "frameIndex": 7,
+          "bbox": {
+            "minX": 13,
+            "maxX": 199,
+            "minY": 68,
+            "maxY": 299
+          },
+          "subjectWidth": 187,
+          "subjectHeight": 232,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 29,
+          "bottom5RowsAlphaCount": 297
+        }
+      ],
+      "issues": []
+    }
+  },
+  {
+    "id": "char_nun_static",
+    "name": "Sư cô ni chúng (Static)",
+    "group": "characters_static",
+    "path": "assets/characters/c_nun.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 12655,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 212,
+      "actualHeight": 300,
+      "expectedWidth": 212,
+      "expectedHeight": 300,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "109.06",
+      "zeroAlphaRatio": "0.5526",
+      "opaqueAlphaRatio": "0.4067",
+      "semiAlphaRatio": "0.0407",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": {
+      "pass": true,
+      "frames": [
+        {
+          "frameIndex": 0,
+          "bbox": {
+            "minX": 13,
+            "maxX": 199,
+            "minY": 67,
+            "maxY": 299
+          },
+          "subjectWidth": 187,
+          "subjectHeight": 233,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 29,
+          "bottom5RowsAlphaCount": 297
+        }
+      ],
+      "issues": []
+    }
+  },
+  {
+    "id": "char_nun_strip",
+    "name": "Sư cô ni chúng (Spritesheet)",
+    "group": "characters_strip",
+    "path": "assets/characters/anim_nun.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 73109,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 1696,
+      "actualHeight": 300,
+      "expectedWidth": 1696,
+      "expectedHeight": 300,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "97.18",
+      "zeroAlphaRatio": "0.5986",
+      "opaqueAlphaRatio": "0.3596",
+      "semiAlphaRatio": "0.0418",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": {
+      "pass": true,
+      "frames": [
+        {
+          "frameIndex": 0,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 27,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 273,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 17,
+          "bottom5RowsAlphaCount": 306
+        },
+        {
+          "frameIndex": 1,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 30,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 270,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 16,
+          "bottom5RowsAlphaCount": 297
+        },
+        {
+          "frameIndex": 2,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 27,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 273,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 17,
+          "bottom5RowsAlphaCount": 306
+        },
+        {
+          "frameIndex": 3,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 30,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 270,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 16,
+          "bottom5RowsAlphaCount": 297
+        },
+        {
+          "frameIndex": 4,
+          "bbox": {
+            "minX": 38,
+            "maxX": 173,
+            "minY": 64,
+            "maxY": 299
+          },
+          "subjectWidth": 136,
+          "subjectHeight": 236,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 128,
+          "bottom5RowsAlphaCount": 636
+        },
+        {
+          "frameIndex": 5,
+          "bbox": {
+            "minX": 30,
+            "maxX": 182,
+            "minY": 89,
+            "maxY": 299
+          },
+          "subjectWidth": 153,
+          "subjectHeight": 211,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 153,
+          "bottom5RowsAlphaCount": 761
+        },
+        {
+          "frameIndex": 6,
+          "bbox": {
+            "minX": 17,
+            "maxX": 195,
+            "minY": 114,
+            "maxY": 299
+          },
+          "subjectWidth": 179,
+          "subjectHeight": 186,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 179,
+          "bottom5RowsAlphaCount": 885
+        },
+        {
+          "frameIndex": 7,
+          "bbox": {
+            "minX": 13,
+            "maxX": 199,
+            "minY": 67,
+            "maxY": 299
+          },
+          "subjectWidth": 187,
+          "subjectHeight": 233,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 29,
+          "bottom5RowsAlphaCount": 297
+        }
+      ],
+      "issues": []
+    }
+  },
+  {
+    "id": "char_master_static",
+    "name": "Cao tăng viện chủ (Static)",
+    "group": "characters_static",
+    "path": "assets/characters/c_master.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 19221,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 230,
+      "actualHeight": 320,
+      "expectedWidth": 230,
+      "expectedHeight": 320,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "108.41",
+      "zeroAlphaRatio": "0.5545",
+      "opaqueAlphaRatio": "0.4047",
+      "semiAlphaRatio": "0.0409",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": {
+      "pass": true,
+      "frames": [
+        {
+          "frameIndex": 0,
+          "bbox": {
+            "minX": 14,
+            "maxX": 216,
+            "minY": 72,
+            "maxY": 319
+          },
+          "subjectWidth": 203,
+          "subjectHeight": 248,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 30,
+          "bottom5RowsAlphaCount": 311
+        }
+      ],
+      "issues": []
+    }
+  },
+  {
+    "id": "char_master_strip",
+    "name": "Cao tăng viện chủ (Spritesheet)",
+    "group": "characters_strip",
+    "path": "assets/characters/anim_master.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 106366,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 1840,
+      "actualHeight": 320,
+      "expectedWidth": 1840,
+      "expectedHeight": 320,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "96.45",
+      "zeroAlphaRatio": "0.6017",
+      "opaqueAlphaRatio": "0.3576",
+      "semiAlphaRatio": "0.0406",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": {
+      "pass": true,
+      "frames": [
+        {
+          "frameIndex": 0,
+          "bbox": {
+            "minX": 41,
+            "maxX": 188,
+            "minY": 30,
+            "maxY": 319
+          },
+          "subjectWidth": 148,
+          "subjectHeight": 290,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 17,
+          "bottom5RowsAlphaCount": 326
+        },
+        {
+          "frameIndex": 1,
+          "bbox": {
+            "minX": 41,
+            "maxX": 188,
+            "minY": 33,
+            "maxY": 319
+          },
+          "subjectWidth": 148,
+          "subjectHeight": 287,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 16,
+          "bottom5RowsAlphaCount": 317
+        },
+        {
+          "frameIndex": 2,
+          "bbox": {
+            "minX": 41,
+            "maxX": 188,
+            "minY": 30,
+            "maxY": 319
+          },
+          "subjectWidth": 148,
+          "subjectHeight": 290,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 17,
+          "bottom5RowsAlphaCount": 326
+        },
+        {
+          "frameIndex": 3,
+          "bbox": {
+            "minX": 41,
+            "maxX": 188,
+            "minY": 33,
+            "maxY": 319
+          },
+          "subjectWidth": 148,
+          "subjectHeight": 287,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 16,
+          "bottom5RowsAlphaCount": 317
+        },
+        {
+          "frameIndex": 4,
+          "bbox": {
+            "minX": 41,
+            "maxX": 188,
+            "minY": 70,
+            "maxY": 319
+          },
+          "subjectWidth": 148,
+          "subjectHeight": 250,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 139,
+          "bottom5RowsAlphaCount": 692
+        },
+        {
+          "frameIndex": 5,
+          "bbox": {
+            "minX": 32,
+            "maxX": 197,
+            "minY": 96,
+            "maxY": 319
+          },
+          "subjectWidth": 166,
+          "subjectHeight": 224,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 166,
+          "bottom5RowsAlphaCount": 827
+        },
+        {
+          "frameIndex": 6,
+          "bbox": {
+            "minX": 18,
+            "maxX": 211,
+            "minY": 122,
+            "maxY": 319
+          },
+          "subjectWidth": 194,
+          "subjectHeight": 198,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 194,
+          "bottom5RowsAlphaCount": 960
+        },
+        {
+          "frameIndex": 7,
+          "bbox": {
+            "minX": 14,
+            "maxX": 216,
+            "minY": 72,
+            "maxY": 319
+          },
+          "subjectWidth": 203,
+          "subjectHeight": 248,
+          "bottomMargin": 0,
+          "bottomRowAlphaCount": 30,
+          "bottom5RowsAlphaCount": 311
+        }
+      ],
+      "issues": []
+    }
+  },
+  {
+    "id": "fx_halo_gold",
+    "name": "Hào Quang Hoàng Kim Phật Chiếu",
+    "group": "visual_fx",
+    "path": "assets/fx/fx_halo.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 194865,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IDAT",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 512,
+      "actualHeight": 512,
+      "expectedWidth": 512,
+      "expectedHeight": 512,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 214,
+      "avgAlpha": "28.59",
+      "zeroAlphaRatio": "0.4786",
+      "opaqueAlphaRatio": "0.0000",
+      "semiAlphaRatio": "0.5214",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": null
+  },
+  {
+    "id": "fx_floating_lotus",
+    "name": "Hoa Sen Hồng Bay Tỏa Sáng",
+    "group": "visual_fx",
+    "path": "assets/fx/fx_lotus.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 12647,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 128,
+      "actualHeight": 128,
+      "expectedWidth": 128,
+      "expectedHeight": 128,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "41.12",
+      "zeroAlphaRatio": "0.6039",
+      "opaqueAlphaRatio": "0.0272",
+      "semiAlphaRatio": "0.3689",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": null
+  },
+  {
+    "id": "fx_gold_petal",
+    "name": "Cánh Hoa Sen Vàng Rơi",
+    "group": "visual_fx",
+    "path": "assets/fx/fx_petal.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 2936,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 64,
+      "actualHeight": 64,
+      "expectedWidth": 64,
+      "expectedHeight": 64,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "52.90",
+      "zeroAlphaRatio": "0.7075",
+      "opaqueAlphaRatio": "0.0115",
+      "semiAlphaRatio": "0.2810",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": null
+  },
+  {
+    "id": "fx_gift_bell_flash",
+    "name": "Tỏa Sáng Chuông Vàng Cúng Dường",
+    "group": "visual_fx",
+    "path": "assets/fx/fx_bell.png",
+    "format": "png",
+    "exists": true,
+    "fileSizeBytes": 50490,
+    "binaryCheck": {
+      "pass": true,
+      "issues": [],
+      "details": {
+        "chunks": [
+          "IHDR",
+          "IDAT",
+          "IEND"
+        ],
+        "colorType": 6,
+        "bitDepth": 8
+      }
+    },
+    "dimensionCheck": {
+      "pass": true,
+      "actualWidth": 256,
+      "actualHeight": 256,
+      "expectedWidth": 256,
+      "expectedHeight": 256,
+      "issues": []
+    },
+    "alphaCheck": {
+      "pass": true,
+      "minAlpha": 0,
+      "maxAlpha": 255,
+      "avgAlpha": "31.86",
+      "zeroAlphaRatio": "0.6062",
+      "opaqueAlphaRatio": "0.0043",
+      "semiAlphaRatio": "0.3895",
+      "corners": {
+        "cornerTopLeft": 0,
+        "cornerTopRight": 0,
+        "cornerBottomLeft": 0,
+        "cornerBottomRight": 0
+      },
+      "borderOpaqueCounts": {
+        "topEdgeOpaque": 0,
+        "bottomEdgeOpaque": 0,
+        "leftEdgeOpaque": 0,
+        "rightEdgeOpaque": 0
+      },
+      "issues": []
+    },
+    "anchoringCheck": null
+  }
+]

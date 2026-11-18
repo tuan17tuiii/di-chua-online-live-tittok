@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=1080, height=1920, initial-scale=1.0, user-scalable=no">
+  <title>Chánh Điện Tịnh Tâm — OBS Overlay</title>
+  <link rel="stylesheet" href="css/overlay.css">
+</head>
+<body>
+  <div id="overlay-container">
+    <!-- Layer 1: HTML5 Canvas 2D Graphics Engine (z-index: 10) -->
+    <canvas id="templeCanvas" width="1080" height="1920"></canvas>
+
+    <!-- Layer 2: DOM HUD & High-Clarity Typography Layer (z-index: 60-100) -->
+    <div id="hud-layer">
+      <!-- Hoành phi sơn son thếp vàng (#plaque) -->
+      <div id="plaque" class="hud-plaque">
+        <div class="plaque-frame">
+          <h1 id="plaque-title">CHÁNH ĐIỆN TỊNH TÂM</h1>
+          <p id="plaque-subtitle">Nam Mô A Di Đà Phật</p>
+        </div>
+      </div>
+
+      <!-- Bảng Vàng Công Đức (#merit) -->
+      <div id="merit" class="hud-merit">
+        <div class="merit-header">BẢNG VÀNG CÔNG ĐỨC</div>
+        <div id="merit-list" class="merit-list"></div>
+      </div>
+
+      <!-- Bộ đếm Phật tử tọa thiền (#pills) -->
+      <div id="pills" class="hud-pills">
+        <span class="pill-item"><span class="pill-icon">🪷</span> <span id="viewer-count">0</span> / <span id="capacity-count">36</span></span>
+        <span class="pill-item"><span class="pill-icon">❤️</span> <span id="like-count">0</span></span>
+      </div>
+
+      <!-- Băng rôn câu kinh tụng niệm (#chant-banner) -->
+      <div id="chant-banner" class="hud-chant-banner">
+        <p id="chant-text"></p>
+      </div>
+
+      <!-- Băng rôn xướng danh đại lễ cúng dường lớn Tier 3 (#gift-banner) -->
+      <div id="gift-banner" class="hud-gift-banner">
+        <div class="gift-banner-inner">
+          <div class="gift-banner-title">ĐẠI LỄ CÚNG DƯỜNG</div>
+          <div id="gift-banner-donor" class="gift-banner-donor"></div>
+          <div id="gift-banner-gift" class="gift-banner-gift"></div>
+          <div id="gift-banner-prayer" class="gift-banner-prayer"></div>
+        </div>
+      </div>
+
+      <!-- Container bong bóng thoại bình luận (#speech-bubbles) -->
+      <div id="speech-bubbles" class="hud-speech-container"></div>
+
+      <!-- Container thẻ tên người xem (#nametags) -->
+      <div id="nametags" class="hud-nametag-container"></div>
+    </div>
+  </div>
+
+  <script type="module" src="js/OverlayApp.js"></script>
+</body>
+</html>

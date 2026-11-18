@@ -1,0 +1,429 @@
+[
+  {
+    "id": "char_man",
+    "name": "Cư sĩ Nam áo lam",
+    "declared": "212x300",
+    "actualStatic": "212x300",
+    "actualStrip": "1696x300",
+    "actualFwFromStrip": 212,
+    "dimensionMatch": true,
+    "maxBleedPx": 0,
+    "outOfBoundsPx": 0,
+    "frameDrift": [
+      {
+        "frame": 0,
+        "engineSlice": "[0, 212]",
+        "actualFrame": "[0, 212]",
+        "driftPx": 0
+      },
+      {
+        "frame": 1,
+        "engineSlice": "[212, 424]",
+        "actualFrame": "[212, 424]",
+        "driftPx": 0
+      },
+      {
+        "frame": 2,
+        "engineSlice": "[424, 636]",
+        "actualFrame": "[424, 636]",
+        "driftPx": 0
+      },
+      {
+        "frame": 3,
+        "engineSlice": "[636, 848]",
+        "actualFrame": "[636, 848]",
+        "driftPx": 0
+      },
+      {
+        "frame": 4,
+        "engineSlice": "[848, 1060]",
+        "actualFrame": "[848, 1060]",
+        "driftPx": 0
+      },
+      {
+        "frame": 5,
+        "engineSlice": "[1060, 1272]",
+        "actualFrame": "[1060, 1272]",
+        "driftPx": 0
+      },
+      {
+        "frame": 6,
+        "engineSlice": "[1272, 1484]",
+        "actualFrame": "[1272, 1484]",
+        "driftPx": 0
+      },
+      {
+        "frame": 7,
+        "engineSlice": "[1484, 1696]",
+        "actualFrame": "[1484, 1696]",
+        "driftPx": 0
+      }
+    ]
+  },
+  {
+    "id": "char_woman",
+    "name": "Cư sĩ Nữ áo lam",
+    "declared": "212x300",
+    "actualStatic": "212x300",
+    "actualStrip": "1696x300",
+    "actualFwFromStrip": 212,
+    "dimensionMatch": true,
+    "maxBleedPx": 0,
+    "outOfBoundsPx": 0,
+    "frameDrift": [
+      {
+        "frame": 0,
+        "engineSlice": "[0, 212]",
+        "actualFrame": "[0, 212]",
+        "driftPx": 0
+      },
+      {
+        "frame": 1,
+        "engineSlice": "[212, 424]",
+        "actualFrame": "[212, 424]",
+        "driftPx": 0
+      },
+      {
+        "frame": 2,
+        "engineSlice": "[424, 636]",
+        "actualFrame": "[424, 636]",
+        "driftPx": 0
+      },
+      {
+        "frame": 3,
+        "engineSlice": "[636, 848]",
+        "actualFrame": "[636, 848]",
+        "driftPx": 0
+      },
+      {
+        "frame": 4,
+        "engineSlice": "[848, 1060]",
+        "actualFrame": "[848, 1060]",
+        "driftPx": 0
+      },
+      {
+        "frame": 5,
+        "engineSlice": "[1060, 1272]",
+        "actualFrame": "[1060, 1272]",
+        "driftPx": 0
+      },
+      {
+        "frame": 6,
+        "engineSlice": "[1272, 1484]",
+        "actualFrame": "[1272, 1484]",
+        "driftPx": 0
+      },
+      {
+        "frame": 7,
+        "engineSlice": "[1484, 1696]",
+        "actualFrame": "[1484, 1696]",
+        "driftPx": 0
+      }
+    ]
+  },
+  {
+    "id": "char_granny",
+    "name": "Phật tử cao tuổi áo nâu sồng",
+    "declared": "195x300",
+    "actualStatic": "195x300",
+    "actualStrip": "1560x300",
+    "actualFwFromStrip": 195,
+    "dimensionMatch": true,
+    "maxBleedPx": 0,
+    "outOfBoundsPx": 0,
+    "frameDrift": [
+      {
+        "frame": 0,
+        "engineSlice": "[0, 195]",
+        "actualFrame": "[0, 195]",
+        "driftPx": 0
+      },
+      {
+        "frame": 1,
+        "engineSlice": "[195, 390]",
+        "actualFrame": "[195, 390]",
+        "driftPx": 0
+      },
+      {
+        "frame": 2,
+        "engineSlice": "[390, 585]",
+        "actualFrame": "[390, 585]",
+        "driftPx": 0
+      },
+      {
+        "frame": 3,
+        "engineSlice": "[585, 780]",
+        "actualFrame": "[585, 780]",
+        "driftPx": 0
+      },
+      {
+        "frame": 4,
+        "engineSlice": "[780, 975]",
+        "actualFrame": "[780, 975]",
+        "driftPx": 0
+      },
+      {
+        "frame": 5,
+        "engineSlice": "[975, 1170]",
+        "actualFrame": "[975, 1170]",
+        "driftPx": 0
+      },
+      {
+        "frame": 6,
+        "engineSlice": "[1170, 1365]",
+        "actualFrame": "[1170, 1365]",
+        "driftPx": 0
+      },
+      {
+        "frame": 7,
+        "engineSlice": "[1365, 1560]",
+        "actualFrame": "[1365, 1560]",
+        "driftPx": 0
+      }
+    ]
+  },
+  {
+    "id": "char_child",
+    "name": "Chú tiểu ngây thơ",
+    "declared": "180x260",
+    "actualStatic": "180x260",
+    "actualStrip": "1440x260",
+    "actualFwFromStrip": 180,
+    "dimensionMatch": true,
+    "maxBleedPx": 0,
+    "outOfBoundsPx": 0,
+    "frameDrift": [
+      {
+        "frame": 0,
+        "engineSlice": "[0, 180]",
+        "actualFrame": "[0, 180]",
+        "driftPx": 0
+      },
+      {
+        "frame": 1,
+        "engineSlice": "[180, 360]",
+        "actualFrame": "[180, 360]",
+        "driftPx": 0
+      },
+      {
+        "frame": 2,
+        "engineSlice": "[360, 540]",
+        "actualFrame": "[360, 540]",
+        "driftPx": 0
+      },
+      {
+        "frame": 3,
+        "engineSlice": "[540, 720]",
+        "actualFrame": "[540, 720]",
+        "driftPx": 0
+      },
+      {
+        "frame": 4,
+        "engineSlice": "[720, 900]",
+        "actualFrame": "[720, 900]",
+        "driftPx": 0
+      },
+      {
+        "frame": 5,
+        "engineSlice": "[900, 1080]",
+        "actualFrame": "[900, 1080]",
+        "driftPx": 0
+      },
+      {
+        "frame": 6,
+        "engineSlice": "[1080, 1260]",
+        "actualFrame": "[1080, 1260]",
+        "driftPx": 0
+      },
+      {
+        "frame": 7,
+        "engineSlice": "[1260, 1440]",
+        "actualFrame": "[1260, 1440]",
+        "driftPx": 0
+      }
+    ]
+  },
+  {
+    "id": "char_monk",
+    "name": "Sư thầy thiền môn",
+    "declared": "212x300",
+    "actualStatic": "212x300",
+    "actualStrip": "1696x300",
+    "actualFwFromStrip": 212,
+    "dimensionMatch": true,
+    "maxBleedPx": 0,
+    "outOfBoundsPx": 0,
+    "frameDrift": [
+      {
+        "frame": 0,
+        "engineSlice": "[0, 212]",
+        "actualFrame": "[0, 212]",
+        "driftPx": 0
+      },
+      {
+        "frame": 1,
+        "engineSlice": "[212, 424]",
+        "actualFrame": "[212, 424]",
+        "driftPx": 0
+      },
+      {
+        "frame": 2,
+        "engineSlice": "[424, 636]",
+        "actualFrame": "[424, 636]",
+        "driftPx": 0
+      },
+      {
+        "frame": 3,
+        "engineSlice": "[636, 848]",
+        "actualFrame": "[636, 848]",
+        "driftPx": 0
+      },
+      {
+        "frame": 4,
+        "engineSlice": "[848, 1060]",
+        "actualFrame": "[848, 1060]",
+        "driftPx": 0
+      },
+      {
+        "frame": 5,
+        "engineSlice": "[1060, 1272]",
+        "actualFrame": "[1060, 1272]",
+        "driftPx": 0
+      },
+      {
+        "frame": 6,
+        "engineSlice": "[1272, 1484]",
+        "actualFrame": "[1272, 1484]",
+        "driftPx": 0
+      },
+      {
+        "frame": 7,
+        "engineSlice": "[1484, 1696]",
+        "actualFrame": "[1484, 1696]",
+        "driftPx": 0
+      }
+    ]
+  },
+  {
+    "id": "char_nun",
+    "name": "Sư cô ni chúng",
+    "declared": "212x300",
+    "actualStatic": "212x300",
+    "actualStrip": "1696x300",
+    "actualFwFromStrip": 212,
+    "dimensionMatch": true,
+    "maxBleedPx": 0,
+    "outOfBoundsPx": 0,
+    "frameDrift": [
+      {
+        "frame": 0,
+        "engineSlice": "[0, 212]",
+        "actualFrame": "[0, 212]",
+        "driftPx": 0
+      },
+      {
+        "frame": 1,
+        "engineSlice": "[212, 424]",
+        "actualFrame": "[212, 424]",
+        "driftPx": 0
+      },
+      {
+        "frame": 2,
+        "engineSlice": "[424, 636]",
+        "actualFrame": "[424, 636]",
+        "driftPx": 0
+      },
+      {
+        "frame": 3,
+        "engineSlice": "[636, 848]",
+        "actualFrame": "[636, 848]",
+        "driftPx": 0
+      },
+      {
+        "frame": 4,
+        "engineSlice": "[848, 1060]",
+        "actualFrame": "[848, 1060]",
+        "driftPx": 0
+      },
+      {
+        "frame": 5,
+        "engineSlice": "[1060, 1272]",
+        "actualFrame": "[1060, 1272]",
+        "driftPx": 0
+      },
+      {
+        "frame": 6,
+        "engineSlice": "[1272, 1484]",
+        "actualFrame": "[1272, 1484]",
+        "driftPx": 0
+      },
+      {
+        "frame": 7,
+        "engineSlice": "[1484, 1696]",
+        "actualFrame": "[1484, 1696]",
+        "driftPx": 0
+      }
+    ]
+  },
+  {
+    "id": "char_master",
+    "name": "Cao tăng viện chủ",
+    "declared": "230x320",
+    "actualStatic": "230x320",
+    "actualStrip": "1840x320",
+    "actualFwFromStrip": 230,
+    "dimensionMatch": true,
+    "maxBleedPx": 0,
+    "outOfBoundsPx": 0,
+    "frameDrift": [
+      {
+        "frame": 0,
+        "engineSlice": "[0, 230]",
+        "actualFrame": "[0, 230]",
+        "driftPx": 0
+      },
+      {
+        "frame": 1,
+        "engineSlice": "[230, 460]",
+        "actualFrame": "[230, 460]",
+        "driftPx": 0
+      },
+      {
+        "frame": 2,
+        "engineSlice": "[460, 690]",
+        "actualFrame": "[460, 690]",
+        "driftPx": 0
+      },
+      {
+        "frame": 3,
+        "engineSlice": "[690, 920]",
+        "actualFrame": "[690, 920]",
+        "driftPx": 0
+      },
+      {
+        "frame": 4,
+        "engineSlice": "[920, 1150]",
+        "actualFrame": "[920, 1150]",
+        "driftPx": 0
+      },
+      {
+        "frame": 5,
+        "engineSlice": "[1150, 1380]",
+        "actualFrame": "[1150, 1380]",
+        "driftPx": 0
+      },
+      {
+        "frame": 6,
+        "engineSlice": "[1380, 1610]",
+        "actualFrame": "[1380, 1610]",
+        "driftPx": 0
+      },
+      {
+        "frame": 7,
+        "engineSlice": "[1610, 1840]",
+        "actualFrame": "[1610, 1840]",
+        "driftPx": 0
+      }
+    ]
+  }
+]

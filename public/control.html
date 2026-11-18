@@ -1,0 +1,729 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Chánh Điện Tịnh Tâm · Bảng Điều Khiển Quản Trị Trung Tâm</title>
+  <link rel="stylesheet" href="css/control.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- Header Bar -->
+  <header class="app-header">
+    <div class="header-branding">
+      <div class="temple-emblem">
+        <span class="emblem-lotus">🪷</span>
+      </div>
+      <div class="branding-text">
+        <h1 class="temple-title">CHÁNH ĐIỆN TỊNH TÂM</h1>
+        <p class="temple-subtitle">BẢNG ĐIỀU KHIỂN QUẢN TRỊ TRUNG TÂM (ROLE=CONTROL)</p>
+      </div>
+    </div>
+
+    <!-- Live Telemetry Status Strip -->
+    <div class="header-telemetry">
+      <div class="telemetry-badge" id="badge-ws">
+        <span class="status-dot dot-yellow" id="ws-dot"></span>
+        <span class="telemetry-label">WS:</span>
+        <span class="telemetry-value" id="ws-status-text">Đang kết nối...</span>
+      </div>
+
+      <div class="telemetry-badge" id="badge-tiktok">
+        <span class="status-dot dot-gray" id="tiktok-dot"></span>
+        <span class="telemetry-label">TikTok:</span>
+        <span class="telemetry-value" id="tiktok-status-text">Chưa kết nối</span>
+      </div>
+
+      <div class="telemetry-badge">
+        <span class="badge-icon">⏱️</span>
+        <span class="telemetry-label">Thời gian:</span>
+        <span class="telemetry-value mono" id="session-uptime">00:00:00</span>
+      </div>
+
+      <div class="telemetry-badge">
+        <span class="badge-icon">👥</span>
+        <span class="telemetry-label">Xem live:</span>
+        <span class="telemetry-value mono" id="telemetry-viewers">0</span>
+      </div>
+
+      <div class="telemetry-badge">
+        <span class="badge-icon">❤️</span>
+        <span class="telemetry-label">Lượt tim:</span>
+        <span class="telemetry-value mono" id="telemetry-likes">0</span>
+      </div>
+
+      <button class="btn btn-gold btn-preview" id="btn-open-preview" title="Mở màn hình Overlay OBS tỷ lệ chuẩn 9:16 (540×960 px)">
+        <span class="btn-icon">⧉</span> MỞ PREVIEW 9:16
+      </button>
+    </div>
+  </header>
+
+  <!-- Main Dashboard Layout Grid -->
+  <main class="dashboard-grid">
+
+    <!-- ============================================================ -->
+    <!-- COLUMN 1: Phân Hệ 1 (Connection Hub) & Top Contributors     -->
+    <!-- ============================================================ -->
+    <div class="dashboard-col col-sidebar-left">
+
+      <!-- PHÂN HỆ 1: KẾT NỐI PHÒNG LIVE (Connection Hub) -->
+      <section class="card panel-connection" id="module-connection">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">📡</span>
+            <h2>PHÂN HỆ 1: KẾT NỐI TIKTOK LIVE</h2>
+          </div>
+          <span class="card-badge" id="conn-active-badge">SẴN SÀNG</span>
+        </div>
+
+        <div class="card-body">
+          <div class="form-group">
+            <label for="input-unique-id">Tài khoản TikTok Live (@username):</label>
+            <div class="input-with-prefix">
+              <span class="input-prefix">@</span>
+              <input type="text" id="input-unique-id" class="form-control" placeholder="kenh_phat_phap" value="kenh_phat_phap">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="input-room-id">Mã phòng Live (Room ID - tùy chọn):</label>
+            <input type="text" id="input-room-id" class="form-control" placeholder="Để trống nếu không biết">
+          </div>
+
+          <div class="btn-group-row">
+            <button class="btn btn-primary btn-flex" id="btn-tiktok-connect">
+              <span class="btn-icon">⚡</span> KẾT NỐI LIVE
+            </button>
+            <button class="btn btn-danger btn-flex" id="btn-tiktok-disconnect">
+              <span class="btn-icon">⏹</span> NGẮT PHIÊN
+            </button>
+          </div>
+
+          <!-- Channel Info Banner -->
+          <div class="telemetry-box mt-3" id="conn-telemetry-box">
+            <div class="telemetry-row">
+              <span class="text-muted">Kênh đích:</span>
+              <span class="text-gold mono" id="display-channel-target">@kenh_phat_phap</span>
+            </div>
+            <div class="telemetry-row">
+              <span class="text-muted">Trạng thái:</span>
+              <span class="badge-status-pill status-idle" id="display-channel-state">Chưa kết nối</span>
+            </div>
+            <div class="telemetry-row">
+              <span class="text-muted">Bồ đoàn đang ngồi:</span>
+              <span class="text-highlight mono" id="display-occupancy-count">0 / 24</span>
+            </div>
+          </div>
+
+          <!-- Hoành Phi Câu Đối Customizer (cmd: "title") -->
+          <div class="accordion-section mt-3">
+            <div class="accordion-header" id="header-hoanhphi">
+              <span class="accordion-title">🏛️ Hoành Phi Sơn Son Thếp Vàng</span>
+              <span class="accordion-arrow">▾</span>
+            </div>
+            <div class="accordion-content" id="content-hoanhphi">
+              <div class="form-group">
+                <label for="input-title">Tiêu đề Hoành Phi:</label>
+                <input type="text" id="input-title" class="form-control" value="Chánh Điện Tịnh Tâm">
+              </div>
+              <div class="form-group">
+                <label for="input-subtitle">Câu đối / Kinh tụng:</label>
+                <input type="text" id="input-subtitle" class="form-control" value="Nam Mô Bổn Sư Thích Ca Mâu Ni Phật">
+              </div>
+              <button class="btn btn-sm btn-gold btn-block" id="btn-update-title">
+                CẬP NHẬT HOÀNH PHI
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- BẢNG CÔNG ĐỨC TRỰC TUYẾN / DANH SÁCH BỒ ĐOÀN NỔI BẬT -->
+      <section class="card panel-hall-occupants mt-3">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">👑</span>
+            <h2>PHẬT TỬ CÔNG ĐỨC TIÊU BIỂU</h2>
+          </div>
+          <span class="occupants-count mono" id="active-occupants-badge">0 người</span>
+        </div>
+        <div class="card-body p-0">
+          <div class="top-donors-list" id="top-donors-container">
+            <div class="empty-state-small">Chưa có Phật tử nào trong chánh điện</div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- COLUMN 2: Phân Hệ 2 (Interactive Seating Matrix Floor Grid) -->
+    <!-- ============================================================ -->
+    <div class="dashboard-col col-main-center">
+
+      <section class="card panel-matrix" id="module-seating">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">🧘</span>
+            <h2>PHÂN HỆ 2: MA TRẬN BỒ ĐOÀN (SÀN CHÁNH ĐIỆN)</h2>
+          </div>
+          <div class="matrix-controls">
+            <!-- Capacity Selector & Mode -->
+            <div class="control-pill-group">
+              <label for="select-seat-mode" class="pill-label">Sức chứa:</label>
+              <select id="select-seat-mode" class="form-select-sm">
+                <option value="auto">Tự động (Auto)</option>
+                <option value="24">Cố định 24 chỗ</option>
+                <option value="36">Cố định 36 chỗ</option>
+                <option value="64">Cố định 64 chỗ</option>
+                <option value="100">Cố định 100 chỗ</option>
+              </select>
+            </div>
+            <div class="matrix-stats-pill">
+              <span class="stats-label">Tọa thiền:</span>
+              <span class="stats-val mono" id="matrix-seated-count">0 / 24</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body matrix-body">
+
+          <!-- Matrix Quick Actions Bar -->
+          <div class="matrix-action-bar">
+            <div class="action-btn-group">
+              <button class="btn btn-sm btn-outline-danger" id="btn-clear-hall" title="Giải phóng toàn bộ bồ đoàn, đưa chánh điện về trạng thái tĩnh">
+                <span class="btn-icon">🧹</span> DỌN SẠCH CHÁNH ĐIỆN
+              </button>
+              <button class="btn btn-sm btn-outline-gold" id="btn-fill-15" title="Đổ 15 Phật tử mẫu">
+                +15 Mẫu
+              </button>
+              <button class="btn btn-sm btn-outline-gold" id="btn-fill-36" title="Đổ 36 Phật tử mẫu">
+                +36 Mẫu
+              </button>
+              <button class="btn btn-sm btn-outline-gold" id="btn-fill-64" title="Đổ 64 Phật tử mẫu">
+                +64 Mẫu
+              </button>
+              <button class="btn btn-sm btn-outline-gold" id="btn-fill-100" title="Đổ 100 Phật tử mẫu">
+                +100 Mẫu
+              </button>
+            </div>
+
+            <div class="matrix-legend">
+              <span class="legend-item"><span class="legend-dot dot-free"></span> Trống</span>
+              <span class="legend-item"><span class="legend-dot dot-occupied"></span> Có người</span>
+              <span class="legend-item"><span class="legend-dot dot-vip"></span> VIP (Được bảo vệ)</span>
+              <span class="legend-item"><span class="legend-dot dot-locked"></span> Đã khóa</span>
+            </div>
+          </div>
+
+          <!-- Altar Header Direction Indicator -->
+          <div class="altar-direction-indicator">
+            <div class="altar-glow-line"></div>
+            <div class="altar-label">
+              <span>🪷</span> TAM BẢO CHÁNH ĐIỆN · HƯỚNG VỀ PHẬT ĐÀI <span>🪷</span>
+            </div>
+            <div class="altar-glow-line"></div>
+          </div>
+
+          <!-- 2.5D Floor Perspective Seating Grid Container -->
+          <div class="floor-perspective-wrapper" id="floor-perspective-wrapper">
+            <div class="floor-matrix-container" id="floor-matrix-container">
+              <!-- Left Wing (Cánh Tả) -->
+              <div class="floor-wing wing-left" id="wing-left">
+                <!-- Dynamically generated slots -->
+              </div>
+
+              <!-- Central Aisle (Lối Đi Giữa 15%) -->
+              <div class="central-aisle" id="central-aisle">
+                <div class="aisle-carpet">
+                  <div class="carpet-lotus">🪷</div>
+                  <div class="aisle-text">LỐI ĐI GIỮA</div>
+                  <div class="carpet-lotus">🪷</div>
+                </div>
+              </div>
+
+              <!-- Right Wing (Cánh Hữu) -->
+              <div class="floor-wing wing-right" id="wing-right">
+                <!-- Dynamically generated slots -->
+              </div>
+            </div>
+          </div>
+
+          <div class="matrix-footer-hint">
+            <span>💡 Nhấp vào bồ đoàn bất kỳ để xem thông tin chi tiết và thao tác: <strong>Kick</strong>, <strong>Ghim VIP</strong>, <strong>Khóa chỗ</strong>, <strong>Đổi trang phục</strong>.</span>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- COLUMN 3: Phân Hệ 3 (Live Audio Mixing Console)             -->
+    <!-- ============================================================ -->
+    <div class="dashboard-col col-sidebar-right">
+
+      <section class="card panel-audio" id="module-audio">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">🎛️</span>
+            <h2>PHÂN HỆ 3: BỘ TRỘN ÂM THANH & NGHI LỄ</h2>
+          </div>
+          <span class="card-badge" id="audio-engine-badge">CHUẨN BỊ</span>
+        </div>
+
+        <div class="card-body">
+
+          <!-- BGM Zen Music Control -->
+          <div class="mixer-section">
+            <div class="mixer-header-row">
+              <label class="mixer-label">
+                <span>🎵 Nhạc Thiền Tịnh Tâm (BGM)</span>
+              </label>
+              <label class="switch">
+                <input type="checkbox" id="toggle-bgm" checked>
+                <span class="slider-round"></span>
+              </label>
+            </div>
+            <div class="fader-container">
+              <input type="range" min="0" max="100" value="55" class="fader-slider" id="slider-bgm-vol">
+              <span class="fader-val mono" id="val-bgm-vol">55%</span>
+            </div>
+          </div>
+
+          <!-- Mõ Metronome Cadence Controller -->
+          <div class="mixer-section mt-3">
+            <div class="mixer-header-row">
+              <label class="mixer-label">
+                <span>🪵 Nhịp Mõ Tụng Kinh Tự Động</span>
+              </label>
+              <label class="switch">
+                <input type="checkbox" id="toggle-mo" checked>
+                <span class="slider-round"></span>
+              </label>
+            </div>
+            <div class="fader-container">
+              <input type="range" min="20" max="120" value="52" class="fader-slider" id="slider-mo-bpm">
+              <span class="fader-val mono" id="val-mo-bpm">52 BPM</span>
+            </div>
+            <div class="tempo-presets mt-1">
+              <span class="tempo-hint">Nhịp thiền phổ biến:</span>
+              <button class="btn btn-xs btn-outline-gold" id="bpm-preset-36">36 (Tịnh)</button>
+              <button class="btn btn-xs btn-outline-gold active" id="bpm-preset-52">52 (Chuẩn)</button>
+              <button class="btn btn-xs btn-outline-gold" id="bpm-preset-72">72 (Tụng)</button>
+              <button class="btn btn-xs btn-outline-gold" id="bpm-preset-108">108 (Đại lễ)</button>
+            </div>
+          </div>
+
+          <!-- Manual Ritual Triggers (Bell, Mo, Chant) -->
+          <div class="mixer-section mt-3">
+            <label class="mixer-label mb-2">
+              <span>🔔 Thỉnh Chuông & Gõ Mõ Tức Thì:</span>
+            </label>
+            <div class="btn-group-column">
+              <button class="btn btn-great-bell btn-block" id="btn-trigger-great-bell" title="Thỉnh Đại Hồng Chung: Ngân 11.2s, hào quang Phật bừng sáng, ducking BGM -14dB">
+                <span class="bell-glow-icon">🔔</span> THỈNH ĐẠI HỒNG CHUNG
+              </button>
+
+              <div class="btn-group-row mt-2">
+                <button class="btn btn-bell btn-flex" id="btn-trigger-small-bell" title="Chuông gia trì nhỏ">
+                  <span class="btn-icon">🛎️</span> Chuông Gia Trì
+                </button>
+                <button class="btn btn-mo btn-flex" id="btn-trigger-mo" title="Gõ một tiếng mõ tức thì và cân chỉnh lại nhịp cadence">
+                  <span class="btn-icon">🪵</span> GÕ MÕ TỨC THÌ
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Auto Liturgical Chant Scheduler -->
+          <div class="mixer-section mt-3">
+            <div class="mixer-header-row">
+              <label class="mixer-label">
+                <span>📜 Đọc Kinh Tự Động Định Kỳ</span>
+              </label>
+              <label class="switch">
+                <input type="checkbox" id="toggle-auto-chant" checked>
+                <span class="slider-round"></span>
+              </label>
+            </div>
+            <div class="fader-container">
+              <span class="text-muted text-xs">Mỗi:</span>
+              <input type="range" min="1" max="10" value="3" class="fader-slider" id="slider-chant-min">
+              <span class="fader-val mono" id="val-chant-min">3 phút</span>
+            </div>
+            <button class="btn btn-xs btn-outline-gold btn-block mt-2" id="btn-trigger-chant-now">
+              KÍCH HOẠT TỤNG KINH NGAY
+            </button>
+          </div>
+
+          <!-- Edge-TTS AI Voice Customizer -->
+          <div class="accordion-section mt-3">
+            <div class="accordion-header" id="header-tts-config">
+              <span class="accordion-title">🎙️ Cấu Hình Giọng Đọc AI (Edge-TTS)</span>
+              <span class="accordion-arrow">▾</span>
+            </div>
+            <div class="accordion-content" id="content-tts-config">
+              <div class="form-group">
+                <label for="select-tts-voice">Giọng xướng danh:</label>
+                <select id="select-tts-voice" class="form-select">
+                  <option value="vi-VN-NamMinhNeural" selected>Nam Minh Neural (Trầm ấm, trang nghiêm)</option>
+                  <option value="vi-VN-HoaiMyNeural">Hoài My Neural (Thanh tao, nhẹ nhàng)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <div class="flex-between">
+                  <label for="slider-tts-pitch">Cao độ (Pitch):</label>
+                  <span class="mono text-gold text-xs" id="val-tts-pitch">-18 Hz</span>
+                </div>
+                <input type="range" min="-50" max="50" value="-18" class="form-range" id="slider-tts-pitch">
+              </div>
+
+              <div class="form-group">
+                <div class="flex-between">
+                  <label for="slider-tts-rate">Tốc độ (Rate):</label>
+                  <span class="mono text-gold text-xs" id="val-tts-rate">-20%</span>
+                </div>
+                <input type="range" min="-50" max="50" value="-20" class="form-range" id="slider-tts-rate">
+              </div>
+
+              <button class="btn btn-sm btn-gold btn-block" id="btn-save-tts-settings">
+                LƯU CẤU HÌNH GIỌNG ĐỌC
+              </button>
+            </div>
+          </div>
+
+          <!-- Emergency Announcement Broadcaster (`say`) -->
+          <div class="emergency-broadcast-box mt-3">
+            <div class="emergency-header">
+              <span class="emergency-title">📢 Phát Thanh Thông Báo Khẩn Cấp</span>
+              <span class="char-counter mono" id="say-char-count">0/200</span>
+            </div>
+            <textarea id="input-say-text" class="form-control say-textarea" rows="2" maxlength="200" placeholder="Kính mời chư vị Phật tử cùng lắng lòng hướng về Tam Bảo chuẩn bị vào khóa lễ..."></textarea>
+            
+            <div class="quick-prayer-templates mt-1">
+              <button class="btn btn-xxs btn-outline-muted" data-text="Kính mời chư vị Phật tử cùng lắng lòng hướng về Tam Bảo chuẩn bị vào khóa lễ.">Khóa lễ</button>
+              <button class="btn btn-xxs btn-outline-muted" data-text="Nguyện đem công đức này, hướng về khắp tất cả, đệ tử và chúng sanh, đều trọn thành Phật đạo.">Hồi hướng</button>
+              <button class="btn btn-xxs btn-outline-muted" data-text="Cầu chúc quý Phật tử cùng gia quyến thân tâm an lạc, tai qua nạn khỏi.">An lạc</button>
+            </div>
+
+            <button class="btn btn-danger btn-block mt-2" id="btn-broadcast-say">
+              <span class="btn-icon">🎙️</span> XƯỚNG THANH LÊN SÓNG LIVE
+            </button>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- ROW 2 - BOTTOM: Phân Hệ 4 (Simulation) & Phân Hệ 5 (Logger)  -->
+    <!-- ============================================================ -->
+    <div class="dashboard-col col-bottom-left">
+
+      <!-- PHÂN HỆ 4: STUDIO GIẢ LẬP & TỔNG DUYỆT (Simulation Studio) -->
+      <section class="card panel-simulation" id="module-simulation">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">🧪</span>
+            <h2>PHÂN HỆ 4: STUDIO GIẢ LẬP SỰ KIỆN TIKTOK</h2>
+          </div>
+          <span class="card-badge badge-sim">MÔ PHỎNG E2E</span>
+        </div>
+
+        <div class="card-body">
+
+          <!-- Tab Bar for Simulation: Chat / Gift / Autonomous Bots -->
+          <div class="tab-nav">
+            <button class="tab-btn active" data-tab="tab-sim-chat">💬 Gửi Bình Luận</button>
+            <button class="tab-btn" data-tab="tab-sim-gift">🎁 Dâng Quà Cúng Dường</button>
+            <button class="tab-btn" data-tab="tab-sim-bots">🤖 Động Cơ Bot Tự Động</button>
+          </div>
+
+          <!-- TAB 1: Chat Injection Form -->
+          <div class="tab-pane active" id="tab-sim-chat">
+            <div class="form-row">
+              <div class="form-col col-4">
+                <label for="sim-chat-name">Tên Phật tử:</label>
+                <input type="text" id="sim-chat-name" class="form-control" value="Phật Tử Diệu Âm">
+              </div>
+              <div class="form-col col-8">
+                <label for="sim-chat-text">Nội dung bình luận:</label>
+                <div class="input-with-button">
+                  <input type="text" id="sim-chat-text" class="form-control" value="Nam mô A Di Đà Phật, cầu gia đạo bình an" placeholder="Nhập câu bình luận thử...">
+                  <button class="btn btn-primary" id="btn-send-sim-chat">GỬI CHAT</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="quick-chips mt-2">
+              <span class="text-xs text-muted">Mẫu nhanh:</span>
+              <button class="chip-btn" data-text="Nam mô Bổn Sư Thích Ca Mâu Ni Phật">Thích Ca</button>
+              <button class="chip-btn" data-text="Nam mô Đại Bi Quán Thế Âm Bồ Tát">Quán Âm</button>
+              <button class="chip-btn" data-text="Cầu cho cha mẹ sống lâu trăm tuổi, bình an vô sự">Cầu an cha mẹ</button>
+              <button class="chip-btn" data-text="Lạy Phật từ bi chứng minh công đức">Lạy Phật</button>
+            </div>
+          </div>
+
+          <!-- TAB 2: Gift Injection Form -->
+          <div class="tab-pane" id="tab-sim-gift">
+            <!-- Preset Quick Gift Tiers -->
+            <div class="gift-tier-grid mb-2">
+              <div class="gift-tier-card" data-gift="Hoa Hồng" data-diamonds="1">
+                <div class="gift-tier-icon">🌹</div>
+                <div class="gift-tier-name">Hoa Hồng</div>
+                <div class="gift-tier-coins">1 xu (Cấp 1)</div>
+              </div>
+              <div class="gift-tier-card" data-gift="Đèn Hoa Sen" data-diamonds="30">
+                <div class="gift-tier-icon">🪷</div>
+                <div class="gift-tier-name">Đèn Hoa Sen</div>
+                <div class="gift-tier-coins">30 xu (Cấp 2)</div>
+              </div>
+              <div class="gift-tier-card" data-gift="Chuông Vàng" data-diamonds="199">
+                <div class="gift-tier-icon">🔔</div>
+                <div class="gift-tier-name">Chuông Vàng</div>
+                <div class="gift-tier-coins">199 xu (Cấp 3)</div>
+              </div>
+              <div class="gift-tier-card highlight-grand" data-gift="Đại Hồng Chung" data-diamonds="1000">
+                <div class="gift-tier-icon">✨</div>
+                <div class="gift-tier-name">Đại Lễ Phật</div>
+                <div class="gift-tier-coins">1000 xu (Đại Lễ)</div>
+              </div>
+            </div>
+
+            <!-- Custom Gift Parameters -->
+            <div class="form-row">
+              <div class="form-col col-4">
+                <label for="sim-gift-donor">Người dâng cúng:</label>
+                <input type="text" id="sim-gift-donor" class="form-control" value="Phật Tử Minh Tâm">
+              </div>
+              <div class="form-col col-3">
+                <label for="sim-gift-name">Tên quà:</label>
+                <input type="text" id="sim-gift-name" class="form-control" value="Đèn Hoa Sen">
+              </div>
+              <div class="form-col col-2">
+                <label for="sim-gift-diamonds">Số xu:</label>
+                <input type="number" id="sim-gift-diamonds" class="form-control" value="30" min="1" max="10000">
+              </div>
+              <div class="form-col col-3">
+                <label for="sim-gift-count">Số lượng:</label>
+                <input type="number" id="sim-gift-count" class="form-control" value="1" min="1" max="99">
+              </div>
+            </div>
+
+            <div class="form-group mt-2">
+              <label for="sim-gift-prayer">Lời nguyện cầu (Edge-TTS sẽ xướng danh):</label>
+              <div class="input-with-button">
+                <input type="text" id="sim-gift-prayer" class="form-control" value="Nguyện cầu gia đạo bình an, tai qua nạn khỏi, vạn sự hanh thông" placeholder="Lời cầu an, cầu siêu...">
+                <button class="btn btn-gold" id="btn-send-sim-gift">
+                  <span class="btn-icon">🎁</span> DÂNG CÚNG DƯỜNG
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- TAB 3: Autonomous Bot Engine -->
+          <div class="tab-pane" id="tab-sim-bots">
+            <div class="bot-engine-card">
+              <div class="bot-engine-header">
+                <div>
+                  <h3 class="bot-engine-title">🤖 Động Cơ Bot Giả Lập Tương Tác Tự Động</h3>
+                  <p class="bot-engine-desc">Tự động bơm Phật tử vào bồ đoàn, niệm Phật, thả tim và dâng quà theo nhịp điệu tự nhiên.</p>
+                </div>
+                <div class="bot-toggle-wrapper">
+                  <label class="switch switch-lg">
+                    <input type="checkbox" id="toggle-bot-engine">
+                    <span class="slider-round"></span>
+                  </label>
+                  <span class="bot-status-text" id="bot-status-text">ĐANG TẮT</span>
+                </div>
+              </div>
+
+              <div class="bot-params-grid mt-3">
+                <div class="bot-param-box">
+                  <label for="slider-bot-count">Số lượng Bot tham gia:</label>
+                  <div class="fader-container">
+                    <input type="range" min="1" max="100" value="15" class="fader-slider" id="slider-bot-count">
+                    <span class="fader-val mono" id="val-bot-count">15 Bot</span>
+                  </div>
+                </div>
+
+                <div class="bot-param-box">
+                  <label>Tốc độ tương tác (Pace):</label>
+                  <div class="pace-selector" id="pace-selector">
+                    <button class="btn-pace" data-pace="slow">Chậm (10s)</button>
+                    <button class="btn-pace active" data-pace="mid">Vừa (3s)</button>
+                    <button class="btn-pace" data-pace="fast">Nhanh (1s)</button>
+                  </div>
+                </div>
+              </div>
+
+              <div class="bot-footer mt-2">
+                <span class="text-xs text-muted">Trạng thái phát tán từ máy chủ:</span>
+                <span class="mono text-gold text-xs" id="bot-server-status">on: false | count: 0 | pace: mid</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+    <div class="dashboard-col col-bottom-right">
+
+      <!-- PHÂN HỆ 5: NHẬT KÝ SỰ KIỆN THỜI GIAN THỰC (Audit Logger) -->
+      <section class="card panel-audit" id="module-audit">
+        <div class="card-header">
+          <div class="card-title">
+            <span class="card-icon">📜</span>
+            <h2>PHÂN HỆ 5: NHẬT KÝ KIỂM TRA HỆ THỐNG</h2>
+          </div>
+          <div class="audit-controls">
+            <span class="audit-buffer-badge mono" id="audit-count-badge">0 / 300 dòng</span>
+            <button class="btn btn-xs btn-outline-muted" id="btn-copy-logs" title="Sao chép nhật ký">📋 Chép</button>
+            <button class="btn btn-xs btn-outline-muted" id="btn-clear-logs" title="Xóa màn hình nhật ký">Xóa</button>
+          </div>
+        </div>
+
+        <div class="card-body p-0 audit-body">
+          <!-- Filter Buttons Bar -->
+          <div class="audit-filter-bar">
+            <button class="filter-tab active" data-filter="all">Tất cả</button>
+            <button class="filter-tab" data-filter="gift">🎁 Quà tặng</button>
+            <button class="filter-tab" data-filter="chat">💬 Chat</button>
+            <button class="filter-tab" data-filter="ritual">🔔 Nghi lễ</button>
+            <button class="filter-tab" data-filter="warn">⚠️ Cảnh báo</button>
+            <button class="filter-tab" data-filter="error">❌ Lỗi</button>
+            <label class="auto-scroll-label ml-auto">
+              <input type="checkbox" id="check-auto-scroll" checked> Tự cuộn
+            </label>
+          </div>
+
+          <!-- Scrolling Log Terminal -->
+          <div class="audit-log-terminal" id="audit-log-terminal">
+            <div class="log-entry log-system">
+              <span class="log-time">[00:00:00]</span>
+              <span class="log-tag tag-sys">[SYS]</span>
+              <span class="log-text">Khởi tạo trung tâm điều khiển Web Admin Dashboard thành công. Đang kết nối tới WebSocket máy chủ...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+
+  </main>
+
+  <!-- ============================================================ -->
+  <!-- CONTEXT MODAL: Tương tác chi tiết từng Bồ Đoàn (Slot Modal)  -->
+  <!-- ============================================================ -->
+  <div class="modal-backdrop" id="slot-modal-backdrop">
+    <div class="modal-dialog" id="slot-modal">
+      <div class="modal-header">
+        <div class="modal-title-group">
+          <span class="modal-slot-badge mono" id="modal-slot-id">S01</span>
+          <h3 class="modal-title" id="modal-slot-title">Chi Tiết Bồ Đoàn</h3>
+        </div>
+        <button class="modal-close-btn" id="btn-close-modal">&times;</button>
+      </div>
+
+      <div class="modal-body">
+        <div class="slot-occupant-profile" id="modal-occupant-profile">
+          <div class="occupant-avatar-box">
+            <img src="" alt="Avatar" class="occupant-avatar" id="modal-avatar-img">
+            <span class="occupant-skin-badge" id="modal-skin-name">Cư sĩ</span>
+          </div>
+
+          <div class="occupant-details">
+            <div class="occupant-name-row">
+              <h4 class="occupant-name" id="modal-occupant-name">Phật Tử Diệu Hạnh</h4>
+              <span class="badge-vip" id="modal-vip-badge">👑 VIP</span>
+              <span class="badge-locked" id="modal-locked-badge">🔒 ĐÃ KHÓA</span>
+            </div>
+            <div class="occupant-meta">
+              <div class="meta-item"><span class="meta-label">ID:</span> <span class="mono" id="modal-occupant-id">718294019</span></div>
+              <div class="meta-item"><span class="meta-label">Công đức:</span> <span class="mono text-gold" id="modal-occupant-coins">180 xu</span></div>
+              <div class="meta-item"><span class="meta-label">Bồ đoàn:</span> <span class="mono" id="modal-occupant-slot">Slot #01</span></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Administrative Actions for this Slot -->
+        <div class="slot-actions-panel mt-3">
+          <h4 class="actions-heading">HÀNH ĐỘNG QUẢN TRỊ VIÊN</h4>
+
+          <div class="action-buttons-grid">
+            <button class="btn btn-action btn-kick" id="btn-action-kick">
+              <span class="action-icon">🚫</span>
+              <span class="action-name">TRỤC XUẤT (KICK)</span>
+              <span class="action-desc">Thu hồi bồ đoàn ngay lập tức</span>
+            </button>
+
+            <button class="btn btn-action btn-vip" id="btn-action-vip">
+              <span class="action-icon">👑</span>
+              <span class="action-name" id="btn-action-vip-text">GHIM VIP BẢO VỆ</span>
+              <span class="action-desc">Miễn trừ khỏi quy tắc đào thải LRU</span>
+            </button>
+
+            <button class="btn btn-action btn-lock" id="btn-action-lock">
+              <span class="action-icon" id="btn-action-lock-icon">🔒</span>
+              <span class="action-name" id="btn-action-lock-text">KHÓA BỒ ĐOÀN</span>
+              <span class="action-desc">Dành riêng cho Ban Tổ Chức</span>
+            </button>
+          </div>
+
+          <!-- Force Skin Override -->
+          <div class="force-skin-panel mt-3">
+            <label class="actions-subheading">ÉP ĐỔI HÌNH DÁNG TRANG PHỤC (FORCE SKIN):</label>
+            <div class="skin-selector-grid">
+              <button class="btn-skin" data-skin="monk">
+                <span class="skin-icon">🧑‍🦲</span>
+                <span class="skin-label">Sư Thầy</span>
+              </button>
+              <button class="btn-skin" data-skin="nun">
+                <span class="skin-icon">👩‍🦲</span>
+                <span class="skin-label">Ni Cô</span>
+              </button>
+              <button class="btn-skin" data-skin="master">
+                <span class="skin-icon">🧘</span>
+                <span class="skin-label">Cao Tăng</span>
+              </button>
+              <button class="btn-skin" data-skin="child">
+                <span class="skin-icon">👦</span>
+                <span class="skin-label">Chú Tiểu</span>
+              </button>
+              <button class="btn-skin" data-skin="granny">
+                <span class="skin-icon">👵</span>
+                <span class="skin-label">Bà Lão</span>
+              </button>
+              <button class="btn-skin" data-skin="man">
+                <span class="skin-icon">👨</span>
+                <span class="skin-label">Cư Sĩ Nam</span>
+              </button>
+              <button class="btn-skin" data-skin="woman">
+                <span class="skin-icon">👩</span>
+                <span class="skin-label">Cư Sĩ Nữ</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" id="btn-dismiss-modal">Đóng cửa sổ</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Stack Container -->
+  <div class="toast-stack" id="toast-stack"></div>
+
+  <!-- Scripts -->
+  <script type="module" src="js/ControlApp.js"></script>
+</body>
+</html>

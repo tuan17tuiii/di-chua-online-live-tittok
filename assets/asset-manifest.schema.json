@@ -1,0 +1,201 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "ChanhDienAssetManifest",
+  "description": "JSON Schema định nghĩa cấu trúc dữ liệu cho manifest tài nguyên Chánh Điện Tịnh Tâm TikTok Live",
+  "type": "object",
+  "required": ["version", "theme", "defaultConfig", "assets"],
+  "properties": {
+    "$schema": { "type": "string" },
+    "version": { "type": "string" },
+    "theme": { "type": "string" },
+    "description": { "type": "string" },
+    "defaultConfig": {
+      "type": "object",
+      "required": ["resolution", "audio"],
+      "properties": {
+        "resolution": {
+          "type": "object",
+          "required": ["width", "height", "aspectRatio"],
+          "properties": {
+            "width": { "type": "integer", "const": 1080 },
+            "height": { "type": "integer", "const": 1920 },
+            "aspectRatio": { "type": "string", "const": "9:16" }
+          },
+          "additionalProperties": false
+        },
+        "audio": {
+          "type": "object",
+          "required": ["sampleRate", "channels", "bgmVolume", "sfxVolume", "bellVolume"],
+          "properties": {
+            "sampleRate": { "type": "integer", "const": 48000 },
+            "channels": { "type": "integer", "const": 2 },
+            "bgmVolume": { "type": "number", "minimum": 0, "maximum": 1 },
+            "sfxVolume": { "type": "number", "minimum": 0, "maximum": 1 },
+            "bellVolume": { "type": "number", "minimum": 0, "maximum": 1 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "assets": {
+      "type": "object",
+      "required": ["backgrounds", "altar", "characters", "visual_fx", "audio_sfx", "audio_bgm"],
+      "properties": {
+        "backgrounds": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/backgroundItem" }
+        },
+        "altar": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/altarItem" }
+        },
+        "characters": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/characterItem" }
+        },
+        "visual_fx": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/fxItem" }
+        },
+        "audio_sfx": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/sfxItem" }
+        },
+        "audio_bgm": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/bgmItem" }
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "backgroundItem": {
+      "type": "object",
+      "required": ["id", "name", "category", "path", "format", "width", "height", "zIndex", "license"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string", "const": "background" },
+        "path": { "type": "string" },
+        "format": { "type": "string", "enum": ["jpg", "webp", "png"] },
+        "width": { "type": "integer" },
+        "height": { "type": "integer" },
+        "zIndex": { "type": "integer" },
+        "fallbackId": { "type": ["string", "null"] },
+        "fallbackSynthetic": { "type": "boolean" },
+        "description": { "type": "string" },
+        "license": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "altarItem": {
+      "type": "object",
+      "required": ["id", "name", "category", "path", "format", "width", "height", "zIndex", "license"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string", "enum": ["altar_layer", "statue", "fx_prop"] },
+        "path": { "type": "string" },
+        "format": { "type": "string", "enum": ["png", "webp"] },
+        "width": { "type": "integer" },
+        "height": { "type": "integer" },
+        "zIndex": { "type": "integer" },
+        "fallbackId": { "type": ["string", "null"] },
+        "fallbackSynthetic": { "type": "boolean" },
+        "description": { "type": "string" },
+        "license": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "characterItem": {
+      "type": "object",
+      "required": ["id", "name", "category", "gender", "staticPath", "spritesheetPath", "format", "frameWidth", "frameHeight", "frameCount", "seatedHeight", "fps", "bowingFrames", "license"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string", "const": "character" },
+        "gender": { "type": "string", "enum": ["male", "female", "neutral"] },
+        "staticPath": { "type": "string" },
+        "spritesheetPath": { "type": "string" },
+        "format": { "type": "string", "enum": ["png", "webp"] },
+        "frameWidth": { "type": "integer" },
+        "frameHeight": { "type": "integer" },
+        "frameCount": { "type": "integer", "const": 8 },
+        "seatedHeight": { "type": "integer" },
+        "fps": { "type": "integer" },
+        "bowingFrames": {
+          "type": "array",
+          "items": { "type": "integer" }
+        },
+        "fallbackId": { "type": ["string", "null"] },
+        "fallbackSynthetic": { "type": "boolean" },
+        "license": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "fxItem": {
+      "type": "object",
+      "required": ["id", "name", "category", "path", "format", "width", "height", "zIndex", "license"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string", "const": "fx_prop" },
+        "path": { "type": "string" },
+        "format": { "type": "string", "enum": ["png", "webp"] },
+        "width": { "type": "integer" },
+        "height": { "type": "integer" },
+        "zIndex": { "type": "integer" },
+        "blendMode": { "type": "string", "enum": ["lighter", "source-over"] },
+        "fallbackId": { "type": ["string", "null"] },
+        "fallbackSynthetic": { "type": "boolean" },
+        "license": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "sfxItem": {
+      "type": "object",
+      "required": ["id", "name", "category", "type", "path", "format", "sampleRate", "bitDepth", "durationSec", "volume", "license"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string", "const": "audio_sfx" },
+        "type": { "type": "string", "enum": ["mo", "bell", "gift_chime"] },
+        "path": { "type": "string" },
+        "format": { "type": "string", "enum": ["wav", "mp3"] },
+        "sampleRate": { "type": "integer", "const": 48000 },
+        "bitDepth": { "type": "integer", "const": 24 },
+        "durationSec": { "type": "number" },
+        "volume": { "type": "number", "minimum": 0, "maximum": 1 },
+        "roundRobinGroup": { "type": "string" },
+        "fallbackId": { "type": ["string", "null"] },
+        "fallbackSynthetic": { "type": "boolean" },
+        "license": { "type": "string" }
+      },
+      "additionalProperties": false
+    },
+    "bgmItem": {
+      "type": "object",
+      "required": ["id", "name", "category", "type", "path", "format", "bitrate", "durationSec", "volume", "loop", "description", "license"],
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "category": { "type": "string", "const": "audio_bgm" },
+        "type": { "type": "string", "const": "bgm_loop" },
+        "path": { "type": "string" },
+        "format": { "type": "string", "enum": ["mp3", "wav", "ogg"] },
+        "bitrate": { "type": "integer" },
+        "durationSec": { "type": "number" },
+        "volume": { "type": "number", "minimum": 0, "maximum": 1 },
+        "loop": { "type": "boolean" },
+        "description": { "type": "string" },
+        "fallbackId": { "type": ["string", "null"] },
+        "fallbackSynthetic": { "type": "boolean" },
+        "license": { "type": "string" }
+      },
+      "additionalProperties": false
+    }
+  }
+}
